@@ -197,7 +197,11 @@ def main():
     st.markdown(get_custom_css(), unsafe_allow_html=True)
 
     # 헤더
-    st.title("🏦 한국은행 통화정책 톤 분석 대시보드")
+    st.markdown("""
+        <h1 style='text-align: center; margin-bottom: 2rem;'>
+            🏦 한국은행 통화정책 톤 분석 대시보드 <span style="font-size: 0.5em; color: #ff6b6b;">(주의: 비공식/테스트용임!)</span>
+        </h1>
+    """, unsafe_allow_html=True)
     st.markdown("---")
 
     # 데이터 로드
