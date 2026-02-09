@@ -1,0 +1,461 @@
+{
+  "hawkish": [
+    {
+      "term": "인상",
+      "polarity": "hawkish",
+      "weight": 2.0,
+      "category": "policy",
+      "description": "금리 인상"
+    },
+    {
+      "term": "긴축",
+      "polarity": "hawkish",
+      "weight": 2.0,
+      "category": "policy",
+      "description": "긴축 정책"
+    },
+    {
+      "term": "정상화",
+      "polarity": "hawkish",
+      "weight": 1.5,
+      "category": "policy",
+      "description": "통화정책 정상화"
+    },
+    {
+      "term": "선제적",
+      "polarity": "hawkish",
+      "weight": 1.2,
+      "category": "policy",
+      "description": "선제적 대응"
+    },
+    {
+      "term": "물가상승",
+      "polarity": "hawkish",
+      "weight": 1.8,
+      "category": "inflation",
+      "description": "물가 상승 압력"
+    },
+    {
+      "term": "상방압력",
+      "polarity": "hawkish",
+      "weight": 1.8,
+      "category": "inflation",
+      "description": "물가 상방 압력"
+    },
+    {
+      "term": "상방위험",
+      "polarity": "hawkish",
+      "weight": 1.7,
+      "category": "inflation",
+      "description": "상방 위험"
+    },
+    {
+      "term": "상방리스크",
+      "polarity": "hawkish",
+      "weight": 1.7,
+      "category": "inflation",
+      "description": "상방 리스크"
+    },
+    {
+      "term": "인플레이션",
+      "polarity": "hawkish",
+      "weight": 1.2,
+      "category": "inflation",
+      "description": "인플레이션 압력"
+    },
+    {
+      "term": "기대인플레이션",
+      "polarity": "hawkish",
+      "weight": 1.5,
+      "category": "inflation",
+      "description": "기대인플레이션 상승"
+    },
+    {
+      "term": "물가불안",
+      "polarity": "hawkish",
+      "weight": 1.6,
+      "category": "inflation",
+      "description": "물가 불안정"
+    },
+    {
+      "term": "물가오름세",
+      "polarity": "hawkish",
+      "weight": 1.5,
+      "category": "inflation",
+      "description": "물가 오름세"
+    },
+    {
+      "term": "과열",
+      "polarity": "hawkish",
+      "weight": 1.8,
+      "category": "growth",
+      "description": "경기 과열"
+    },
+    {
+      "term": "견조",
+      "polarity": "hawkish",
+      "weight": 1.3,
+      "category": "growth",
+      "description": "견조한 성장"
+    },
+    {
+      "term": "호조",
+      "polarity": "hawkish",
+      "weight": 1.2,
+      "category": "growth",
+      "description": "호조세"
+    },
+    {
+      "term": "확대",
+      "polarity": "hawkish",
+      "weight": 0.8,
+      "category": "growth",
+      "description": "확대 기조"
+    },
+    {
+      "term": "개선",
+      "polarity": "hawkish",
+      "weight": 0.7,
+      "category": "growth",
+      "description": "경기 개선"
+    },
+    {
+      "term": "금융불균형",
+      "polarity": "hawkish",
+      "weight": 2.0,
+      "category": "financial_stability",
+      "description": "금융 불균형"
+    },
+    {
+      "term": "가계부채",
+      "polarity": "hawkish",
+      "weight": 1.8,
+      "category": "financial_stability",
+      "description": "가계부채 우려"
+    },
+    {
+      "term": "부채증가",
+      "polarity": "hawkish",
+      "weight": 1.7,
+      "category": "financial_stability",
+      "description": "부채 증가"
+    },
+    {
+      "term": "부채누증",
+      "polarity": "hawkish",
+      "weight": 1.8,
+      "category": "financial_stability",
+      "description": "부채 누증"
+    },
+    {
+      "term": "주택가격",
+      "polarity": "hawkish",
+      "weight": 1.3,
+      "category": "financial_stability",
+      "description": "주택가격 상승"
+    },
+    {
+      "term": "부동산",
+      "polarity": "hawkish",
+      "weight": 1.0,
+      "category": "financial_stability",
+      "description": "부동산 가격"
+    },
+    {
+      "term": "레버리지",
+      "polarity": "hawkish",
+      "weight": 1.5,
+      "category": "financial_stability",
+      "description": "레버리지 확대"
+    },
+    {
+      "term": "자산가격",
+      "polarity": "hawkish",
+      "weight": 1.2,
+      "category": "financial_stability",
+      "description": "자산가격 상승"
+    },
+    {
+      "term": "유동성축소",
+      "polarity": "hawkish",
+      "weight": 1.6,
+      "category": "liquidity",
+      "description": "유동성 축소"
+    },
+    {
+      "term": "유동성과잉",
+      "polarity": "hawkish",
+      "weight": 1.5,
+      "category": "liquidity",
+      "description": "유동성 과잉"
+    },
+    {
+      "term": "완화축소",
+      "polarity": "hawkish",
+      "weight": 1.8,
+      "category": "liquidity",
+      "description": "완화 정도 축소"
+    },
+    {
+      "term": "빅스텝",
+      "polarity": "hawkish",
+      "weight": 2.5,
+      "category": "policy",
+      "description": "50bp 인상"
+    },
+    {
+      "term": "추가인상",
+      "polarity": "hawkish",
+      "weight": 2.2,
+      "category": "policy",
+      "description": "추가 금리 인상"
+    }
+  ],
+  "dovish": [
+    {
+      "term": "인하",
+      "polarity": "dovish",
+      "weight": 2.0,
+      "category": "policy",
+      "description": "금리 인하"
+    },
+    {
+      "term": "완화",
+      "polarity": "dovish",
+      "weight": 0.5,
+      "category": "policy",
+      "description": "완화 기조"
+    },
+    {
+      "term": "동결",
+      "polarity": "dovish",
+      "weight": 1.2,
+      "category": "policy",
+      "description": "금리 동결"
+    },
+    {
+      "term": "유지",
+      "polarity": "dovish",
+      "weight": 0.8,
+      "category": "policy",
+      "description": "금리 유지"
+    },
+    {
+      "term": "지지",
+      "polarity": "dovish",
+      "weight": 1.0,
+      "category": "policy",
+      "description": "경기 지지"
+    },
+    {
+      "term": "둔화",
+      "polarity": "dovish",
+      "weight": 0.5,
+      "category": "growth",
+      "description": "경기 둔화"
+    },
+    {
+      "term": "부진",
+      "polarity": "dovish",
+      "weight": 1.7,
+      "category": "growth",
+      "description": "경기 부진"
+    },
+    {
+      "term": "위축",
+      "polarity": "dovish",
+      "weight": 1.8,
+      "category": "growth",
+      "description": "경기 위축"
+    },
+    {
+      "term": "침체",
+      "polarity": "dovish",
+      "weight": 2.0,
+      "category": "growth",
+      "description": "경기 침체"
+    },
+    {
+      "term": "하락",
+      "polarity": "dovish",
+      "weight": 0.5,
+      "category": "growth",
+      "description": "성장 하락"
+    },
+    {
+      "term": "감소",
+      "polarity": "dovish",
+      "weight": 1.2,
+      "category": "growth",
+      "description": "성장 감소"
+    },
+    {
+      "term": "약화",
+      "polarity": "dovish",
+      "weight": 1.5,
+      "category": "growth",
+      "description": "성장세 약화"
+    },
+    {
+      "term": "미약",
+      "polarity": "dovish",
+      "weight": 1.4,
+      "category": "growth",
+      "description": "미약한 성장"
+    },
+    {
+      "term": "저조",
+      "polarity": "dovish",
+      "weight": 1.4,
+      "category": "growth",
+      "description": "저조한 성장"
+    },
+    {
+      "term": "하방위험",
+      "polarity": "dovish",
+      "weight": 1.8,
+      "category": "risk",
+      "description": "하방 위험"
+    },
+    {
+      "term": "하방리스크",
+      "polarity": "dovish",
+      "weight": 1.8,
+      "category": "risk",
+      "description": "하방 리스크"
+    },
+    {
+      "term": "하방압력",
+      "polarity": "dovish",
+      "weight": 1.7,
+      "category": "risk",
+      "description": "하방 압력"
+    },
+    {
+      "term": "하회",
+      "polarity": "dovish",
+      "weight": 1.3,
+      "category": "risk",
+      "description": "목표 하회"
+    },
+    {
+      "term": "불확실성",
+      "polarity": "dovish",
+      "weight": 0.2,
+      "category": "risk",
+      "description": "불확실성"
+    },
+    {
+      "term": "불확실",
+      "polarity": "dovish",
+      "weight": 1.4,
+      "category": "risk",
+      "description": "불확실"
+    },
+    {
+      "term": "리스크",
+      "polarity": "dovish",
+      "weight": 1.0,
+      "category": "risk",
+      "description": "리스크"
+    },
+    {
+      "term": "우려",
+      "polarity": "dovish",
+      "weight": 0.2,
+      "category": "risk",
+      "description": "우려"
+    },
+    {
+      "term": "변동성",
+      "polarity": "dovish",
+      "weight": 1.1,
+      "category": "risk",
+      "description": "변동성"
+    },
+    {
+      "term": "물가안정",
+      "polarity": "dovish",
+      "weight": 1.5,
+      "category": "inflation",
+      "description": "물가 안정"
+    },
+    {
+      "term": "안정세",
+      "polarity": "dovish",
+      "weight": 1.3,
+      "category": "inflation",
+      "description": "물가 안정세"
+    },
+    {
+      "term": "둔화세",
+      "polarity": "dovish",
+      "weight": 1.4,
+      "category": "inflation",
+      "description": "물가 둔화세"
+    },
+    {
+      "term": "수요부진",
+      "polarity": "dovish",
+      "weight": 1.6,
+      "category": "demand",
+      "description": "수요 부진"
+    },
+    {
+      "term": "소비부진",
+      "polarity": "dovish",
+      "weight": 1.5,
+      "category": "demand",
+      "description": "소비 부진"
+    },
+    {
+      "term": "투자부진",
+      "polarity": "dovish",
+      "weight": 1.5,
+      "category": "demand",
+      "description": "투자 부진"
+    },
+    {
+      "term": "수출부진",
+      "polarity": "dovish",
+      "weight": 1.4,
+      "category": "demand",
+      "description": "수출 부진"
+    },
+    {
+      "term": "대외불확실성",
+      "polarity": "dovish",
+      "weight": 1.6,
+      "category": "external",
+      "description": "대외 불확실성"
+    },
+    {
+      "term": "대외여건",
+      "polarity": "dovish",
+      "weight": 1.0,
+      "category": "external",
+      "description": "대외 여건"
+    },
+    {
+      "term": "글로벌불확실성",
+      "polarity": "dovish",
+      "weight": 1.5,
+      "category": "external",
+      "description": "글로벌 불확실성"
+    },
+    {
+      "term": "회복지연",
+      "polarity": "dovish",
+      "weight": 1.7,
+      "category": "growth",
+      "description": "회복 지연"
+    },
+    {
+      "term": "지연",
+      "polarity": "dovish",
+      "weight": 1.2,
+      "category": "growth",
+      "description": "지연"
+    }
+  ]
+}

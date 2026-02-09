@@ -15,14 +15,27 @@ from pathlib import Path
 import json
 from datetime import datetime, timedelta
 
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import cross_val_score, TimeSeriesSplit
-from sklearn.metrics import classification_report, accuracy_score
-import statsmodels.api as sm
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+# sklearn을 선택사항으로 변경 (Python 3.14에서 빌드 문제 해결)
+try:
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.model_selection import cross_val_score, TimeSeriesSplit
+    from sklearn.metrics import classification_report, accuracy_score
+    SKLEARN_AVAILABLE = True
+except ImportError:
+    SKLEARN_AVAILABLE = False
+    logger.warning("scikit-learn을 사용할 수 없습니다. 간단한 휴리스틱 방법을 사용합니다.")
+
+try:
+    import statsmodels.api as sm
+    STATSMODELS_AVAILABLE = True
+except ImportError:
+    STATSMODELS_AVAILABLE = False
+
 
 # 프로젝트 루트 디렉토리
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -101,7 +114,10 @@ class RatePredictor:
     def __init__(self):
         """예측기 초기화"""
         self.model = None
-        self.scaler = StandardScaler()
+        if SKLEARN_AVAILABLE:
+            self.scaler = StandardScaler()
+        else:
+            self.scaler = None
         self.is_fitted = False
 
         # 디렉토리 생성
@@ -162,12 +178,23 @@ class RatePredictor:
             df: 톤 분석 결과 DataFrame (None이면 파일에서 로드)
         """
         if df is None:
-            df = self.load_tone_data()
+            try:
+                df = self.load_tone_data()
+            except FileNotFoundError:
+                logger.warning("톤 분석 결과 파일이 없습니다. 휴리스틱 모드로 작동합니다.")
+                self.is_fitted = False
+                return
+
+        if not SKLEARN_AVAILABLE:
+            logger.info("scikit-learn이 없어 간단한 룰 기반 방법을 사용합니다.")
+            self.is_fitted = True  # 룰 기반이므로 학습 없이 사용 가능
+            return
 
         X, y = self.prepare_training_data(df)
 
         if len(X) < 10:
             logger.warning("학습 데이터가 부족합니다")
+            self.is_fitted = True  # 룰 기반으로 fallback
             return
 
         # 스케일링
@@ -190,16 +217,25 @@ class RatePredictor:
         logger.info(f"학습 샘플 수: {len(X)}")
 
         # 교차 검증 (시계열 분할)
-        tscv = TimeSeriesSplit(n_splits=3)
-        cv_scores = cross_val_score(self.model, X_scaled, y, cv=tscv)
-        logger.info(f"교차 검증 정확도: {cv_scores.mean():.2%} (±{cv_scores.std():.2%})")
+        try:
+            tscv = TimeSeriesSplit(n_splits=3)
+            cv_scores = cross_val_score(self.model, X_scaled, y, cv=tscv)
+            logger.info(f"교차 검증 정확도: {cv_scores.mean():.2%} (±{cv_scores.std():.2%})")
 
-        return {
-            'accuracy': accuracy,
-            'cv_mean': cv_scores.mean(),
-            'cv_std': cv_scores.std(),
-            'n_samples': len(X)
-        }
+            return {
+                'accuracy': accuracy,
+                'cv_mean': cv_scores.mean(),
+                'cv_std': cv_scores.std(),
+                'n_samples': len(X)
+            }
+        except Exception as e:
+            logger.warning(f"교차 검증 실패: {e}")
+            return {
+                'accuracy': accuracy,
+                'cv_mean': 0.0,
+                'cv_std': 0.0,
+                'n_samples': len(X)
+            }
 
     def predict(self, tone_result: Dict) -> PredictionResult:
         """
@@ -211,9 +247,8 @@ class RatePredictor:
         Returns:
             PredictionResult 객체
         """
-        if not self.is_fitted:
-            logger.warning("모델이 학습되지 않았습니다. 먼저 train()을 호출하세요.")
-            # 간단한 규칙 기반 예측으로 대체
+        # sklearn이 없거나 모델이 학습되지 않았으면 룰 기반 예측 사용
+        if not SKLEARN_AVAILABLE or not self.is_fitted or self.model is None:
             return self._rule_based_predict(tone_result)
 
         # 특성 추출

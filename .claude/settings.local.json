@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.bok.or.kr)",
+      "Bash(python:*)",
+      "WebSearch",
+      "Bash(chcp 6500)",
+      "Bash(pip install:*)",
+      "Bash(\"venv\\\\Scripts\\\\python.exe\" -m src.crawlers.pdf_downloader)",
+      "Bash(\"venv\\\\Scripts\\\\pip.exe\" install -r requirements.txt)",
+      "Bash(\"venv\\\\Scripts\\\\pip.exe\" install numpy kss streamlit plotly matplotlib statsmodels scikit-learn --quiet)",
+      "Bash(\"venv\\\\Scripts\\\\pip.exe\" install numpy kss streamlit plotly statsmodels scikit-learn)",
+      "Bash(findstr:*)",
+      "Bash(\"venv\\\\Scripts\\\\python.exe\" -m src.nlp.tone_analyzer)",
+      "Bash(\"venv\\\\Scripts\\\\python.exe\" -m src.models.rate_predictor)",
+      "Bash(\"venv\\\\Scripts\\\\streamlit.exe\" run app.py --server.headless true)",
+      "Bash(claude --version)",
+      "Bash(npm update:*)",
+      "Bash(claude config show:*)",
+      "Bash(dir \"D:\\\\Programing\\\\bok_policy_analyzer_v2\")",
+      "Bash(dir \"D:\\\\Programing\\\\bok_policy_analyzer_v2\\\\src\\\\crawlers\")",
+      "Bash(dir:*)",
+      "Bash(tree:*)",
+      "WebFetch(domain:)",
+      "Bash(\"venv/Scripts/python.exe\" -m pip install scikit-learn)",
+      "Bash(\"venv/Scripts/python.exe\" -m pip install selenium ekonlpy wordcloud Pillow openpyxl)",
+      "Bash(\"venv/Scripts/python.exe\" -m pip install:*)",
+      "Bash(\"venv/Scripts/streamlit.exe\" run:*)",
+      "Bash(tasklist:*)",
+      "Bash(\"venv/Scripts/pip.exe\" list)",
+      "Bash(\"venv/Scripts/pip.exe\" install scikit-learn)",
+      "Bash(\"venv/Scripts/python.exe\" -m pip install --upgrade pip)",
+      "Bash(\"venv/Scripts/python.exe\" -m pip install scikit-learn==1.3.0)",
+      "Bash(\"venv/Scripts/python.exe\" -c \"import sys; print\\(f''Python {sys.version}''\\)\")",
+      "Bash(cmd /c run_app.bat)",
+      "Bash(\"venv/Scripts/python.exe\" app.py)",
+      "Bash(\"venv/Scripts/streamlit.exe\" run app.py --server.headless=true)"
+    ]
+  }
+}

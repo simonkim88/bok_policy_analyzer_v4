@@ -21,6 +21,7 @@ from src.nlp.tone_analyzer import ToneAnalyzer
 from src.models.rate_predictor import RatePredictor
 from src.utils.styles import get_custom_css
 from src.views.analysis_view import render_analysis_view
+from src.views.settings_view import render_settings_view
 
 # 페이지 설정
 st.set_page_config(
@@ -103,7 +104,7 @@ def create_timeline_chart(df):
 
     # 톤 지수 라인
     fig.add_trace(go.Scatter(
-        x=pd.to_datetime(df['meeting_date']),
+        x=pd.to_datetime(df['meeting_date'].astype(str).str.split(' ').str[0]),
         y=df['tone_index'],
         mode='lines+markers',
         name='Tone Index',
@@ -214,6 +215,8 @@ def main():
     # Session State 초기화
     if 'show_analysis' not in st.session_state:
         st.session_state.show_analysis = False
+    if 'show_settings' not in st.session_state:
+        st.session_state.show_settings = False
     if 'selected_meeting' not in st.session_state:
         st.session_state.selected_meeting = '2025_11_27'  # 기본값: 2025년 11월 27일
     
@@ -551,6 +554,14 @@ def main():
              
         render_analysis_view(selected_row)
         
+    elif st.session_state.show_settings:
+        # 전문가 설정 화면
+        if st.button("← 대시보드로 돌아가기 (Back to Dashboard)"):
+             st.session_state.show_settings = False
+             st.rerun()
+             
+        render_settings_view()
+        
     else:
         # 기존 대시보드 화면
         tone_value = selected_row['tone_index']
@@ -565,6 +576,33 @@ def main():
             st.metric("평균 톤 지수", f"{df['tone_index'].mean():+.3f}")
             st.metric("최근 톤 지수", f"{df.iloc[-1]['tone_index']:+.3f}")
 
+            st.markdown("---")
+            
+            # 전문가 설정 버튼
+            st.markdown("""
+            <style>
+            div[data-testid="stSidebar"] div[data-testid="stButton"] button {
+                background-color: #2D3748;  /* Dark Slate Grey - Subtle */
+                color: #CBD5E0;
+                border: 1px solid #4A5568;
+                font-size: 0.9rem;
+                padding: 0.4rem 1rem;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+            div[data-testid="stSidebar"] div[data-testid="stButton"] button:hover {
+                background-color: #4A5568;
+                border-color: #718096;
+                color: white;
+                box-shadow: none;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            if st.button("⚙️ 전문가 설정", key="btn_expert_settings"):
+                st.session_state.show_settings = True
+                st.rerun()
+                
             st.markdown("---")
             st.markdown("### 💡 정보")
             st.markdown("""

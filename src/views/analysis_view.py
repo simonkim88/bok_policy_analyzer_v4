@@ -6,6 +6,8 @@ import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
+import os
+from pathlib import Path
 
 def render_analysis_view(row, previous_row=None):
     """
@@ -280,27 +282,27 @@ def render_sample_2025_11_27(row):
         <tbody>
             <tr style="background-color: #0D1B2A;">
                 <td style="padding: 15px; color: #E0E0E0; border-bottom: 1px solid #333;"><strong>성장</strong></td>
-                <td style="padding: 15px; color: #B0B0B0; border-bottom: 1px solid #333;">"양호한 성장세 지속"</td>
+                <td style="padding: 15px; color: #B0B0B0; border-bottom: 1px solid #333;">"국내경제는 건설투자 부진에도 소비 회복세 지속, 양호한 수출 증가세 등으로 개선 흐름을 이어갔다."</td>
                 <td style="padding: 15px; color: #81D4FA; border-bottom: 1px solid #333;">
-                    "성장세가 <strong style="color: #4FC3F7;">다소 둔화</strong>되는 모습"
+                    "국내경제는 건설투자 부진에도 <strong style="color: #4FC3F7;">소비 회복세와 수출 증가세</strong>가 이어지면서 개선세를 지속하였다."
                     <span style="background-color: rgba(33,150,243,0.2); color: #42A5F5; 
                                  padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 10px;">Dovish</span>
                 </td>
             </tr>
             <tr style="background-color: #0D1B2A;">
                 <td style="padding: 15px; color: #E0E0E0; border-bottom: 1px solid #333;"><strong>물가</strong></td>
-                <td style="padding: 15px; color: #B0B0B0; border-bottom: 1px solid #333;">"물가 상승률이 점차 둔화"</td>
+                <td style="padding: 15px; color: #B0B0B0; border-bottom: 1px solid #333;">"9월 중 소비자물가 상승률이 2.1%, 근원물가 상승률이 2.0% ... 안정적인 흐름을 이어갔다."</td>
                 <td style="padding: 15px; color: #81D4FA; border-bottom: 1px solid #333;">
-                    "물가 안정세가 <strong style="color: #4FC3F7;">뚜렷해지고</strong> 있음"
-                    <span style="background-color: rgba(33,150,243,0.2); color: #42A5F5; 
-                                 padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 10px;">Dovish</span>
+                    "소비자물가 및 근원물가 상승률이 <strong style="color: #EF5350;">2.4% 및 2.2%로 높아졌다.</strong>"
+                    <span style="background-color: rgba(244,67,54,0.2); color: #EF5350; 
+                                 padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 10px;">Hawkish (Fact Check)</span>
                 </td>
             </tr>
             <tr style="background-color: #0D1B2A;">
                 <td style="padding: 15px; color: #E0E0E0; border-bottom: 1px solid #333;"><strong>정책방향</strong></td>
-                <td style="padding: 15px; color: #B0B0B0; border-bottom: 1px solid #333;">"긴축 기조를 충분한 기간 유지"</td>
+                <td style="padding: 15px; color: #B0B0B0; border-bottom: 1px solid #333;">"성장의 하방리스크 완화를 위한 금리인하 기조를 이어나가되 ... 기준금리의 추가 인하 시기 및 속도 등을 결정해 나갈 것이다."</td>
                 <td style="padding: 15px; color: #81D4FA; border-bottom: 1px solid #333;">
-                    "경기 상황을 <strong style="color: #4FC3F7;">면밀히 점검</strong>하면서 유연하게 대응"
+                    "향후 통화정책은 <strong style="color: #4FC3F7;">금리인하 가능성</strong>을 열어두되 ... 기준금리의 추가 인하 여부 및 시기를 결정해 나갈 것이다."
                     <span style="background-color: rgba(33,150,243,0.2); color: #42A5F5; 
                                  padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 10px;">Dovish Pivot</span>
                 </td>
@@ -308,6 +310,17 @@ def render_sample_2025_11_27(row):
         </tbody>
     </table>
     """, unsafe_allow_html=True)
+
+    if st.button("📄 원문 PDF 보기 (2025년 11월 의사록)", key="btn_view_pdf_2025_11", use_container_width=True):
+        try:
+            pdf_path = Path("data/pdfs/minutes_2025_11_27.pdf").resolve()
+            if pdf_path.exists():
+                os.startfile(pdf_path)
+                st.success(f"파일을 열었습니다: {pdf_path.name}")
+            else:
+                st.error(f"파일을 찾을 수 없습니다: {pdf_path}")
+        except Exception as e:
+            st.error(f"파일 열기 실패: {e}")
     
     st.markdown("""
     <div style="background-color: #1B263B; padding: 20px; border-radius: 10px; margin-top: 20px;">
