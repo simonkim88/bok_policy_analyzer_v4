@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 from src.data.database import DatabaseManager
 from datetime import datetime
+from src.views.analysis_view_2026 import render_analysis_2026_01
 
 def render_analysis_view(row, previous_row=None):
     """
@@ -24,6 +25,8 @@ def render_analysis_view(row, previous_row=None):
     # 2025-11-27 샘플 데이터 하드코딩 (요청사항 반영)
     if meeting_date == '2025-11-27':
         render_sample_2025_11_27(row)
+    elif meeting_date in ['2026-01', '2026-01-01', '2026-01-15']:
+        render_analysis_2026_01(row)
     else:
         # 일반적인 데이터에 대한 템플릿 (향후 확장 가능)
         render_generic_analysis(row)

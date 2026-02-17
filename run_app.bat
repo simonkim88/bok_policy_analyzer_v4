@@ -7,7 +7,7 @@ echo 가상환경에서 Streamlit 앱을 실행합니다...
 echo.
 
 cd /d "%~dp0"
-call venv\Scripts\activate
+call venv_new\Scripts\activate
 streamlit run app.py
 
 pause

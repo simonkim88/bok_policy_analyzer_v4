@@ -22,6 +22,7 @@ from src.models.rate_predictor import RatePredictor
 from src.utils.styles import get_custom_css
 from src.views.analysis_view import render_analysis_view
 from src.views.settings_view import render_settings_view
+from src.views.taylor_view import render_taylor_view
 
 # 페이지 설정
 st.set_page_config(
@@ -43,7 +44,11 @@ def load_tone_data():
     if not tone_path.exists():
         st.error("톤 분석 결과 파일이 없습니다. 먼저 분석을 실행해주세요.")
         return None
-    return pd.read_csv(tone_path)
+    
+    df = pd.read_csv(tone_path)
+    # Exclude 2025-05-29 as requested
+    df = df[df['meeting_date_str'] != '2025_05_29']
+    return df
 
 
 @st.cache_resource
@@ -217,8 +222,10 @@ def main():
         st.session_state.show_analysis = False
     if 'show_settings' not in st.session_state:
         st.session_state.show_settings = False
+    if 'show_taylor' not in st.session_state:
+        st.session_state.show_taylor = False
     if 'selected_meeting' not in st.session_state:
-        st.session_state.selected_meeting = '2025_11_27'  # 기본값: 2025년 11월 27일
+        st.session_state.selected_meeting = '2026_01'  # 기본값: 2026년 1월 (최신)
     
     # --- 상단 Meeting Selection Area ---
     meeting_dates = df['meeting_date_str'].tolist()
@@ -541,7 +548,13 @@ def main():
     # 선택된 회의 데이터
     selected_meeting = st.session_state.selected_meeting
 
-    # 선택된 회의 데이터
+    # 선택된 회의 데이터 검증 및 Fallback
+    if selected_meeting not in df['meeting_date_str'].values:
+        st.warning(f"선택된 회의({selected_meeting}) 데이터를 찾을 수 없어 최신 회의로 변경합니다.")
+        selected_meeting = df['meeting_date_str'].iloc[-1]
+        st.session_state.selected_meeting = selected_meeting
+        st.rerun()
+
     selected_row = df[df['meeting_date_str'] == selected_meeting].iloc[0]
     
     # --- Analysis View 또는 Dashboard View 표시 ---
@@ -561,6 +574,14 @@ def main():
              st.rerun()
              
         render_settings_view()
+
+    elif st.session_state.show_taylor:
+        # 테일러 룰 분석 화면
+        if st.button("← 대시보드로 돌아가기 (Back to Dashboard)"):
+             st.session_state.show_taylor = False
+             st.rerun()
+             
+        render_taylor_view()
         
     else:
         # 기존 대시보드 화면
@@ -601,6 +622,14 @@ def main():
             
             if st.button("⚙️ 전문가 설정", key="btn_expert_settings"):
                 st.session_state.show_settings = True
+                st.session_state.show_taylor = False
+                st.session_state.show_analysis = False
+                st.rerun()
+            
+            if st.button("📈 테일러 룰 분석", key="btn_taylor_analysis"):
+                st.session_state.show_taylor = True
+                st.session_state.show_settings = False
+                st.session_state.show_analysis = False
                 st.rerun()
                 
             st.markdown("---")

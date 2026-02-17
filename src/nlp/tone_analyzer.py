@@ -326,7 +326,8 @@ def main():
     analyzer = ToneAnalyzer()
 
     # 텍스트 파일 디렉토리
-    texts_dir = DATA_DIR / "texts"
+    # Phase 1 Update: Read from structured directories
+    texts_dir = DATA_DIR / "01_minutes/txt"
 
     if not texts_dir.exists():
         print(f"텍스트 디렉토리가 없습니다: {texts_dir}")
