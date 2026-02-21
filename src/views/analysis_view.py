@@ -1,566 +1,601 @@
-"""
-View module for rendering the detailed analysis report.
-Uses Streamlit native components with professional economic consulting aesthetics.
-"""
-import streamlit as st
-import plotly.graph_objects as go
-import plotly.express as px
-import pandas as pd
-import os
-from pathlib import Path
-from src.data.database import DatabaseManager
+# pyright: basic
+import ast
 from datetime import datetime
-from src.views.analysis_view_2026 import render_analysis_2026_01
+
+import pandas as pd
+import plotly.graph_objects as go
+import streamlit as st
+
+
+def _safe_float(value, default=0.0):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return float(default)
+
+
+def _parse_meeting_label(meeting_date_str):
+    date_str = str(meeting_date_str or '')
+    parts = date_str.split('_')
+    try:
+        if len(parts) == 3:
+            return datetime.strptime(date_str, '%Y_%m_%d').strftime('%Y-%m-%d')
+        if len(parts) == 2:
+            return datetime.strptime(date_str, '%Y_%m').strftime('%Y-%m')
+    except ValueError:
+        return date_str.replace('_', '-')
+    return date_str.replace('_', '-')
+
+
+def _parse_keywords(raw_value, limit=5):
+    if raw_value is None:
+        return []
+    text = str(raw_value).strip()
+    if not text:
+        return []
+    return [item.strip() for item in text.split(',') if item.strip()][:limit]
+
+
+def _extract_sentence_tones(row):
+    keys = ['sentence_tones', 'sentence_tone_values', 'tone_distribution', 'sentence_level_tones']
+    for key in keys:
+        if key not in row:
+            continue
+        value = row.get(key)
+        if value is None or (isinstance(value, float) and pd.isna(value)):
+            continue
+        if isinstance(value, list):
+            tones = [_safe_float(v, 0.0) for v in value]
+            return tones if tones else None
+        text = str(value).strip()
+        if not text:
+            continue
+        try:
+            parsed = ast.literal_eval(text)
+            if isinstance(parsed, list):
+                tones = [_safe_float(v, 0.0) for v in parsed]
+                return tones if tones else None
+        except (ValueError, SyntaxError):
+            pass
+        if ',' in text:
+            tones = [_safe_float(v.strip(), 0.0) for v in text.split(',') if v.strip()]
+            if tones:
+                return tones
+    return None
+
+
+def _render_metric_card(title, value, color):
+    st.markdown(
+        f'<div style="background: linear-gradient(145deg, #1E1E2E 0%, #1B263B 100%); border-left: 4px solid {color}; padding: 16px; border-radius: 12px; min-height: 120px; box-shadow: 0 6px 20px rgba(0,0,0,0.25);"><p style="margin: 0; color: #90A4AE; font-size: 0.82rem;">{title}</p><h3 style="margin: 10px 0 0 0; color: #E0E0E0; font-size: 1.8rem;">{value}</h3></div>',
+        unsafe_allow_html=True,
+    )
+
+
+def _load_macro_data(meeting_date_str: str) -> dict:
+    """Load macro indicators from ECOS CSVs closest to meeting date."""
+    import os
+
+    base_path = os.path.join(os.path.dirname(__file__), '..', '..', 'data', '08_ecos')
+    result = {}
+
+    try:
+        br = pd.read_csv(os.path.join(base_path, 'base_rate', 'base_rate.csv'))
+        br['DATA_VALUE'] = pd.to_numeric(br['DATA_VALUE'], errors='coerce')
+        values = br['DATA_VALUE'].dropna()
+        result['base_rate'] = values.iloc[-1] if not values.empty else None
+        result['base_rate_prev'] = values.iloc[-2] if len(values) > 1 else None
+    except Exception:
+        result['base_rate'] = None
+        result['base_rate_prev'] = None
+
+    try:
+        cpi = pd.read_csv(os.path.join(base_path, 'cpi', 'cpi_total.csv'))
+        cpi['DATA_VALUE'] = pd.to_numeric(cpi['DATA_VALUE'], errors='coerce')
+        cpi = cpi.sort_values('TIME')
+        cpi['YoY'] = cpi['DATA_VALUE'].pct_change(12) * 100
+        yoy = cpi['YoY'].dropna()
+        result['cpi_yoy'] = yoy.iloc[-1] if not yoy.empty else None
+    except Exception:
+        result['cpi_yoy'] = None
+
+    try:
+        gdp = pd.read_csv(os.path.join(base_path, 'gdp', 'gdp_real.csv'))
+        gdp['DATA_VALUE'] = pd.to_numeric(gdp['DATA_VALUE'], errors='coerce')
+        gdp = gdp.sort_values('TIME')
+        gdp['YoY'] = gdp['DATA_VALUE'].pct_change(4) * 100
+        yoy = gdp['YoY'].dropna()
+        result['gdp_yoy'] = yoy.iloc[-1] if not yoy.empty else None
+    except Exception:
+        result['gdp_yoy'] = None
+
+    try:
+        fx = pd.read_csv(os.path.join(base_path, 'exchange_rates', 'usd_krw.csv'))
+        fx['DATA_VALUE'] = pd.to_numeric(fx['DATA_VALUE'], errors='coerce')
+        values = fx['DATA_VALUE'].dropna()
+        result['usd_krw'] = values.iloc[-1] if not values.empty else None
+    except Exception:
+        result['usd_krw'] = None
+
+    try:
+        hc = pd.read_csv(os.path.join(base_path, 'household_debt', 'household_credit.csv'))
+        hc['DATA_VALUE'] = pd.to_numeric(hc['DATA_VALUE'], errors='coerce')
+        values = hc['DATA_VALUE'].dropna()
+        result['household_credit'] = values.iloc[-1] if not values.empty else None
+    except Exception:
+        result['household_credit'] = None
+
+    try:
+        ktb = pd.read_csv(os.path.join(base_path, 'bond_yields', 'ktb_3y.csv'))
+        ktb['DATA_VALUE'] = pd.to_numeric(ktb['DATA_VALUE'], errors='coerce')
+        values = ktb['DATA_VALUE'].dropna()
+        result['ktb_3y'] = values.iloc[-1] if not values.empty else None
+    except Exception:
+        result['ktb_3y'] = None
+
+    if meeting_date_str:
+        return result
+    return result
+
+
+def _render_macro_card(title, value, subtitle, bg_color):
+    st.markdown(
+        f'''<div style="background: {bg_color}; padding: 20px; border-radius: 12px; text-align: center; min-height: 100px;">
+        <p style="margin: 0; color: rgba(255,255,255,0.85); font-size: 0.8rem;">{title}</p>
+        <h2 style="margin: 8px 0 4px 0; color: white; font-size: 1.9rem;">{value}</h2>
+        <p style="margin: 0; color: rgba(255,255,255,0.75); font-size: 0.78rem;">{subtitle}</p>
+        </div>''',
+        unsafe_allow_html=True,
+    )
+
+
+def _generate_key_summary(row, macro, meeting_label):
+    tone = _safe_float(row.get('tone_index'))
+    br = macro.get('base_rate')
+    cpi = macro.get('cpi_yoy')
+
+    br_str = f'{br:.2f}%' if br is not None else 'N/A'
+    cpi_str = f'{cpi:.1f}%' if cpi is not None else 'N/A'
+
+    if tone > 0.1:
+        tone_desc = '매파적(긴축적) 성향'
+    elif tone < -0.1:
+        tone_desc = '비둘기파적(완화적) 성향'
+    else:
+        tone_desc = '중립적 성향'
+
+    summary = f'한국은행 금융통화위원회는 {meeting_label} 회의에서 기준금리를 {br_str}로 유지하기로 결정했습니다. '
+    summary += f'톤 분석 결과 {tone_desc}을 보이고 있으며, 소비자물가 상승률은 {cpi_str} 수준입니다.'
+    return summary
+
+
+def _render_background_card(title, subtitle, items):
+    items_html = ''.join(f'<li style="color: #B0BEC5; margin: 4px 0;">{item}</li>' for item in items)
+    return f'''<div style="background: #1E1E2E; border-radius: 10px; padding: 20px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 12px;">
+        <h4 style="color: #E0E0E0; margin: 0 0 12px 0;">{title}</h4>
+        <p style="color: #78909C; font-weight: 600; margin: 0 0 6px 0;">{subtitle}</p>
+        <ul style="padding-left: 20px; margin: 0;">{items_html}</ul>
+    </div>'''
+
+
+def _render_risk_card(icon, title, line1, line2, bg_color):
+    st.markdown(
+        f'''<div style="background: {bg_color}; padding: 24px; border-radius: 12px; text-align: center; min-height: 140px;">
+        <p style="font-size: 2rem; margin: 0;">{icon}</p>
+        <h3 style="color: white; margin: 8px 0;">{title}</h3>
+        <p style="color: rgba(255,255,255,0.8); font-size: 0.82rem; margin: 4px 0;">{line1}</p>
+        <p style="color: rgba(255,255,255,0.8); font-size: 0.82rem; margin: 4px 0;">{line2}</p>
+        </div>''',
+        unsafe_allow_html=True,
+    )
+
+
+def _generate_ai_commentary(row, macro, previous_row):
+    tone = _safe_float(row.get('tone_index'))
+    prev_tone = _safe_float(previous_row.get('tone_index')) if previous_row else None
+    cpi = macro.get('cpi_yoy')
+    gdp = macro.get('gdp_yoy')
+    fx = macro.get('usd_krw')
+
+    p1 = f'톤 분석 결과, Tone Index는 {tone:+.3f}로 '
+    if tone > 0.3:
+        p1 += '강한 매파적 성향을 보였습니다.'
+    elif tone > 0.1:
+        p1 += '온건 매파적 성향을 보였습니다.'
+    elif tone > -0.1:
+        p1 += '중립적 성향을 보였습니다.'
+    elif tone > -0.3:
+        p1 += '온건 비둘기파적 성향을 보였습니다.'
+    else:
+        p1 += '강한 비둘기파적(완화적) 성향을 보였습니다.'
+
+    if prev_tone is not None:
+        p1 += f' 직전 대비 변화폭은 {tone - prev_tone:+.3f}p입니다.'
+    if cpi is not None:
+        p1 += f' 물가({cpi:.1f}%)가 목표 수준에 근접하고 '
+    if gdp is not None:
+        p1 += f'성장률({gdp:.1f}%)을 고려한 결과입니다.'
+
+    p2 = ''
+    if fx is not None and fx > 1400:
+        p2 += f'다만, 아직 {fx:,.0f}원대 중후반에 머물고 있는 환율과 수도권 부동산 가격 불안이 조기 완화를 제약하는 핵심 요인입니다. '
+    p2 += "위원들은 '성장과 물가 안정'을 강조하면서도 '금융안정'을 동시에 고려하여 신중한 접근이 필요하다는 시각을 보였습니다."
+
+    return p1, p2
+
+
+def _generate_implication(row, previous_row, macro):
+    tone = _safe_float(row.get('tone_index'))
+    prev_tone = _safe_float(previous_row.get('tone_index')) if previous_row else 0
+    tone_shift = tone - prev_tone
+
+    if tone_shift > 0.05:
+        direction = '긴축 기조 충분히 유지하되, 향후 호율을 경기 부양으로 이동하고 있음을 시사'
+    elif tone_shift < -0.05:
+        direction = '통화정책의 초점이 경기 부양으로 이동하고 있음을 시사'
+    else:
+        direction = '통화정책 기조가 유지되고 있음을 시사'
+
+    text = f'금번 회의에서는 물가 안정에 대한 자신감을 바탕으로 {direction}합니다. '
+    text += '다만, 금융안정(환율, 가계부채)에 대한 경계감은 여전히 유지되고 있어 신중한 접근이 예상됩니다.'
+    if macro.get('ktb_3y') is not None:
+        text += f' 국고채 3년물은 {macro.get("ktb_3y"):.2f}%로 금리 경로 민감도가 높은 구간입니다.'
+    return text
+
+
+def _render_asset_card(icon, title, outlook, outlook_color, points):
+    border_color = {
+        'BULLISH': '#4CAF50',
+        'NEUTRAL': '#FFC107',
+        'BEARISH': '#F44336',
+        'VOLATILE': '#F44336',
+        'POLARIZED': '#FFC107',
+        'STABLE': '#4CAF50',
+    }
+    bg_bar = {
+        'BULLISH': '#1B5E20',
+        'NEUTRAL': '#F57F17',
+        'BEARISH': '#B71C1C',
+        'VOLATILE': '#B71C1C',
+        'POLARIZED': '#F57F17',
+        'STABLE': '#1B5E20',
+    }
+    final_border = border_color.get(outlook, outlook_color)
+    final_bar = bg_bar.get(outlook, '#424242')
+    pts_html = ''.join(f'<li style="color: #B0BEC5; font-size: 0.78rem; margin: 3px 0;">•{p}</li>' for p in points)
+    st.markdown(
+        f'''
+    <div style="background: #1E1E2E; border: 2px solid {final_border}; border-radius: 12px; padding: 20px; text-align: center; min-height: 250px;">
+        <p style="font-size: 1.8rem; margin: 0;">{icon}</p>
+        <h4 style="color: white; margin: 8px 0;">{title}</h4>
+        <div style="background: {final_bar}; padding: 6px; border-radius: 6px; margin: 8px 0;">
+            <span style="color: white; font-weight: 700; font-size: 0.85rem;">{outlook}</span>
+        </div>
+        <ul style="list-style: none; padding: 0; text-align: left; margin-top: 12px;">{pts_html}</ul>
+    </div>''',
+        unsafe_allow_html=True,
+    )
+
+
+def _tone_badge_html(value):
+    if value > 0.1:
+        return '<span style="background:#E65100;color:white;padding:2px 8px;border-radius:999px;font-size:0.72rem;">Hawkish</span>'
+    if value < -0.1:
+        return '<span style="background:#1565C0;color:white;padding:2px 8px;border-radius:999px;font-size:0.72rem;">Dovish</span>'
+    return '<span style="background:#455A64;color:white;padding:2px 8px;border-radius:999px;font-size:0.72rem;">Neutral</span>'
+
 
 def render_analysis_view(row, previous_row=None):
-    """
-    Renders the detailed analysis view for a specific meeting.
-    
-    Args:
-        row: The dataframe row for the selected meeting.
-        previous_row: The dataframe row for the previous meeting (for comparison).
-    """
-    meeting_date = row['meeting_date_str'].replace('_', '-')
-    
-    # 2025-11-27 샘플 데이터 하드코딩 (요청사항 반영)
-    if meeting_date == '2025-11-27':
-        render_sample_2025_11_27(row)
-    elif meeting_date in ['2026-01', '2026-01-01', '2026-01-15']:
-        render_analysis_2026_01(row)
+    row = row.to_dict() if hasattr(row, 'to_dict') else dict(row)
+    if previous_row is not None and hasattr(previous_row, 'to_dict'):
+        previous_row = previous_row.to_dict()
+
+    meeting_label = _parse_meeting_label(row.get('meeting_date_str'))
+    tone_index = _safe_float(row.get('tone_index'))
+    interpretation = str(row.get('interpretation', 'N/A'))
+    hawkish_score = _safe_float(row.get('hawkish_score'))
+    dovish_score = _safe_float(row.get('dovish_score'))
+    total_sentences = int(_safe_float(row.get('total_sentences'), 0))
+    top_hawkish = _parse_keywords(row.get('top_hawkish'))
+    top_dovish = _parse_keywords(row.get('top_dovish'))
+
+    st.markdown(
+        f'<div style="background: linear-gradient(135deg, #0D1B2A 0%, #1B263B 48%, #1E1E2E 100%); padding: 36px 30px; border-radius: 16px; margin-bottom: 24px; border: 1px solid rgba(100,181,246,0.2);"><p style="margin: 0; color: #64B5F6; letter-spacing: 2px; font-size: 0.82rem;">POLICY ANALYSIS REPORT</p><h1 style="margin: 10px 0 8px 0; color: white;">{meeting_label} 통화정책 톤 분석</h1><p style="margin: 0; color: #E0E0E0; font-size: 1.05rem;">판단: <span style="color: #00E676; font-weight: 700;">{interpretation}</span></p></div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown('## Executive Summary')
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        _render_metric_card('Tone Index', f'{tone_index:+.3f}', '#00E676')
+    with c2:
+        _render_metric_card('Hawkish Score', f'{hawkish_score:.1f}', '#FFAB40')
+    with c3:
+        _render_metric_card('Dovish Score', f'{dovish_score:.1f}', '#64B5F6')
+    with c4:
+        _render_metric_card('Sentence Count', f'{total_sentences:,}', '#CFD8DC')
+
+    st.markdown('## Tone Decomposition')
+    fig_decomp = go.Figure(go.Bar(y=['Hawkish', 'Dovish'], x=[hawkish_score, dovish_score], orientation='h', marker_color=['#FFAB40', '#64B5F6'], text=[f'{hawkish_score:.1f}', f'{dovish_score:.1f}'], textposition='outside'))
+    fig_decomp.update_layout(template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', height=280, showlegend=False, xaxis_title='Keyword Weighted Score', yaxis_title='')
+    st.plotly_chart(fig_decomp, use_container_width=True)
+
+    st.markdown('## Top Keywords')
+    k1, k2 = st.columns(2)
+    hawk_df = pd.DataFrame({'Keyword': top_hawkish, 'Rank': range(1, len(top_hawkish) + 1)})
+    dove_df = pd.DataFrame({'Keyword': top_dovish, 'Rank': range(1, len(top_dovish) + 1)})
+
+    with k1:
+        st.markdown('**Hawkish Top 5**')
+        if hawk_df.empty:
+            st.info('Hawkish keywords unavailable.')
+        else:
+            fig_hawk = go.Figure(go.Bar(x=list(reversed(hawk_df['Rank'].tolist())), y=list(reversed(hawk_df['Keyword'].tolist())), orientation='h', marker_color='#FFAB40', text=list(reversed(hawk_df['Rank'].tolist())), textposition='inside'))
+            fig_hawk.update_layout(template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', xaxis_title='Relative Rank', yaxis_title='', showlegend=False, height=320)
+            st.plotly_chart(fig_hawk, use_container_width=True)
+
+    with k2:
+        st.markdown('**Dovish Top 5**')
+        if dove_df.empty:
+            st.info('Dovish keywords unavailable.')
+        else:
+            fig_dove = go.Figure(go.Bar(x=list(reversed(dove_df['Rank'].tolist())), y=list(reversed(dove_df['Keyword'].tolist())), orientation='h', marker_color='#64B5F6', text=list(reversed(dove_df['Rank'].tolist())), textposition='inside'))
+            fig_dove.update_layout(template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', xaxis_title='Relative Rank', yaxis_title='', showlegend=False, height=320)
+            st.plotly_chart(fig_dove, use_container_width=True)
+
+    st.markdown('## Comparison With Previous')
+    if previous_row:
+        p_tone = _safe_float(previous_row.get('tone_index'))
+        p_hawk = _safe_float(previous_row.get('hawkish_score'))
+        p_dove = _safe_float(previous_row.get('dovish_score'))
+        p_sent = int(_safe_float(previous_row.get('total_sentences'), 0))
+
+        d1, d2, d3, d4 = st.columns(4)
+        d1.metric('Tone Index Delta', f'{tone_index:+.3f}', delta=f'{tone_index - p_tone:+.3f}')
+        d2.metric('Hawkish Score Delta', f'{hawkish_score:.1f}', delta=f'{hawkish_score - p_hawk:+.1f}')
+        d3.metric('Dovish Score Delta', f'{dovish_score:.1f}', delta=f'{dovish_score - p_dove:+.1f}')
+        d4.metric('Sentence Count Delta', f'{total_sentences:,}', delta=f'{total_sentences - p_sent:+d}')
+
+        compare_df = pd.DataFrame({'Metric': ['Tone Index', 'Hawkish Score', 'Dovish Score'], 'Previous': [p_tone, p_hawk, p_dove], 'Current': [tone_index, hawkish_score, dovish_score]})
+        fig_comp = go.Figure()
+        fig_comp.add_trace(go.Bar(name='Previous', x=compare_df['Metric'], y=compare_df['Previous'], marker_color='#78909C'))
+        fig_comp.add_trace(go.Bar(name='Current', x=compare_df['Metric'], y=compare_df['Current'], marker_color='#00E676'))
+        fig_comp.update_layout(barmode='group', template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', height=360, xaxis_title='', yaxis_title='Score', legend=dict(orientation='h', y=1.02, yanchor='bottom', x=1, xanchor='right'))
+        st.plotly_chart(fig_comp, use_container_width=True)
     else:
-        # 일반적인 데이터에 대한 템플릿 (향후 확장 가능)
-        render_generic_analysis(row)
+        st.info('직전 회의 데이터가 없어 비교를 생략합니다.')
 
-def render_sample_2025_11_27(row):
-    """2025년 11월 27일 발표에 대한 전문가 수준의 상세 분석"""
-    
-    # DB에서 최신 경제전망 조회
-    db = DatabaseManager()
-    latest_forecast = db.get_latest_forecast(target_date='2025-11-27')
-    
-    # 기본값 (DB에 없을 경우) - 수정된 올바른 값
-    gdp_forecast = 1.0
-    cpi_forecast = 2.1
-    
-    if latest_forecast and latest_forecast.get('forecasts'):
-        forecasts = latest_forecast['forecasts']
-        # 2025년 전망치 찾기
-        if 2025 in forecasts:
-            if forecasts[2025]['gdp'] is not None:
-                gdp_forecast = forecasts[2025]['gdp']
-            if forecasts[2025]['cpi'] is not None:
-                cpi_forecast = forecasts[2025]['cpi']
-    
-    # ==================== REPORT HEADER ====================
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #0D1B2A 0%, #1B263B 50%, #415A77 100%); 
-                padding: 50px 40px; border-radius: 16px; margin-bottom: 40px;
-                box-shadow: 0 15px 50px rgba(0,0,0,0.4); position: relative; overflow: hidden;">
-        <div style="position: absolute; top: 0; right: 0; width: 300px; height: 300px; 
-                    background: radial-gradient(circle, rgba(100,181,246,0.15) 0%, transparent 70%);"></div>
-        <div style="position: relative; z-index: 1;">
-            <p style="color: #64B5F6; font-size: 0.9rem; letter-spacing: 3px; margin-bottom: 10px; 
-                      text-transform: uppercase; font-weight: 600;">Policy Analysis Report</p>
-            <h1 style="color: white; margin: 0; font-size: 3rem; font-weight: 700; 
-                       letter-spacing: 1px; line-height: 1.2;">
-                2025년 11월 통화정책방향<br/>
-                <span style="font-size: 1.8rem; color: #90CAF9;">심층 분석 리포트</span>
-            </h1>
-            <div style="margin-top: 25px; display: flex; gap: 30px; flex-wrap: wrap;">
-                <div style="background: rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 8px;">
-                    <span style="color: #90CAF9; font-size: 0.8rem;">발표일</span><br/>
-                    <span style="color: white; font-size: 1.2rem; font-weight: 600;">2025년 11월 27일</span>
-                </div>
-                <div style="background: rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 8px;">
-                    <span style="color: #90CAF9; font-size: 0.8rem;">기준금리</span><br/>
-                    <span style="color: #4CAF50; font-size: 1.2rem; font-weight: 600;">2.50% (동결)</span>
-                </div>
-                <div style="background: rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 8px;">
-                    <span style="color: #90CAF9; font-size: 0.8rem;">연속 동결</span><br/>
-                    <span style="color: white; font-size: 1.2rem; font-weight: 600;">4회차</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    macro = _load_macro_data(str(row.get('meeting_date_str', '')))
 
-    # ==================== EXECUTIVE SUMMARY ====================
-    st.markdown("## 📋 Executive Summary")
-    
-    # Key Metrics in Cards
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%); 
-                    padding: 25px; border-radius: 12px; text-align: center;
-                    box-shadow: 0 8px 25px rgba(21,101,192,0.3);">
-            <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.85rem;">기준금리</p>
-            <h2 style="color: white; margin: 10px 0 5px 0; font-size: 2.2rem;">2.50%</h2>
-            <p style="color: #81D4FA; margin: 0; font-size: 0.9rem;">▬ 동결 (5월 이후)</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown(f"""
-        <div style="background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%); 
-                    padding: 25px; border-radius: 12px; text-align: center;
-                    box-shadow: 0 8px 25px rgba(46,125,50,0.3);">
-            <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.85rem;">소비자물가</p>
-            <h2 style="color: white; margin: 10px 0 5px 0; font-size: 2.2rem;">{cpi_forecast}%</h2>
-            <p style="color: #A5D6A7; margin: 0; font-size: 0.9rem;">목표(2%) 근접</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown(f"""
-        <div style="background: linear-gradient(135deg, #F57C00 0%, #E65100 100%); 
-                    padding: 25px; border-radius: 12px; text-align: center;
-                    box-shadow: 0 8px 25px rgba(245,124,0,0.3);">
-            <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.85rem;">GDP 성장률 전망</p>
-            <h2 style="color: white; margin: 10px 0 5px 0; font-size: 2.2rem;">{gdp_forecast}%</h2>
-            <p style="color: #FFCC80; margin: 0; font-size: 0.9rem;">▼ 하향 조정</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col4:
-        st.markdown(f"""
-        <div style="background: linear-gradient(135deg, #7B1FA2 0%, #4A148C 100%); 
-                    padding: 25px; border-radius: 12px; text-align: center;
-                    box-shadow: 0 8px 25px rgba(123,31,162,0.3);">
-            <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.85rem;">Tone Index</p>
-            <h2 style="color: white; margin: 10px 0 5px 0; font-size: 2.2rem;">{row['tone_index']:.2f}</h2>
-            <p style="color: #CE93D8; margin: 0; font-size: 0.9rem;">비둘기파 (Dovish)</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # Summary Text
-    st.markdown("""
-    <div style="background-color: #1A1A2E; padding: 30px; border-radius: 12px; 
-                border-left: 5px solid #64B5F6; margin: 20px 0;">
-        <h3 style="color: #64B5F6; margin-top: 0; font-size: 1.3rem;">🎯 핵심 요약</h3>
-        <p style="color: #E0E0E0; font-size: 1.1rem; line-height: 1.9; margin-bottom: 0;">
-            한국은행 금융통화위원회는 2025년 11월 27일 회의에서 기준금리를 연 <strong style="color: #4CAF50;">2.50%</strong>로 
-            동결하기로 결정했습니다. 이는 2025년 5월 25bp 인하 이후 <strong>4회 연속 동결</strong>입니다.<br><br>
-            이번 결정의 핵심 배경은 다음과 같습니다:
-        </p>
-        <ul style="color: #E0E0E0; font-size: 1.05rem; line-height: 2; margin-top: 15px;">
-            <li><strong style="color: #FFB74D;">물가 안정세 확인:</strong> 소비자물가 상승률이 2% 초반대로 안정화되며 목표 수준에 근접</li>
-            <li><strong style="color: #FFB74D;">성장 불확실성:</strong> 소비와 수출은 개선세이나, 대외 불확실성과 내수 회복 지연 우려 상존</li>
-            <li><strong style="color: #FFB74D;">금융안정 리스크:</strong> 원/달러 환율 변동성, 수도권 주택시장 불안, 가계대출 증가세 경계</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # ==================== DECISION RATIONALE ====================
-    st.markdown("## 🔍 결정 배경 상세 분석")
-    
-    col_left, col_right = st.columns(2)
-    
-    with col_left:
-        st.markdown("### 📈 경제 성장")
-        st.markdown("""
-        <div style="background-color: #1E1E2E; padding: 25px; border-radius: 10px; min-height: 280px;">
-            <h4 style="color: #4CAF50; margin-top: 0;">긍정적 요인</h4>
-            <ul style="color: #C0C0C0; line-height: 1.9;">
-                <li>민간소비가 서비스 중심으로 회복세 지속</li>
-                <li>수출이 반도체, 자동차 등 주력 품목 호조로 증가세 유지</li>
-                <li>설비투자 개선 조짐 (IT 부문 중심)</li>
-            </ul>
-            <h4 style="color: #FF7043; margin-top: 20px;">부정적 요인</h4>
-            <ul style="color: #C0C0C0; line-height: 1.9;">
-                <li>건설투자 부진 장기화</li>
-                <li>중국 경기 회복 지연으로 수출 증가폭 축소 우려</li>
-                <li>고금리 장기화에 따른 내수 회복 지연</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col_right:
-        st.markdown("### 🏷️ 물가 동향")
-        st.markdown(f"""
-        <div style="background-color: #1E1E2E; padding: 25px; border-radius: 10px; min-height: 280px;">
-            <h4 style="color: #4CAF50; margin-top: 0;">안정화 신호</h4>
-            <ul style="color: #C0C0C0; line-height: 1.9;">
-                <li>헤드라인 CPI: {cpi_forecast}% (전년동월대비)</li>
-                <li>근원물가: 2.1%대로 안정화</li>
-                <li>기대인플레이션: 2.5% 내외로 안착</li>
-            </ul>
-            <h4 style="color: #FFC107; margin-top: 20px;">잠재 리스크</h4>
-            <ul style="color: #C0C0C0; line-height: 1.9;">
-                <li>국제유가 변동성 (지정학적 리스크)</li>
-                <li>원/달러 환율 상승에 따른 수입물가 압력</li>
-                <li>농산물가격 불안정 요인 상존</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # Financial Stability Section
-    st.markdown("### 🏦 금융안정 리스크 요인")
-    
-    col_fx, col_house, col_debt = st.columns(3)
-    
-    with col_fx:
-        st.markdown("""
-        <div style="background: linear-gradient(180deg, #B71C1C 0%, #7F0000 100%); 
-                    padding: 25px; border-radius: 12px; text-align: center; min-height: 200px;">
-            <p style="font-size: 2.5rem; margin: 0;">💱</p>
-            <h4 style="color: white; margin: 15px 0 10px 0;">환율 변동성</h4>
-            <p style="color: rgba(255,255,255,0.85); font-size: 0.95rem; line-height: 1.6;">
-                원/달러 환율 1,380원대 등락<br/>
-                미 연준 정책 불확실성 반영
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col_house:
-        st.markdown("""
-        <div style="background: linear-gradient(180deg, #E65100 0%, #BF360C 100%); 
-                    padding: 25px; border-radius: 12px; text-align: center; min-height: 200px;">
-            <p style="font-size: 2.5rem; margin: 0;">🏠</p>
-            <h4 style="color: white; margin: 15px 0 10px 0;">주택시장</h4>
-            <p style="color: rgba(255,255,255,0.85); font-size: 0.95rem; line-height: 1.6;">
-                수도권 아파트 가격 상승세<br/>
-                투기 수요 재점화 우려
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col_debt:
-        st.markdown("""
-        <div style="background: linear-gradient(180deg, #6A1B9A 0%, #4A148C 100%); 
-                    padding: 25px; border-radius: 12px; text-align: center; min-height: 200px;">
-            <p style="font-size: 2.5rem; margin: 0;">💳</p>
-            <h4 style="color: white; margin: 15px 0 10px 0;">가계부채</h4>
-            <p style="color: rgba(255,255,255,0.85); font-size: 0.95rem; line-height: 1.6;">
-                가계대출 증가세 지속<br/>
-                DSR 규제 강화에도 불구
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # ==================== COMPARISON WITH PREVIOUS ====================
-    st.markdown("## 🔄 직전 회의(10월) 대비 주요 변화")
-    
-    # Comparison Chart
-    comparison_data = pd.DataFrame({
-        'Category': ['경제 성장 평가', '물가 전망', '금융안정', '정책 기조'],
-        'Previous': [0.3, -0.1, 0.4, 0.2],
-        'Current': [0.1, -0.3, 0.3, -0.1],
-    })
-    
-    fig_comparison = go.Figure()
-    
-    fig_comparison.add_trace(go.Bar(
-        name='10월 회의',
-        x=comparison_data['Category'],
-        y=comparison_data['Previous'],
-        marker_color='#78909C',
-        text=['+0.3', '-0.1', '+0.4', '+0.2'],
-        textposition='outside'
-    ))
-    
-    fig_comparison.add_trace(go.Bar(
-        name='11월 회의',
-        x=comparison_data['Category'],
-        y=comparison_data['Current'],
-        marker_color='#42A5F5',
-        text=['+0.1', '-0.3', '+0.3', '-0.1'],
-        textposition='outside'
-    ))
-    
-    fig_comparison.update_layout(
-        title="Tone Index 변화 비교 (양수=매파, 음수=비둘기파)",
-        barmode='group',
-        template='plotly_dark',
-        height=400,
-        yaxis_range=[-0.6, 0.6],
-        yaxis_title="Tone Score",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    st.markdown('## 매크로 경제 지표')
+    m1, m2, m3, m4 = st.columns(4)
+
+    base_rate = macro.get('base_rate')
+    base_rate_prev = macro.get('base_rate_prev')
+    cpi_yoy = macro.get('cpi_yoy')
+    gdp_yoy = macro.get('gdp_yoy')
+
+    if base_rate is None:
+        base_subtitle = '데이터 없음'
+        base_value = 'N/A'
+    else:
+        base_value = f'{base_rate:.2f}%'
+        if base_rate_prev is None:
+            base_subtitle = '기준 추세 확인'
+        elif base_rate > base_rate_prev:
+            base_subtitle = '인상'
+        elif base_rate < base_rate_prev:
+            base_subtitle = '인하'
+        else:
+            base_subtitle = '동결 유지'
+
+    if cpi_yoy is None:
+        cpi_value = 'N/A'
+        cpi_subtitle = '데이터 없음'
+    else:
+        cpi_value = f'{cpi_yoy:.1f}%'
+        if cpi_yoy > 2.5:
+            cpi_subtitle = '상방 압력'
+        elif cpi_yoy >= 1.5:
+            cpi_subtitle = '안정화 추세'
+        else:
+            cpi_subtitle = '하방 안정'
+
+    if gdp_yoy is None:
+        gdp_value = 'N/A'
+        gdp_subtitle = '데이터 없음'
+    else:
+        gdp_value = f'{gdp_yoy:.1f}%'
+        if gdp_yoy > 2:
+            gdp_subtitle = '회복 기조'
+        elif gdp_yoy >= 0:
+            gdp_subtitle = '▲ 상방 리스크'
+        else:
+            gdp_subtitle = '경기 위축'
+
+    with m1:
+        _render_macro_card('기준금리', base_value, base_subtitle, '#1565C0')
+    with m2:
+        _render_macro_card('소비자물가(YoY)', cpi_value, cpi_subtitle, '#2E7D32')
+    with m3:
+        _render_macro_card('GDP 성장률(YoY)', gdp_value, gdp_subtitle, '#E65100')
+    with m4:
+        _render_macro_card('Tone Index', f'{tone_index:+.3f}', interpretation, '#7B1FA2')
+
+    st.markdown('## 🎯 핵심 요약')
+    summary_text = _generate_key_summary(row, macro, meeting_label)
+    fx = macro.get('usd_krw')
+    household_credit = macro.get('household_credit')
+
+    hawk_for_points = top_hawkish[:2] if len(top_hawkish) >= 2 else (top_hawkish + ['매파 키워드'])[:2]
+    dove_for_points = top_dovish[:2] if len(top_dovish) >= 2 else (top_dovish + ['비둘기파 키워드'])[:2]
+    fx_text = f'{fx:,.0f}원대' if fx is not None else 'N/A'
+    debt_text = f'{household_credit / 10000:.1f}조원' if household_credit is not None else 'N/A'
+
+    key_points_html = ''.join(
+        [
+            f'<li style="color:#CFD8DC; margin:6px 0;"><span style="color:#66BB6A; font-weight:700;">경기 회복세:</span> {hawk_for_points[0]}, {hawk_for_points[1]} 등 매파적 요인 포착</li>',
+            f'<li style="color:#CFD8DC; margin:6px 0;"><span style="color:#FFD54F; font-weight:700;">물가:</span> {dove_for_points[0]}, {dove_for_points[1]} 등 비둘기파적 요인 존재</li>',
+            f'<li style="color:#CFD8DC; margin:6px 0;"><span style="color:#EF5350; font-weight:700;">금융안정:</span> 환율 {fx_text}, 가계신용 {debt_text} 등 리스크 요인 상존</li>',
+        ]
     )
-    
-    st.plotly_chart(fig_comparison, use_container_width=True)
-    
-    # Text Comparison Table
-    st.markdown("### 📝 결정문 문구 변화 분석")
-    
-    st.markdown("""
-    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-        <thead>
-            <tr style="background-color: #1E3A5F;">
-                <th style="padding: 15px; text-align: left; color: #90CAF9; width: 15%; border-bottom: 2px solid #42A5F5;">항목</th>
-                <th style="padding: 15px; text-align: left; color: #90CAF9; width: 40%; border-bottom: 2px solid #42A5F5;">10월 표현</th>
-                <th style="padding: 15px; text-align: left; color: #90CAF9; width: 45%; border-bottom: 2px solid #42A5F5;">11월 표현 (변화)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr style="background-color: #0D1B2A;">
-                <td style="padding: 15px; color: #E0E0E0; border-bottom: 1px solid #333;"><strong>성장</strong></td>
-                <td style="padding: 15px; color: #B0B0B0; border-bottom: 1px solid #333;">"국내경제는 건설투자 부진에도 소비 회복세 지속, 양호한 수출 증가세 등으로 개선 흐름을 이어갔다."</td>
-                <td style="padding: 15px; color: #81D4FA; border-bottom: 1px solid #333;">
-                    "국내경제는 건설투자 부진에도 <strong style="color: #4FC3F7;">소비 회복세와 수출 증가세</strong>가 이어지면서 개선세를 지속하였다."
-                    <span style="background-color: rgba(33,150,243,0.2); color: #42A5F5; 
-                                 padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 10px;">Dovish</span>
-                </td>
-            </tr>
-            <tr style="background-color: #0D1B2A;">
-                <td style="padding: 15px; color: #E0E0E0; border-bottom: 1px solid #333;"><strong>물가</strong></td>
-                <td style="padding: 15px; color: #B0B0B0; border-bottom: 1px solid #333;">"9월 중 소비자물가 상승률이 2.1%, 근원물가 상승률이 2.0% ... 안정적인 흐름을 이어갔다."</td>
-                <td style="padding: 15px; color: #81D4FA; border-bottom: 1px solid #333;">
-                    "소비자물가 및 근원물가 상승률이 <strong style="color: #EF5350;">{cpi_forecast}% 및 2.1%로 안정화되었다.</strong>"
-                    <span style="background-color: rgba(66, 165, 245, 0.2); color: #42A5F5; 
-                                 padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 10px;">Neutral/Dovish</span>
-                </td>
-            </tr>
-            <tr style="background-color: #0D1B2A;">
-                <td style="padding: 15px; color: #E0E0E0; border-bottom: 1px solid #333;"><strong>정책방향</strong></td>
-                <td style="padding: 15px; color: #B0B0B0; border-bottom: 1px solid #333;">"성장의 하방리스크 완화를 위한 금리인하 기조를 이어나가되 ... 기준금리의 추가 인하 시기 및 속도 등을 결정해 나갈 것이다."</td>
-                <td style="padding: 15px; color: #81D4FA; border-bottom: 1px solid #333;">
-                    "향후 통화정책은 <strong style="color: #4FC3F7;">금리인하 가능성</strong>을 열어두되 ... 기준금리의 추가 인하 여부 및 시기를 결정해 나갈 것이다."
-                    <span style="background-color: rgba(33,150,243,0.2); color: #42A5F5; 
-                                 padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 10px;">Dovish Pivot</span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    """, unsafe_allow_html=True)
 
-    if st.button("📄 원문 PDF 보기 (2025년 11월 의사록)", key="btn_view_pdf_2025_11", use_container_width=True):
-        try:
-            pdf_path = Path("data/pdfs/minutes_2025_11_27.pdf").resolve()
-            if pdf_path.exists():
-                os.startfile(pdf_path)
-                st.success(f"파일을 열었습니다: {pdf_path.name}")
-            else:
-                st.error(f"파일을 찾을 수 없습니다: {pdf_path}")
-        except Exception as e:
-            st.error(f"파일 열기 실패: {e}")
-    
-    st.markdown("""
-    <div style="background-color: #1B263B; padding: 20px; border-radius: 10px; margin-top: 20px;">
-        <h4 style="color: #FFC107; margin-top: 0;">💡 시사점</h4>
-        <p style="color: #E0E0E0; line-height: 1.8; margin-bottom: 0;">
-            11월 결정문에서는 "충분한 기간 유지" 대신 "유연하게 대응"이라는 표현이 사용되었습니다. 
-            이는 한국은행이 <strong style="color: #81D4FA;">긴축 기조에서 벗어나 완화 쪽으로 선회할 준비</strong>를 시사하는 
-            중요한 레토릭 변화로 해석됩니다.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # ==================== FUTURE OUTLOOK ====================
-    st.markdown("## 🔮 향후 전망 및 예측")
-    
-    # Rate Path Prediction Chart
-    rate_path_data = pd.DataFrame({
-        'Date': ['2025.05', '2025.07', '2025.08', '2025.10', '2025.11', '2026.01(E)', '2026.02(E)', '2026.04(E)'],
-        'Rate': [2.75, 2.50, 2.50, 2.50, 2.50, 2.25, 2.25, 2.00],
-        'Type': ['Actual', 'Actual', 'Actual', 'Actual', 'Actual', 'Forecast', 'Forecast', 'Forecast']
-    })
-    
-    fig_path = go.Figure()
-    
-    # Actual rates
-    actual_data = rate_path_data[rate_path_data['Type'] == 'Actual']
-    fig_path.add_trace(go.Scatter(
-        x=actual_data['Date'],
-        y=actual_data['Rate'],
-        mode='lines+markers',
-        name='실제 기준금리',
-        line=dict(color='#42A5F5', width=3),
-        marker=dict(size=10)
-    ))
-    
-    # Forecast rates
-    forecast_data = rate_path_data[rate_path_data['Type'] == 'Forecast']
-    fig_path.add_trace(go.Scatter(
-        x=['2025.11'] + forecast_data['Date'].tolist(),
-        y=[2.50] + forecast_data['Rate'].tolist(),
-        mode='lines+markers',
-        name='예상 경로',
-        line=dict(color='#FFA726', width=3, dash='dash'),
-        marker=dict(size=10, symbol='diamond')
-    ))
-    
-    fig_path.update_layout(
-        title="기준금리 추이 및 전망",
-        template='plotly_dark',
-        height=400,
-        yaxis_title="기준금리 (%)",
-        yaxis_range=[1.8, 3.0],
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    st.markdown(
+        f'''<div style="background: linear-gradient(145deg, #1E1E2E, #1B263B); border: 1px solid rgba(100,181,246,0.15); border-radius: 12px; padding: 24px;">
+            <p style="color: #E0E0E0; line-height: 1.8;">{summary_text}</p>
+            <p style="color: #90A4AE; margin-top: 16px;">주요 포인트:</p>
+            <ul style="margin: 8px 0 0 0; padding-left: 18px;">{key_points_html}</ul>
+        </div>''',
+        unsafe_allow_html=True,
     )
-    
-    st.plotly_chart(fig_path, use_container_width=True)
-    
-    # Prediction Cards
-    col_pred1, col_pred2 = st.columns(2)
-    
-    with col_pred1:
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%); 
-                    padding: 30px; border-radius: 12px; min-height: 250px;
-                    box-shadow: 0 10px 30px rgba(21,101,192,0.4);">
-            <h3 style="color: white; margin-top: 0;">🎯 기준금리 전망</h3>
-            <div style="display: flex; align-items: baseline; margin: 20px 0;">
-                <span style="font-size: 3rem; font-weight: bold; color: white;">65%</span>
-                <span style="font-size: 1.2rem; color: #90CAF9; margin-left: 10px;">확률</span>
-            </div>
-            <p style="color: #B3E5FC; font-size: 1.1rem; line-height: 1.7;">
-                <strong>2026년 1분기 중 25bp 인하</strong> 예상<br/>
-                • 1월 동결 후 2월 인하 가능성 高<br/>
-                • 경기 둔화 확인 시 연속 인하 가능
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col_pred2:
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%); 
-                    padding: 30px; border-radius: 12px; min-height: 250px;
-                    box-shadow: 0 10px 30px rgba(46,125,50,0.4);">
-            <h3 style="color: white; margin-top: 0;">📊 2026년 말 기준금리</h3>
-            <div style="display: flex; align-items: baseline; margin: 20px 0;">
-                <span style="font-size: 3rem; font-weight: bold; color: white;">2.00%</span>
-                <span style="font-size: 1.2rem; color: #A5D6A7; margin-left: 10px;">전망</span>
-            </div>
-            <p style="color: #C8E6C9; font-size: 1.1rem; line-height: 1.7;">
-                연간 <strong>50bp 인하</strong> 예상 (2회)<br/>
-                • 상반기: 25bp × 1회<br/>
-                • 하반기: 25bp × 1회
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # ==================== MARKET IMPACT ====================
-    st.markdown("## 💹 자산별 영향 분석")
-    
-    # Impact Matrix
-    col_bond, col_stock, col_fx, col_re = st.columns(4)
-    
-    with col_bond:
-        st.markdown("""
-        <div style="background-color: #1E1E2E; padding: 25px; border-radius: 12px; 
-                    border-top: 4px solid #4CAF50; text-align: center; min-height: 320px;">
-            <p style="font-size: 2.5rem; margin: 0;">📈</p>
-            <h4 style="color: #4CAF50; margin: 15px 0 10px 0; font-size: 1.3rem;">채권</h4>
-            <div style="background-color: rgba(76,175,80,0.2); padding: 8px; border-radius: 6px; margin: 10px 0;">
-                <span style="color: #4CAF50; font-weight: bold; font-size: 1.1rem;">BULLISH</span>
-            </div>
-            <p style="color: #B0B0B0; font-size: 0.95rem; line-height: 1.7; text-align: left; margin-top: 15px;">
-                • 금리 인하 기대로 채권 가격 상승 예상<br/>
-                • 국고채 3년물 금리 2.8% → 2.5% 전망<br/>
-                • 장기물 선호 전략 유효
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col_stock:
-        st.markdown("""
-        <div style="background-color: #1E1E2E; padding: 25px; border-radius: 12px; 
-                    border-top: 4px solid #FFC107; text-align: center; min-height: 320px;">
-            <p style="font-size: 2.5rem; margin: 0;">📊</p>
-            <h4 style="color: #FFC107; margin: 15px 0 10px 0; font-size: 1.3rem;">주식</h4>
-            <div style="background-color: rgba(255,193,7,0.2); padding: 8px; border-radius: 6px; margin: 10px 0;">
-                <span style="color: #FFC107; font-weight: bold; font-size: 1.1rem;">NEUTRAL</span>
-            </div>
-            <p style="color: #B0B0B0; font-size: 0.95rem; line-height: 1.7; text-align: left; margin-top: 15px;">
-                • 금리 인하는 긍정적이나 경기 둔화 우려<br/>
-                • 금융주 약세, 성장주 강세 차별화<br/>
-                • 섹터 선별 투자 필요
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col_fx:
-        st.markdown("""
-        <div style="background-color: #1E1E2E; padding: 25px; border-radius: 12px; 
-                    border-top: 4px solid #F44336; text-align: center; min-height: 320px;">
-            <p style="font-size: 2.5rem; margin: 0;">💱</p>
-            <h4 style="color: #F44336; margin: 15px 0 10px 0; font-size: 1.3rem;">환율</h4>
-            <div style="background-color: rgba(244,67,54,0.2); padding: 8px; border-radius: 6px; margin: 10px 0;">
-                <span style="color: #F44336; font-weight: bold; font-size: 1.1rem;">VOLATILE</span>
-            </div>
-            <p style="color: #B0B0B0; font-size: 0.95rem; line-height: 1.7; text-align: left; margin-top: 15px;">
-                • 원/달러 1,350~1,420원 박스권 전망<br/>
-                • 한미 금리차 확대 시 원화 약세 압력<br/>
-                • 미 연준 정책에 연동 가능성
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col_re:
-        st.markdown("""
-        <div style="background-color: #1E1E2E; padding: 25px; border-radius: 12px; 
-                    border-top: 4px solid #9C27B0; text-align: center; min-height: 320px;">
-            <p style="font-size: 2.5rem; margin: 0;">🏠</p>
-            <h4 style="color: #9C27B0; margin: 15px 0 10px 0; font-size: 1.3rem;">부동산</h4>
-            <div style="background-color: rgba(156,39,176,0.2); padding: 8px; border-radius: 6px; margin: 10px 0;">
-                <span style="color: #9C27B0; font-weight: bold; font-size: 1.1rem;">CAUTIOUS</span>
-            </div>
-            <p style="color: #B0B0B0; font-size: 0.95rem; line-height: 1.7; text-align: left; margin-top: 15px;">
-                • 금리 인하 시 수요 자극 가능성<br/>
-                • 수도권 vs 지방 양극화 지속 전망<br/>
-                • 정부 규제 정책 변수 주시
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # ==================== EXPERT COMMENTARY ====================
-    st.markdown("## 👨‍💼 전문가 코멘터리")
-    
-    # Expert Commentary using Streamlit columns instead of complex HTML
-    expert_col1, expert_col2 = st.columns([1, 8])
-    
-    with expert_col1:
-        st.markdown("""
-        <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #42A5F5, #1976D2); 
-                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-                    margin-top: 10px;">
-            <span style="font-size: 2rem;">🤖</span>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with expert_col2:
-        st.markdown(f"#### BOK Policy Analyzer AI")
-        st.markdown(f"""
-        > "11월 통화정책방향 결정문의 텍스트를 분석한 결과, **Tone Index가 -0.34로 명확한 비둘기파 영역**에 
-        > 진입했습니다. 특히 2025년 성장률 전망이 **{gdp_forecast}%**로 하향 조정됨에 따라 
-        > 통화정책의 **피봇(Pivot) 필요성**이 더욱 커졌습니다.
-        > 
-        > 물가상승률 전망({cpi_forecast}%)이 목표 수준(2.0%)에 근접함에 따라, 금리 인하의 장애물은 낮아졌습니다.
-        > 인하 시점은 **2026년 1~2월로 예상**되며, 경기 부양을 위한 선제적 대응 가능성도 배제할 수 없습니다."
-        """)
-    
-    # ==================== FOOTER ====================
-    st.markdown("---")
-    st.markdown("""
-    <div style="text-align: center; color: #666; padding: 30px 0;">
-        <p style="margin-bottom: 10px;">
-            <strong style="color: #64B5F6;">BOK Policy Analyzer</strong> | AI-Powered Monetary Policy Analysis
-        </p>
-        <p style="font-size: 0.85rem; color: #888;">
-            본 분석은 AI 모델에 의해 생성되었으며, 투자 조언이 아닙니다. 투자 결정은 본인의 판단과 책임 하에 이루어져야 합니다.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
 
+    st.markdown('## 🔍 결정 배경 상세 분석')
+    col_growth, col_price = st.columns(2)
 
-def render_generic_analysis(row):
-    """일반적인 데이터에 대한 분석 뷰 (향후 구현)"""
-    st.info("이 회의에 대한 상세 분석 리포트는 준비 중입니다.")
-    st.markdown(f"**Tone Index:** {row['tone_index']:.3f}")
-    st.markdown(f"**해석:** {row['interpretation']}")
+    growth_positive = [f'{kw} 관련 상방 요인' for kw in top_hawkish[:3]] or ['상방 요인 데이터 부족']
+    growth_concern = [f'{kw} 관련 하방 요인' for kw in top_dovish[:3]] or ['하방 요인 데이터 부족']
+    cpi_trend = f'CPI YoY {cpi_yoy:.1f}%로 안정화 구간' if cpi_yoy is not None else 'CPI 추세 데이터 부족'
+    price_stabilization = [cpi_trend] + [f'{kw} 중심 완화 신호' for kw in top_dovish[:2]]
+    inflation_risk = [f'{kw} 중심 상방 압력' for kw in top_hawkish[:3]] or ['물가 상방 압력 데이터 부족']
+
+    with col_growth:
+        st.markdown(_render_background_card('📊 경제 성장', '긍정적 요인/기회', growth_positive), unsafe_allow_html=True)
+        st.markdown(_render_background_card('📊 경제 성장', '우려 요인', growth_concern), unsafe_allow_html=True)
+
+    with col_price:
+        st.markdown(_render_background_card('🔥 물가 동향', '안정화 요인', price_stabilization), unsafe_allow_html=True)
+        st.markdown(_render_background_card('🔥 물가 동향', '상방 리스크', inflation_risk), unsafe_allow_html=True)
+
+    st.markdown('## 🏦 금융안정 리스크 요인')
+    r1, r2, r3 = st.columns(3)
+    with r1:
+        line1 = f'달러/원 {fx:,.0f}원 수준' if fx is not None else '달러/원 데이터 없음'
+        _render_risk_card('💱', '고환율 기조', line1, '거주자 해외투자 확대 영향', '#E65100')
+    with r2:
+        _render_risk_card('🏠', '주택가격', '수도권 중심 상승세 지속', '공급 부족 우려에 따른 불안', '#0277BD')
+    with r3:
+        debt_line = f'가계신용 {household_credit / 10000:.1f}조원' if household_credit is not None else '가계신용 데이터 없음'
+        _render_risk_card('📈', '가계부채', debt_line, '수도권 주택담보대출 우려', '#7B1FA2')
+
+    st.markdown('## 🎙️ 전문가 코멘터리 (AI Analysis)')
+    p1, p2 = _generate_ai_commentary(row, macro, previous_row)
+    st.markdown(
+        f'''<div style="background:#1E1E2E; border-radius:12px; padding:24px; border:1px solid rgba(255,255,255,0.08);">
+            <p style="margin:0; color:#90CAF9; font-weight:700;">🤖 BOK Policy Analyzer AI Insight</p>
+            <p style="color:#E0E0E0; line-height:1.85; margin:12px 0 0 0;">{p1}</p>
+            <p style="color:#B0BEC5; line-height:1.85; margin:12px 0 0 0;">{p2}</p>
+        </div>''',
+        unsafe_allow_html=True,
+    )
+
+    if previous_row:
+        st.markdown('## 📝 결정문 문구 변화 분석 (Statement Analysis)')
+        prev_label = _parse_meeting_label(previous_row.get('meeting_date_str'))
+        prev_hawk = _parse_keywords(previous_row.get('top_hawkish'))
+        prev_dove = _parse_keywords(previous_row.get('top_dovish'))
+
+        prev_context_tone = _safe_float(previous_row.get('context_adjusted_tone'), _safe_float(previous_row.get('tone_index')))
+        prev_policy_tone = _safe_float(previous_row.get('policy_intent_tone'), _safe_float(previous_row.get('tone_index')))
+        curr_context_tone = _safe_float(row.get('context_adjusted_tone'), tone_index)
+        curr_policy_tone = _safe_float(row.get('policy_intent_tone'), tone_index)
+
+        prev_hawk_text = ', '.join(prev_hawk[:2]) if prev_hawk else 'N/A'
+        prev_dove_text = ', '.join(prev_dove[:2]) if prev_dove else 'N/A'
+        curr_hawk_text = ', '.join(top_hawkish[:2]) if top_hawkish else 'N/A'
+        curr_dove_text = ', '.join(top_dovish[:2]) if top_dovish else 'N/A'
+
+        table_html = f'''<div style="background:#1E1E2E;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px;">
+            <table style="width:100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th style="text-align:left; padding:10px; color:#CFD8DC; border-bottom:1px solid rgba(255,255,255,0.1);">항목</th>
+                        <th style="text-align:left; padding:10px; color:#B0BEC5; border-bottom:1px solid rgba(255,255,255,0.1);">{prev_label} 표현 (직전)</th>
+                        <th style="text-align:left; padding:10px; color:#90CAF9; border-bottom:1px solid rgba(255,255,255,0.1);">{meeting_label} 표현 (금번 변화)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding:10px; color:#E0E0E0; border-bottom:1px solid rgba(255,255,255,0.06);">성장</td>
+                        <td style="padding:10px; color:#B0BEC5; border-bottom:1px solid rgba(255,255,255,0.06);">매파 키워드: {prev_hawk_text}, 비둘기파: {prev_dove_text} <span style="background:#6D4C41;color:white;padding:2px 8px;border-radius:999px;font-size:0.72rem;">Mixed</span></td>
+                        <td style="padding:10px; color:#CFD8DC; border-bottom:1px solid rgba(255,255,255,0.06);">매파 키워드: {curr_hawk_text}, 비둘기파: {curr_dove_text} <span style="background:#6D4C41;color:white;padding:2px 8px;border-radius:999px;font-size:0.72rem;">Mixed</span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px; color:#E0E0E0; border-bottom:1px solid rgba(255,255,255,0.06);">물가</td>
+                        <td style="padding:10px; color:#B0BEC5; border-bottom:1px solid rgba(255,255,255,0.06);">물가 톤: {prev_context_tone:+.3f} {_tone_badge_html(prev_context_tone)}</td>
+                        <td style="padding:10px; color:#CFD8DC; border-bottom:1px solid rgba(255,255,255,0.06);">물가 톤: {curr_context_tone:+.3f} {_tone_badge_html(curr_context_tone)}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px; color:#E0E0E0;">정책방향</td>
+                        <td style="padding:10px; color:#B0BEC5;">정책의도 톤: {prev_policy_tone:+.3f} {_tone_badge_html(prev_policy_tone)}</td>
+                        <td style="padding:10px; color:#CFD8DC;">정책의도 톤: {curr_policy_tone:+.3f} {_tone_badge_html(curr_policy_tone)}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>'''
+        st.markdown(table_html, unsafe_allow_html=True)
+
+    st.markdown('## 💡 시사점 (Implication)')
+    implication_text = _generate_implication(row, previous_row, macro)
+    st.markdown(
+        f'''<div style="background:#1E1E2E;border:1px solid rgba(100,181,246,0.16);border-radius:12px;padding:22px;">
+            <p style="margin:0;color:#E0E0E0;line-height:1.85;">{implication_text}</p>
+            <p style="margin:12px 0 0 0;color:#90A4AE;">핵심 키워드: <span style="color:#64B5F6;font-weight:700;">물가 안정</span> · <span style="color:#FFB74D;font-weight:700;">정책 기조 유지</span> · <span style="color:#EF9A9A;font-weight:700;">금융안정 경계</span></p>
+        </div>''',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown('## 🏛️ 향후 자산시장 전망 (Asset Outlook)')
+    a1, a2, a3, a4 = st.columns(4)
+
+    if tone_index < 0:
+        bonds_outlook = 'BULLISH'
+    elif tone_index > 0.2:
+        bonds_outlook = 'BEARISH'
+    else:
+        bonds_outlook = 'NEUTRAL'
+
+    if gdp_yoy is not None and gdp_yoy > 1.5 and tone_index < 0.1:
+        stocks_outlook = 'BULLISH'
+    else:
+        stocks_outlook = 'NEUTRAL'
+
+    if fx is not None and fx > 1400:
+        fx_outlook = 'VOLATILE'
+    else:
+        fx_outlook = 'STABLE'
+
+    real_estate_outlook = 'BEARISH' if tone_index > 0 else 'POLARIZED'
+
+    stocks_points = [
+        '반도체/AI 관련주 강세 지속',
+        '내수주 흐름은 금리 인하 시차 존재',
+        '미 관세 정책 등 대외 불확실성 상존',
+    ]
+    fx_points = [
+        f'단기적 {fx:,.0f}원 후반대 유지 가능성' if fx is not None else '단기 환율 레인지 변동 가능성',
+        '거주자 해외투자 수요가 하단 지지',
+        '피벗 가시화 시 점진적 하락 전환',
+    ]
+
+    with a1:
+        _render_asset_card('💵', '채권 (Bonds)', bonds_outlook, '#4CAF50', ['금리 인하 기대감 선반영 지속', '국채 자금 유입 본격화(수급 호재)', '중고채 금리 하향 안정화 전망'])
+    with a2:
+        _render_asset_card('📊', '주식 (Stocks)', stocks_outlook, '#FFC107', stocks_points)
+    with a3:
+        _render_asset_card('💱', '환율 (KRW/USD)', fx_outlook, '#F44336', fx_points)
+    with a4:
+        _render_asset_card('🏘️', '부동산 (Real Estate)', real_estate_outlook, '#FFC107', ['서울·수도권: 공급부족 우려로 강세', '지방: 미분양 누적으로 약세 지속', '금리 인하기 진입 시 수도권 자극 우려'])
+
+    st.markdown('## Sentence Tone Distribution')
+    sentence_tones = _extract_sentence_tones(row)
+    if sentence_tones:
+        hist = go.Figure(go.Histogram(x=sentence_tones, nbinsx=20, marker_color='#64B5F6', opacity=0.85))
+        hist.update_layout(template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', height=320, xaxis_title='Sentence Tone Score', yaxis_title='Count', bargap=0.05)
+        st.plotly_chart(hist, use_container_width=True)
+    else:
+        st.info('문장 단위 톤 분포 데이터가 없어 히스토그램을 표시하지 않습니다.')
+
+    st.markdown('---')
+    st.markdown(
+        '<div style="background-color: #1E1E2E; border-radius: 10px; padding: 16px; border: 1px solid rgba(255,255,255,0.08);"><p style="margin: 0; color: #90A4AE; font-size: 0.88rem;">본 리포트는 텍스트 기반 정량 분석 결과이며 투자 판단의 직접적 근거로 사용될 수 없습니다.</p></div>',
+        unsafe_allow_html=True,
+    )

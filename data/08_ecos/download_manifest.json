@@ -1,0 +1,101 @@
+{
+  "downloads": {
+    "base_rate": {
+      "status": "skipped_recent",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\base_rate\\base_rate.csv",
+      "rows": null,
+      "timestamp": "2026-02-19T19:59:53.205476"
+    },
+    "cpi_total": {
+      "status": "skipped_recent",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\cpi\\cpi_total.csv",
+      "rows": null,
+      "timestamp": "2026-02-19T19:59:53.205975"
+    },
+    "gdp_real": {
+      "status": "skipped_recent",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\gdp\\gdp_real.csv",
+      "rows": null,
+      "timestamp": "2026-02-19T19:59:53.206364"
+    },
+    "expected_inflation": {
+      "status": "skipped_recent",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\cpi\\expected_inflation.csv",
+      "rows": null,
+      "timestamp": "2026-02-19T19:59:53.206748"
+    },
+    "m2": {
+      "status": "downloaded",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\money_supply\\m2.csv",
+      "rows": 132,
+      "timestamp": "2026-02-19T19:59:53.504982",
+      "start_date": "201501",
+      "end_date": "202602",
+      "stat_code": "161Y008",
+      "item_code1": "BBGA00",
+      "period_type": "M",
+      "category": "money_supply"
+    },
+    "unemployment": {
+      "status": "downloaded",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\employment\\unemployment.csv",
+      "rows": 264,
+      "timestamp": "2026-02-19T19:59:54.830950",
+      "start_date": "201501",
+      "end_date": "202602",
+      "stat_code": "901Y033",
+      "item_code1": "A00",
+      "period_type": "M",
+      "category": "employment"
+    },
+    "ktb_3y": {
+      "status": "skipped_recent",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\bond_yields\\ktb_3y.csv",
+      "rows": null,
+      "timestamp": "2026-02-19T19:59:55.831980"
+    },
+    "ktb_10y": {
+      "status": "skipped_recent",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\bond_yields\\ktb_10y.csv",
+      "rows": null,
+      "timestamp": "2026-02-19T19:59:55.832621"
+    },
+    "usd_krw": {
+      "status": "downloaded",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\exchange_rates\\usd_krw.csv",
+      "rows": 2732,
+      "timestamp": "2026-02-19T19:59:56.420556",
+      "start_date": "20150101",
+      "end_date": "20260219",
+      "stat_code": "731Y003",
+      "item_code1": "0000002",
+      "period_type": "D",
+      "category": "exchange_rates"
+    },
+    "kospi": {
+      "status": "skipped_recent",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\stock_indices\\kospi.csv",
+      "rows": null,
+      "timestamp": "2026-02-19T19:59:57.421821"
+    },
+    "household_credit": {
+      "status": "downloaded",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\household_debt\\household_credit.csv",
+      "rows": 43,
+      "timestamp": "2026-02-19T19:59:57.691207",
+      "start_date": "2015Q1",
+      "end_date": "2026Q1",
+      "stat_code": "151Y001",
+      "item_code1": "1112000",
+      "period_type": "Q",
+      "category": "household_debt"
+    },
+    "lending_rate": {
+      "status": "skipped_recent",
+      "path": "D:\\Programing\\bok_policy_analyzer_v4\\data\\08_ecos\\lending_rates\\lending_rate.csv",
+      "rows": null,
+      "timestamp": "2026-02-19T19:59:58.692296"
+    }
+  },
+  "updated_at": "2026-02-19T19:59:58.692302"
+}

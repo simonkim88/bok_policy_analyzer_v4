@@ -1,0 +1,308 @@
+--- 페이지 1 ---
+현 지 정 보
+2026. 2. 5 (목) 프랑크푸르트사무소
+2026년 2월 ECB 통화정책회의 결과
+KEY TAKEAWAYS
+ ECB는 물가목표(2%) 수준의 소비자물가 상승률(25.12월 2.0% → 26.1월
+1.7%), 실물경제 회복세(유로지역의 GDP 성장률[전기비]: 25.3/4분기 +0.3%
+→4/4분기 +0.3%) 등을 고려하여 주요 정책금리를 동결(수신금리 2.00%)
+ 라가르드 총재는 현재의 정책금리 수준에 대해 중기적으로 물가목표를
+달성하는데 좋은 위치에 있다(certainly argue that we are in a good place)면서도
+향후 금리 경로를 미리 정하거나 선제적 지침을 제공하기 어렵다고 언급
+ 또한, 라가르드 총재는 최근 유로화 강세와 관련하여 2025.3월 이후
+지속된 추세로 볼 수 있으며, 유로화 환율의 장기적 평균 수준(in line
+with the overall average)에 부합하는 것으로 판단
+ㅇ ECB는 기본적으로 유로화 환율 수준을 정책 목표로 삼고 있지 않으나
+환율이 성장과 인플레이션 전망에 있어 중요 요인이라는 점을 고려
+하여 환율 변동을 예의주시하고 있음
+1 결정 사항
+ 정책금리 : 동결
+ㅇ ECB는 물가목표(2%) 수준에서 안정적인 흐름을 보이는 소비자물가 상승률
+* 등을 고려하여 수신금리(2.00%), 기준금리(2.15%), 한계대출금리(2.40%)
+등 주요 정책금리를 동결(24.9월~25.6월 7차례 연속 인하 → 25.7월~26.2월 5차
+례 연속 동결)
+* 소비자물가 상승률(전년동월대비): 25.11월 2.1% → 12월 2.0% → 26.1월 1.7%
+ㅇ 유로지역 경제는 어려운(challenging) 글로벌 여건에도 불구하고 회복세
+를 지속(remains resilient)
+작성자 : 장진욱 차장, 박동민 차장
+-1/11-
+
+--- 페이지 2 ---
+― 낮은 수준의 실업률*, 견고한(solid) 민간부문의 대차대조표(balance
+sheets), 국방비 및 인프라 투자에 대한 공공지출의 점진적 확대, 그간의
+정책금리 인하 효과 등이 성장을 뒷받침
+* 25.12월 실업률(6.2%)은 유로 출범 이래 최저치를 기록
+― 다만 글로벌 무역정책 및 지정학적 긴장에 따른 불확실성은 잔존
+ㅇ 앞으로도 데이터에 기반하여(data-dependent) 회의 시점마다
+(meeting-by-meeting) 정책금리를 결정할 예정
+― 인플레이션 전망 및 리스크, 기조적 물가지표 동향, 통화정책 파급효과
+등을 고려
+ 자산매입프로그램(APP), 팬데믹 긴급매입프로그램(PEPP) : 종전 결정 유지
+ㅇ 점진적이고 예견된 방식(a measured and predictable pace)으로 자산매입 포
+트폴리오를 축소하기 위해 APP 및 PEPP 만기상환 원금 재투자를 중단*
+* 2023.7월(APP), 2024년말(PEPP)부터 만기상환 원금 재투자를 전면 중단#
+# 보유자산 규모(억유로)
+25.11월말 12월말 26.1월말
+·APP 23,371 23,217 23,046
+·PEPP 14,314 14,230 14,161
+ 파급경로 보호장치(TPI) : 종전 결정 유지
+ㅇ 통화정책 기조가 모든 유로지역 회원국에 유효하게 파급될 수 있도록 근거
+없이 무질서한 시장 상황(unwarranted, disorderly market dynamics)에 대응하기
+위한 정책수단으로 활용
+2 결정 배경
+□ (경제활동) 유로지역 경제는 내수 및 서비스업 중심의 회복세를 보일 전망
+ㅇ 2025년 4/4분기 유로지역 경제성장률(전기비)은 정보통신 등 서비스업을
+중심으로 0.3%를 기록(25.3/4분기 0.3%)
+-2/11-
+
+--- 페이지 3 ---
+― 제조업의 경우 글로벌 무역 및 지정학적 불확실성에도 불구하고 견조한
+흐름을 보였으며, 건설업도 공공투자 등으로 회복 조짐
+― 노동시장은 노동수요 약화(cooled further)에도 불구하고 실업률이 유로
+출범 이래 최저치(25.12월 6.2%)를 기록하는 등 여전히 견조한 모습
+ㅇ 향후 유로지역 경제는 민간소비 및 정부지출 증가 등에 따른 내수 증가가
+성장의 주요 동인으로 작용할 전망
+― 가계의 근로소득 증가 및 저축률 하락 등이 민간소비를 촉진하는 가운데
+정부의 국방비 지출·인프라 투자 및 기업 투자도 확대되면서 유로지역
+경제성장을 견고하게 지지해 줄 것으로 전망
+― 다만 대외여건은 관세 증가 및 유로화 절상 등으로 여전히 어려운 상황
+ㅇ 중장기적으로 회원국 정부는 지속가능한 공공 재정, 전략적 투자, 성장
+촉진을 위한 구조개혁을 우선적으로 고려할 필요
+― 또한 저축·투자 동맹(savings and investments union) 및 은행동맹(banking
+union)을 통한 자본시장 통합을 촉진해 나가는 한편 디지털 유로 도입에
+대한 규정(regulation)을 조속히 마련하는 것이 중요
+□ (물가) 소비자물가 상승률은 물가목표 수준에서 안정적인 모습을 보일
+것으로 전망
+ㅇ 2026.1월 소비자물가는 음식료품(25.12월 2.5%→26.1월 2.7%) 및 공산품(0.3%→
+0.4%)의 상승폭이 확대되었으나 서비스(3.4%→3.2%) 상승폭 축소, 에너지
+(-1.9%→-4.1%) 하락폭 확대 등으로 오름세가 둔화되면서 전년동월대비 1.7%
+상승(25.12월 2.0%)
+ㅇ 기조적 물가지표(underlying inflation)는 중기 물가목표(2%) 수준을 유지하고
+있으며, 장기 기대인플레이션 지표 또한 대부분 2% 수준을 유지
+ㅇ 협상에 의한 임금상승률(Negotiated wage growth) * 및 ECB의 임금 전망
+치(ECB Wage tracker) **에 따르면 노동비용의 완화(moderation in labour
+costs) 흐름이 지속
+* 유로지역근로자1인당임금상승률(전년동기대비): 25.2/4분기4.0% → 3/4분기4.0%(24.3/4분기4.4%)
+-3/11-
+
+--- 페이지 4 ---
+** 유로지역 임금상승률 전망(전년동기대비, ECB Wage Tracker)
+: 25.2/4e 4.0% → 3/4e 2.3% → 4/4e 1.9% → 26.1/4e 2.0% → 2/4e 2.1%
+□ (리스크 평가) 성장은 상·하방 리스크가 병존하며, 물가는 불확실성이
+평상시보다 확대
+ㅇ 성장은 글로벌 무역마찰 심화 시 수출 및 투자·소비의 위축 가능성, 지
+정학적 긴장(러-우 전쟁) 관련 불확실성, 금융시장 심리 악화에 따른 수
+요 위축 등이 하방 리스크로,
+국방·인프라 관련 재정지출 확대, 생산성 제고를 위한 구조개혁 및 신기술
+도입에 따른 기업·소비자 신뢰 개선 등이 상방 리스크로 작용할 전망
+ㅇ 물가는 관세인상에 따른 유럽산 제품에 대한 해외 수요 감소 및 과잉 생산된
+타국 제품의 유럽시장 유입, 유로화 절상 등의 하방 리스크*와
+글로벌 공급망의 분절화 심화에 따른 수입가격 상승·주요 원자재 공급
+차질·생산능력 제약(capacity constraints), 임금상승률 둔화세 약화에 따른
+서비스 물가상승률의 하락세 둔화, 국방·인프라 관련 재정지출 확대(중
+기적 요인), 기후위기로 인한 식품가격 상승 등의 상방 리스크가 잠재
+* 한편 금융시장의 변동성과 위험회피성향 확대는 수요를 감소시킴에 따라 결과적으로
+인플레이션 하락 압력으로 작용할 수 있음
+□ (금융여건) 글로벌 무역 및 지정학적 긴장 등으로 금융시장의 변동성
+이 일시적으로 확대된 가운데 기업대출 금리는 소폭 상승
+ㅇ 신규 주택담보대출 금리(25.11월 3.30%→12월 3.32%)가 전월 수준을 유
+지한 가운데 신규 기업대출 금리(3.50%→3.57%)는 소폭 상승
+ㅇ 주택담보대출 증가폭(25.11월 2.9%→12월 3.0%, 전년동월대비)은 소폭 확대
+되었으나 기업대출(3.1%→3.0%)의 경우 소폭 축소
+ㅇ 대출행태 서베이에 따르면 2025.4/4분기 중 유로지역 은행들의 기업대
+출 태도는 경기둔화 우려, 은행의 위험회피심리 강화 등으로 전분기에
+이어 소폭 강화
+-4/11-
+
+--- 페이지 5 ---
+― 반면 주택담보대출의 경우 부동산시장 개선 전망 등으로 대출태도가
+완화된 가운데 대출수요도 완만하게 증가
+-5/11-
+
+--- 페이지 6 ---
+3 주요 질의응답
+□ [ECB 정책이 여전히 좋은 위치에 있는 것인지? 금일 결정문 내용을 보다
+매파적인(more hawkish than dovish) 기조로 해석해도 되는지? ]
+ㅇ 현재 금리 수준은 중기적으로 물가목표를 달성하는 데 좋은 위치에 있다고
+분명히 말씀드릴 수 있음(certainly argue that we are in a good place)
+ㅇ 시장은 ECB의 결정이 매파적인지, 비둘기파적인지 규정하는 데 관심
+이 많은 것을 알고 있으나, 최근 지정학적 상황 변화 등으로 불확실성
+이 크게 증대된 점 등을 감안할 때 향후 금리 경로를 미리 정하거나 선
+제적 지침을 제공하기 어려움을 양해해 주기 바람
+□ [2026.1월 물가상승률이 목표 수준(2.0%)을 하회(1.7%)한 데 대한 평가는? ]
+ㅇ ECB의 정책 목표는 물가상승률이 중기적으로 목표치인 2% 수준을 달
+성하도록 하는 것이며, 특정 데이터에 일일이 얽매이는 것은 아니라는
+점을 강조함(cannot be hostage to one data point)
+ㅇ ECB 전망에 따르면 2026년과 2027년의 물가상승률이 2%를 소폭 하
+회할 것이라는 점은 이미 예상*된 것이며, 2028년에 목표 수준인
+2.0%를 기록할 것으로 보고 있음
+* 2026년 유로지역 소비자물가 상승률 전망치는 1.7%(25.9월 전망)~1.9%(25.12월
+전망)이며, 2027년 전망치는 1.9%(25.9월 전망)~1.8%(25.12월 전망)
+□ [성장과 물가의 리스크가 균형을 이루고 있다고 보는지? ]
+ㅇ 통화정책 결정문에서 성장과 물가 관련 상방 위험이 우세한지, 하방 위험이
+우세한지를 명시하고 있지 않으나, 종합적으로 볼 때 현재 리스크 요인은
+큰 틀에서 균형 잡힌(broadly balanced) 것으로 평가함
+-6/11-
+
+--- 페이지 7 ---
+ㅇ 다만 이러한 평가가 리스크가 줄어들었음을 의미하는 것은 아니며(no
+reduction of the range of risks) 주요 위험 요인의 변화가 매우 큰 가운데
+전반적인 맥락에서는 상 ․ 하방이 대체로 균형을 나타내고 있다는 것임
+□ [노동시장이 예상보다 약하다는 견해에 대한 평가는? ]
+ㅇ 노동시장 참가율이 상승하고 실업률이 역사적으로 가장 낮은 수준을
+지속하고 있는 점 등을 감안할 때 노동시장은 여전히 활발하며 어려움
+을 겪고 있다고 말하기 어려움
+ㅇ 노동시장 관련 데이터가 대부분 시차를 두고 발표되므로 향후 고용 상황과
+임금 변화 등에 대해 주의 깊게 살펴볼 예정임
+□ [AI 관련 투자가 유로지역 경제에 미치는 영향은? ]
+ㅇ 최근 수출이 부진한 모습을 보인 반면 내수가 성장의 주요 동인으로
+작용하고 있는데 구체적으로 투자가 중요한 역할을 하고 있음. 이와
+관련하여 국방 및 인프라 분야의 공공 투자뿐만 아니라 민간 투자도
+AI와 관련된 ICT 분야를 중심으로 크게 늘어 성장에 기여할 것으로 전
+망
+ㅇ ECB는 이러한 AI 관련 투자 증가가 생산성에 어떤 영향을 미치고, 이를
+통해 인플레이션에 어떻게 기여하는지를 관심 있게 지켜보고 있음
+□ [최근 유로화 강세에 대한 견해는? ]
+ㅇ 기본적으로 ECB는 유로화 환율 수준을 정책 목표로 삼고 있지 않으나
+환율이 성장과 인플레이션 전망에 중요한 요인이라는 점을 고려하여
+환율 변동을 예의주시하고 있음
+ㅇ 유로화 강세는 최근 며칠 간의 단기적 현상이라기보다 지난 2025.3월
+이후 지속되어 온 추세의 연장으로 볼 수 있으며, 유로화 환율의 장기
+-7/11-
+
+--- 페이지 8 ---
+적인 평균 범위 내(in line with the overall average)에 있는 것으로 판단
+함
+ㅇ 한편 지난해 이후 유로화 강세는 ECB의 baseline 전망에 이미 반영되
+어 있으며, ECB는 이러한 환율 상승의 영향이 예상대로 나타나는지,
+반응 함수에 어떤 영향을 미치는지 등을 모니터링할 예정임
+□ [유로화의 국제적 역할 제고를 위해 유로화 강세가 필요한지? ]
+ㅇ 어떤 통화가 국제적인 통화로서 중요한 역할을 한다고 할 때 이것이
+반드시 다른 통화 대비 강세를 의미하는 것은 아니라고 생각함
+ㅇ 유로화가 국제적인 통화로서 보다 큰 영향력을 갖기 위해서는 ①법과
+제도의 확립을 기반으로 신뢰할 수 있는 환경을 조성하고, ②국방 및
+인프라 투자 등을 통해 여타 국가들보다 강력한 입지를 확보하며, ③
+FTA 체결 등으로 세계시장에서 무역 역량을 키워나가는 것 등이 필요함
+□ [케빈 워시 차기 연준 의장 지명자에 대한 평가는? ]
+ㅇ 케빈 워시 지명자는 오래전부터 잘 알고 지낸 사이이며, 케빈 워시 의
+장 지명을 환영함
+-8/11-
+
+--- 페이지 9 ---
+(붙 임)
+MONETARY POLICY STATEMENT PRESS CONFERENCE
+Christine Lagarde, President of the ECB,
+Luis de Guindos, Vice-President of the ECB
+Frankfurt am Main, 5 February 2026
+Good afternoon, the Vice-President and I welcome you to our press conference.
+We would like to begin by congratulating Bulgaria on joining the euro area on 1 January 2026.
+We also warmly welcome Dimitar Radev, the Governor of Българска народна банка(Bulgarian
+NationalBank), to the Governing Council. Membership of the euro area has almost doubled since
+1999 and is testimony to the attractiveness of the single currency and the enduring benefits of
+European integration.
+We will now report on the outcome of today’s meeting.
+The Governing Council today decided to keep the three key ECB interest rates unchanged. Our
+updated assessment reconfirms that inflation should stabilise at our two percent target in the
+medium term. The economy remains resilient in a challenging global environment. Low
+unemployment, solid private sector balance sheets, the gradual rollout of public spending on
+defence and infrastructure and the supportive effects of our past interest rate cuts are
+underpinning growth. At the same time, the outlook is still uncertain, owing particularly to
+ongoing global trade policy uncertainty and geopolitical tensions.
+We are determined to ensure that inflation stabilises at our two percent target in the medium
+term. We will follow a data-dependent and meeting-by-meeting approach to determining the
+appropriate monetary policy stance. In particular, our interest rate decisions will be based on our
+assessment of the inflation outlook and the risks surrounding it, in light of the incoming
+economic and financial data, as well as the dynamics of underlying inflation and the strength of
+monetary policy transmission. We are not pre-committing to a particular rate path.
+The decisions taken today are set out in a press release available on our website.
+I will now outline in more detail how we see the economy and inflation developing and will
+then explain our assessment of financial and monetary conditions.
+Economic activity
+The economy grew by 0.3 percent in the fourth quarter of 2025, according to Eurostat’s
+preliminaryflash estimate. Growth has mainly been driven by services, notably in the information
+and communication sector. Manufacturing has been resilient despite the headwinds from global
+trade and geopolitical uncertainty. Momentum in construction is picking up, also supported by
+public investment.erm.
+The labour market continues to support incomes, even though demand for labour has cooled
+further. Unemployment stood at 6.2 percent in December, after 6.3 percent in November.
+Growing labour incomes together with a lower household saving rate should bolster private
+consumption. Government spending on defence and infrastructure should also contribute to
+domestic demand. Business investment should strengthen further, and surveys indicate that firms
+are increasingly investing in new digital technologies. At the same time, the external
+environment remains challenging, owing to higher tariffs and a stronger euro over the past year.
+-9/11-
+
+--- 페이지 10 ---
+The Governing Council stresses the urgent need to strengthen the euro area and its economy in
+the present geopolitical context. Governments should prioritise sustainable public finances,
+strategic investment and growth-enhancing structural reforms. Unlocking the full potential of the
+Single Market remains crucial. It is also vital to foster greater capital market integration by
+completing the savings and investments union and the banking union to an ambitious timetable,
+and to rapidly adopt the Regulation on the establishment of the digital euro.
+Inflation
+Inflation declined to 1.7 percent in January, from 2.0 percent in December and 2.1 percent in
+November. Energy inflation dropped to -4.1 percent, after -1.9 percent in December and –0.5
+percent in November, while food price inflation increased to 2.7 percent, from 2.5 percent in
+December and 2.4 percent in November. Inflation excluding energy and food eased to 2.2
+percent, after 2.3 percentin December and 2.4 percent in November. Goods inflation edged up
+to 0.4 percent, whereas services inflation declined to 3.2 percent, from 3.4 percent in December
+and 3.5 percent in November.
+Indicators of underlying inflation have changed little over recent months and remain consistent
+with our two percent medium-term target. Negotiated wage growth and forward-looking
+indicators, such as the ECB’s wage tracker and surveys on wage expectations, point to a
+continued moderation in labour costs. However, the contribution to overall wage growth from
+payments over and above the negotiated wage component remains uncertain.
+Most measures of longer-term inflation expectations continue to stand at around 2 percent,
+supporting the stabilisation of inflation around our target.
+Risk assessment
+The euro area continues to face a volatile global policy environment. A renewed increase in
+uncertainty could weigh on demand. A deterioration in global financial market sentiment could
+also dampen demand. Further frictions in international trade could disrupt supply chains, reduce
+exports and weaken consumption and investment. Geopolitical tensions, in particular Russia’s
+unjustified war against Ukraine, remain a major source of uncertainty. By contrast, planned
+defence and infrastructurespending, together with the adoption of productivity-enhancing reforms
+and the adoption of new technologies by euro area firms, may drive up growth by more than
+expected, including through positive effects on business and consumer confidence. New trade
+agreements and a deeper integration of our European Single Market could also boost growth
+beyond current expectations.
+The outlook for inflation continues to be more uncertain than usual on account of the volatile
+global policy environment. Inflation could turn out to be lower if tariffs reduce demand for euro
+area exports by more than expected and if countries with overcapacity increase further their
+exports to the euro area. Moreover, a stronger euro could bring inflation down beyond current
+expectations. More volatile and risk-averse financial markets could weigh on demand and
+thereby also lower inflation. By contrast, inflation could turn out to be higher if there were a
+persistent upward shift in energy prices, or if more fragmented global supply chains pushed up
+import prices, curtailed the supply of critical raw materials and added to capacity constraints in
+the euro area economy. If wage growth moderated more slowly, services inflation might come
+down later than expected. The planned boost in defence and infrastructure spending could also
+cause inflation to pick up over the medium term. Extreme weather events, and the unfolding
+climate and nature crises more broadly, could drive up food prices by more than expected.
+Financial and monetary conditions
+Market rates have come down since our last meeting, while global trade and geopolitical
+tensions temporarily increased financial market volatility. Bank lending rates for firms ticked up
+to 3.6 percent in December, from 3.5 percent in November, as did the cost of issuing
+-10/11-
+
+--- 페이지 11 ---
+market-based debt. The average interest rate on new mortgages again held steady, at 3.3
+percent in December.
+Bank lending to firms grew by 3.0 percent on a yearly basis in December, after 3.1 percent in
+November and 2.9 percent in October. The issuance of corporate bonds rose by 3.4 percent in
+December. According to our latest bank lending survey for the euro area, firms’ demand for
+credit was up slightly in the fourth quarter, especially to finance inventories and working capital.
+At the same time, credit standards for business loans tightened again.
+Mortgage lending grew by 3.0 percent, after 2.9 percent in November and 2.8 percent in
+October, in response to still rising demand for loans and an easing of credit standards.
+Conclusion
+The Governing Council today decided to keep the three key ECB interest rates unchanged. We
+are determined to ensure that inflation stabilises at our two percent target in the medium term.
+We will follow a data-dependent and meeting-by-meeting approach to determining the
+appropriate monetary policy stance. Our interest rate decisions will be based on our assessment
+of the inflation outlook and the risks surrounding it, in light of the incoming economic and
+financial data, as well as the dynamicsof underlying inflation and the strength of monetary
+policy transmission. We are not pre-committing to a particular rate path.
+In any case, we stand ready to adjust all of our instruments within our mandate to ensure that
+inflation stabilises sustainably at our medium-term target and to preserve the smooth
+functioning of monetary policy transmission.
+We are now ready to take your questions.
+-11/11-

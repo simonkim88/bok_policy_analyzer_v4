@@ -8,10 +8,12 @@
 
 import json
 import logging
-from typing import Dict, List, Set, Tuple, Optional
+import re
+from typing import Dict, List, Set, Tuple, Optional, cast
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from collections import defaultdict
+import numpy as np
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -92,6 +94,37 @@ class SentimentDictionary:
             # 강한 표현
             SentimentEntry("빅스텝", "hawkish", 2.5, "policy", "50bp 인상"),
             SentimentEntry("추가인상", "hawkish", 2.2, "policy", "추가 금리 인상"),
+
+            # 정책 의도/대응
+            SentimentEntry("조기정상화", "hawkish", 2.3, "policy", "조기 정상화"),
+            SentimentEntry("추가조치", "hawkish", 2.1, "policy", "추가 조치"),
+            SentimentEntry("선제적대응", "hawkish", 2.0, "policy", "선제적 대응"),
+            SentimentEntry("정상화속도", "hawkish", 1.7, "policy", "정상화 속도"),
+            SentimentEntry("긴축기조", "hawkish", 2.0, "policy", "긴축 기조"),
+
+            # 인플레이션/물가
+            SentimentEntry("물가목표상회", "hawkish", 2.3, "inflation", "물가 목표 상회"),
+            SentimentEntry("기조적물가", "hawkish", 1.9, "inflation", "기조적 물가"),
+            SentimentEntry("근원상승", "hawkish", 2.0, "inflation", "근원물가 상승"),
+            SentimentEntry("비용전가", "hawkish", 1.8, "inflation", "비용 전가"),
+            SentimentEntry("임금상승압력", "hawkish", 2.0, "inflation", "임금 상승 압력"),
+            SentimentEntry("물가상방리스크", "hawkish", 2.2, "inflation", "물가 상방 리스크"),
+            SentimentEntry("인플레이션고착", "hawkish", 2.3, "inflation", "인플레이션 고착"),
+
+            # 금융/신용
+            SentimentEntry("부동산과열", "hawkish", 2.1, "financial_stability", "부동산 과열"),
+            SentimentEntry("투기수요", "hawkish", 1.9, "financial_stability", "투기 수요"),
+            SentimentEntry("대출급증", "hawkish", 2.0, "financial_stability", "대출 급증"),
+            SentimentEntry("신용리스크", "hawkish", 1.9, "financial_stability", "신용 리스크"),
+            SentimentEntry("금융안정리스크", "hawkish", 1.8, "financial_stability", "금융안정 리스크"),
+            SentimentEntry("자산시장과열", "hawkish", 2.0, "financial_stability", "자산시장 과열"),
+            SentimentEntry("가계대출증가", "hawkish", 2.0, "financial_stability", "가계대출 증가"),
+
+            # 대외
+            SentimentEntry("환율절하", "hawkish", 1.7, "external", "환율 절하"),
+            SentimentEntry("자본유출", "hawkish", 1.8, "external", "자본 유출"),
+            SentimentEntry("수입물가상승", "hawkish", 1.8, "external", "수입물가 상승"),
+            SentimentEntry("환율상방압력", "hawkish", 1.7, "external", "환율 상방 압력"),
         ]
 
         # ========================================
@@ -148,6 +181,38 @@ class SentimentDictionary:
             # 회복 지연
             SentimentEntry("회복지연", "dovish", 1.7, "growth", "회복 지연"),
             SentimentEntry("지연", "dovish", 1.2, "growth", "지연"),
+
+            # 정책 의도/완화
+            SentimentEntry("금리인하여지", "dovish", 2.2, "policy", "금리 인하 여지"),
+            SentimentEntry("완화기조유지", "dovish", 2.1, "policy", "완화 기조 유지"),
+            SentimentEntry("경기부양", "dovish", 2.0, "policy", "경기 부양"),
+            SentimentEntry("완화적통화정책", "dovish", 2.0, "policy", "완화적 통화정책"),
+            SentimentEntry("정책지원", "dovish", 1.5, "policy", "정책 지원"),
+
+            # 성장/내수
+            SentimentEntry("내수부진", "dovish", 2.0, "growth", "내수 부진"),
+            SentimentEntry("소비심리위축", "dovish", 2.0, "growth", "소비 심리 위축"),
+            SentimentEntry("고용악화", "dovish", 1.9, "growth", "고용 악화"),
+            SentimentEntry("투자감소", "dovish", 1.8, "growth", "투자 감소"),
+            SentimentEntry("성장둔화", "dovish", 1.9, "growth", "성장 둔화"),
+            SentimentEntry("회복더딤", "dovish", 1.8, "growth", "회복 더딤"),
+            SentimentEntry("생산감소", "dovish", 1.7, "growth", "생산 감소"),
+
+            # 위험
+            SentimentEntry("디플레이션", "dovish", 2.1, "risk", "디플레이션"),
+            SentimentEntry("경기하강", "dovish", 2.1, "risk", "경기 하강"),
+            SentimentEntry("수출급감", "dovish", 2.0, "risk", "수출 급감"),
+            SentimentEntry("경상수지악화", "dovish", 1.9, "risk", "경상수지 악화"),
+            SentimentEntry("하방요인", "dovish", 1.7, "risk", "하방 요인"),
+            SentimentEntry("침체우려", "dovish", 2.0, "risk", "침체 우려"),
+            SentimentEntry("수요위축", "dovish", 1.9, "risk", "수요 위축"),
+
+            # 대외
+            SentimentEntry("글로벌경기둔화", "dovish", 2.0, "external", "글로벌 경기 둔화"),
+            SentimentEntry("교역감소", "dovish", 1.8, "external", "교역 감소"),
+            SentimentEntry("공급망차질", "dovish", 1.8, "external", "공급망 차질"),
+            SentimentEntry("통상불확실성", "dovish", 1.8, "external", "통상 불확실성"),
+            SentimentEntry("대외수요둔화", "dovish", 1.8, "external", "대외 수요 둔화"),
         ]
 
         # 사전에 추가
@@ -157,7 +222,21 @@ class SentimentDictionary:
         for entry in dovish_keywords:
             self.dovish_terms[entry.term] = entry
 
+        self._normalize_weights()
+
         logger.info(f"기본 감성 사전 로드: 매파 {len(self.hawkish_terms)}개, 비둘기파 {len(self.dovish_terms)}개")
+
+    def _normalize_weights(self):
+        """Normalize weights to have mean=1.0, std=0.5 within each polarity."""
+        for terms_dict in [self.hawkish_terms, self.dovish_terms]:
+            if not terms_dict:
+                continue
+            weights = [e.weight for e in terms_dict.values()]
+            mean_w = np.mean(weights)
+            std_w = np.std(weights) or 1.0
+            for entry in terms_dict.values():
+                entry.weight = float(1.0 + 0.5 * (entry.weight - mean_w) / std_w)
+                entry.weight = max(0.3, min(3.0, entry.weight))
 
     def add_hawkish_term(
         self,
@@ -221,7 +300,6 @@ class SentimentDictionary:
         # 매파 키워드 매칭
         for term, entry in self.hawkish_terms.items():
             if term in text:
-                # 출현 횟수 계산
                 count = text.count(term)
                 matches["hawkish"].append((term, entry.weight * count))
 
@@ -230,6 +308,30 @@ class SentimentDictionary:
             if term in text:
                 count = text.count(term)
                 matches["dovish"].append((term, entry.weight * count))
+
+        ngram_matches = self.match_ngrams_in_text(text)
+        matches["hawkish"].extend(ngram_matches["hawkish"])
+        matches["dovish"].extend(ngram_matches["dovish"])
+
+        return matches
+
+    def match_ngrams_in_text(self, text: str) -> Dict[str, List[Tuple[str, float]]]:
+        """텍스트에서 N-gram 패턴 매칭"""
+        matches = {"hawkish": [], "dovish": []}
+
+        for ngram in NGRAM_HAWKISH:
+            ngram_str = " ".join(ngram)
+            pattern = r".{0,20}".join(re.escape(word) for word in ngram)
+            occurrences = len(re.findall(pattern, text))
+            if occurrences > 0:
+                matches["hawkish"].append((ngram_str, 2.0 * occurrences))
+
+        for ngram in NGRAM_DOVISH:
+            ngram_str = " ".join(ngram)
+            pattern = r".{0,20}".join(re.escape(word) for word in ngram)
+            occurrences = len(re.findall(pattern, text))
+            if occurrences > 0:
+                matches["dovish"].append((ngram_str, 2.0 * occurrences))
 
         return matches
 
@@ -273,7 +375,7 @@ class SentimentDictionary:
 
         logger.info(f"감성 사전 로드: 매파 {len(self.hawkish_terms)}개, 비둘기파 {len(self.dovish_terms)}개")
 
-    def get_statistics(self) -> Dict:
+    def get_statistics(self) -> Dict[str, int | Dict[str, List[str]]]:
         """감성 사전 통계"""
         hawkish_by_cat = defaultdict(list)
         dovish_by_cat = defaultdict(list)
@@ -304,6 +406,22 @@ NGRAM_HAWKISH = [
     ("기대", "인플레이션", "상승"),
     ("수요", "압력", "확대"),
     ("경기", "과열", "우려"),
+    ("물가", "목표", "상회"),
+    ("금융", "불균형", "확대"),
+    ("가계", "대출", "증가"),
+    ("선제적", "대응"),
+    ("통화정책", "정상화"),
+    ("추가", "인상", "필요"),
+    ("기조적", "물가", "상승"),
+    ("근원", "물가", "상승"),
+    ("물가", "상방", "리스크"),
+    ("부동산", "과열", "우려"),
+    ("주택가격", "상승", "압력"),
+    ("대출", "증가세", "확대"),
+    ("신용", "리스크", "확대"),
+    ("환율", "상승", "압력"),
+    ("자본", "유출", "우려"),
+    ("정책", "정상화", "속도"),
 ]
 
 NGRAM_DOVISH = [
@@ -317,8 +435,24 @@ NGRAM_DOVISH = [
     ("수출", "증가세", "둔화"),
     ("성장", "모멘텀", "약화"),
     ("고용", "상황", "악화"),
+    ("성장", "하방", "위험"),
+    ("경기", "회복", "더딘"),
+    ("물가", "목표", "근접"),
+    ("완화적", "통화정책"),
+    ("경기", "하강", "위험"),
+    ("내수", "회복", "지연"),
+    ("소비", "심리", "위축"),
+    ("투자", "감소", "지속"),
+    ("고용", "둔화", "우려"),
+    ("수출", "둔화", "흐름"),
+    ("경상수지", "악화", "우려"),
+    ("글로벌", "경기", "둔화"),
+    ("교역", "감소", "압력"),
+    ("공급망", "차질", "지속"),
+    ("디플레이션", "압력", "확대"),
+    ("금리", "인하", "여지"),
+    ("경기", "부양", "필요"),
 ]
-
 
 def main():
     """테스트 실행"""
@@ -334,11 +468,13 @@ def main():
     print(f"비둘기파 키워드: {stats['total_dovish']}개")
 
     print("\n[매파 키워드 카테고리별]")
-    for cat, terms in stats['hawkish_by_category'].items():
+    hawkish_by_category = cast(Dict[str, List[str]], stats.get('hawkish_by_category', {}))
+    for cat, terms in hawkish_by_category.items():
         print(f"  {cat}: {', '.join(terms[:5])}{'...' if len(terms) > 5 else ''}")
 
     print("\n[비둘기파 키워드 카테고리별]")
-    for cat, terms in stats['dovish_by_category'].items():
+    dovish_by_category = cast(Dict[str, List[str]], stats.get('dovish_by_category', {}))
+    for cat, terms in dovish_by_category.items():
         print(f"  {cat}: {', '.join(terms[:5])}{'...' if len(terms) > 5 else ''}")
 
     # 사전 저장

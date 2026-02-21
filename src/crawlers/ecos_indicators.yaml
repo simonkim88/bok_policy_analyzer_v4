@@ -1,0 +1,73 @@
+indicators:
+  base_rate:
+    stat_code: "722Y001"
+    item_code1: "0101000"
+    period_type: "D"
+    category: "base_rate"
+    description: "한국은행 기준금리"
+  cpi_total:
+    stat_code: "901Y009"
+    item_code1: "0"
+    period_type: "M"
+    category: "cpi"
+    description: "소비자물가지수 (총지수)"
+  gdp_real:
+    stat_code: "200Y104"
+    item_code1: "1400"
+    period_type: "Q"
+    category: "gdp"
+    description: "실질 GDP (계절조정)"
+  expected_inflation:
+    stat_code: "511Y002"
+    item_code1: "FME"
+    period_type: "M"
+    category: "cpi"
+    description: "기대인플레이션율"
+  m2:
+    stat_code: "161Y008"
+    item_code1: "BBGA00"
+    period_type: "M"
+    category: "money_supply"
+    description: "M2 통화량"
+  unemployment:
+    stat_code: "901Y033"
+    item_code1: "A00"
+    period_type: "M"
+    category: "employment"
+    description: "실업률"
+  ktb_3y:
+    stat_code: "817Y002"
+    item_code1: "010200000"
+    period_type: "D"
+    category: "bond_yields"
+    description: "국고채 3년물 금리"
+  ktb_10y:
+    stat_code: "817Y002"
+    item_code1: "010200001"
+    period_type: "D"
+    category: "bond_yields"
+    description: "국고채 10년물 금리"
+  usd_krw:
+    stat_code: "731Y003"
+    item_code1: "0000002"
+    period_type: "D"
+    category: "exchange_rates"
+    description: "원/달러 환율"
+  kospi:
+    stat_code: "802Y001"
+    item_code1: "0001000"
+    period_type: "D"
+    category: "stock_indices"
+    description: "KOSPI 종합주가지수"
+  household_credit:
+    stat_code: "151Y001"
+    item_code1: "1112000"
+    period_type: "Q"
+    category: "household_debt"
+    description: "가계신용 잔액"
+  lending_rate:
+    stat_code: "722Y001"
+    item_code1: "0101000"
+    period_type: "M"
+    category: "lending_rates"
+    description: "대출금리 (가계)"

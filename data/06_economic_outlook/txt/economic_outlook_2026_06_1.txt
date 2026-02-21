@@ -1,0 +1,1948 @@
+--- 페이지 1 ---
+No. 2026-6
+ES Activities and Labor Productivity:
+Evidence from Korean
+Manufacturing Firms
+Seongjun Jeong, Bok-Keun Yu
+2026. 2
+
+--- 페이지 3 ---
+ES Activities and Labor Productivity:
+Evidence from Korean
+Manufacturing Firms
+Seongjun Jeong*, Bok-Keun Yu**
+The views expressed herein are those of the authors and do not necessarily reflect the
+official views of Bank of Korea. When reporting or citing this paper, the authors’ name
+should always be explicitly stated.
+* First Author, Economist, Economic Research Institute, Bank of Korea,
+Tel: +82-2-759-5422, E-mail: seongjun.jeong@bok.or.kr
+** Corresponding Author, Senior Economist, Economic Research Institute, Bank of Korea,
+Tel: +82-2-759-5424, E-mail: bokyu@bok.or.kr
+The authors are grateful to Dr. Jae Won Lee, Dr. Taeyoung Cho, Dr. Indo Hwang, Dr. Eseul Choi at
+Bank of Korea, Prof. Sejoong Lee at University of Seoul, an anonymous reviewer, and the participants
+at the interim seminar of Economic Research Institute (ERI) for their valuable comments and
+suggestions.
+
+--- 페이지 4 ---
+Contents
+Ⅰ. Introduction ………………………………………………… 1
+Ⅱ. Literature Review …………………………………………… 4
+Ⅲ. Data …………………………………………………………… 7
+Ⅳ. Empirical Results ………………………………………… 11
+Ⅴ. Conclusion ………………………………………………… 34
+References …………………………………………………… 37
+Appendix ……………………………………………………… 41
+
+--- 페이지 5 ---
+ES Activities and Labor Productivity:
+Evidence from Korean Manufacturing Firms
+This study empirically examines how firms’ environmental and social (E and
+S) activities affect labor productivity using E and S metrics provided by the
+Korea Corporate Governance Service (KCGS). Using a panel of listed firms over
+2015–2023, we find that both the ES rating and the ES score are significantly and
+negatively associated with labor productivity, which remains robust when we use
+the overall ESG rating or the E and S pillar ratings. We further provide channel
+evidence consistent with a cost-burden mechanism: firms with higher ES exhibit
+a higher total operating cost ratio (TOCR), suggesting that the ES–productivity
+relationship may be linked to operating cost pressure. Subcategory analyses
+reveal heterogeneous pathways within ES. In the environmental category,
+operational/management and communication-oriented activities are negatively
+related to labor productivity, consistent with higher coordination and management
+costs. In contrast, community engagement in the social category is positively
+related to labor productivity, pointing to a complementary pathway through trust,
+reputation, and relationship capital. Finally, firm- and industry-level analyses
+indicate substantial heterogeneity in the ES–productivity relationship across firms
+and industries. Overall, by combining cost-based channel evidence, subcategory-
+level decompositions, and heterogeneity analyses, this study highlights that
+evaluating the economic implications of sustainability initiatives requires
+attention not only to aggregate ES/ESG metrics but also to cost structure, activity
+types, and firm and industry characteristics.
+Keywords: ESG, ES activities, Labor productivity, Manufacturing firms
+JEL Classification: D24, E24, G30, Q50
+
+--- 페이지 7 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 1
+I. Introduction
+At the firm level, productivity is typically defined as output relative to
+inputs and captures the overall efficiency with which multiple factors—
+such as labor, capital, and land—are transformed into output. Productivity
+can be measured using total factor productivity (TFP) or multifactor
+productivity (MFP), but these measures require detailed data and involve
+complex estimation and measurement procedures. By contrast, single-
+factor productivity (SFP) relates output to a single input (e.g., labor or
+capital), which makes it easier to compute and more comparable across firms,
+industries, and countries. Among these measures, labor productivity—output
+per unit of labor input—is the most widely used indicator of productive
+efficiency (OECD, 2025). Prior studies (Fallahi et al., 2010; Laureti and
+Viviani, 2011) emphasize that improvements in labor productivity are a key
+determinant of firm competitiveness in domestic and international markets, in
+part by lowering unit production costs. Moreover, labor productivity reflects
+not only human-capital-related factors but also the influence of other inputs
+and organizational efficiency, including physical capital, intangible assets,
+production technology, and managerial organization (OECD, 2025).
+Meanwhile, growing attention to climate change and broader environmental
+challenges, as well as corporate social responsibility, has heightened the
+importance of firms’ non-financial performance in addition to their financial
+outcomes. Under the traditional shareholder-oriented view, firm performance
+is primarily evaluated in terms of financial results that maximize shareholder
+value. In contrast, stakeholder theory posits that firms should account for the
+interests of a broader set of stakeholders—including employees, customers,
+local communities, and the natural environment—rather than focusing
+exclusively on shareholders. ESG1), an acronym for Environmental, Social,
+1) ESG is widely understood to have originated from the United Nations Environment
+Programme Finance Initiative (UNEP FI), launched in 2003, and to have gained broader
+traction following the establishment of the United Nations Principles for Responsible
+Investment (UN PRI) in 2006. As of end-August 2025, UNEP FI has more than 500
+member institutions—including banks, insurers, and institutional investors—and supports
+the financial sector in incorporating environmental and social sustainability considerations.
+
+--- 페이지 8 ---
+2 BOK Working Paper No. 2026-6
+and Governance, summarizes firms’ sustainability-related non-financial
+activities, and ESG ratings and scores are now widely used as investment-
+screening metrics by global investors, including international investment
+banks.2) A notable turning point was the 2020 annual letter by Larry Fink,
+CEO of BlackRock, widely regarded as the world’s largest asset manager;
+its assets under management are estimated to exceed USD 10 trillion as of
+2025. The letter highlighted sustainability as a core investment consideration
+and signaled a stronger stance toward fossil-fuel producers. Following the
+COVID-19 pandemic, ESG investing has also been framed as part of a broader
+reassessment of environmental degradation and as a potential source of new
+growth in the context of economic recovery. Prior studies report increased
+capital flows into firms with strong ESG performance and more favorable
+market outcomes (Barrymore and Sampson, 2009; Khan, Serafeim, and Yoon,
+2016; Nagy, Kassam, and Lee, 2016). Taken together, these developments
+suggest that corporate ESG activities may enhance firm value by strengthening
+nonfinancial performance and stakeholder relations.
+However, it is important to assess how these sustainability-related activities
+ultimately affect labor productivity, a key determinant of firms’ competitiveness.
+Motivated by this concern, the present study investigates the relationship
+between firms’ environmental and social (ES) activities and labor productivity in
+the Korean manufacturing sector from multiple angles and draws policy-relevant
+implications. We focus on ES as the primary explanatory variable because
+governance-related (G) activities are more closely tied to internal control
+systems and shareholder protection, implying mechanisms that differ from those
+of E and S and are less directly linked to labor productivity. Accordingly, we
+exclude G from our main analyses and use it primarily for robustness checks.
+UN PRI, developed under UNEP FI as a set of principles for the asset management
+and investment community, has more than 5,000 institutional investors as signatories and
+promotes the integration of ESG factors into investment decision-making processes.
+2) Bank of Korea also incorporates ESG considerations into its foreign reserve asset
+management, for example by adopting a negative-screening approach that excludes
+companies associated with ESG controversies, and is reviewing a longer-term shift toward
+an ESG integration strategy that would more comprehensively embed ESG factors across
+the portfolio.
+
+--- 페이지 9 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 3
+The main empirical findings are as follows. First, in the full-sample
+analysis, both the ES rating and the ES score are consistently and negatively
+associated with labor productivity. This negative relationship remains after
+controlling for key firm characteristics—such as firm size, capital intensity,
+wages, and R&D—and is broadly robust to alternative ESG measures,
+including the overall ESG rating and the E, S, and G pillar ratings. Second,
+our channel analyses suggest that the negative ES–productivity relationship
+may be linked to firms’ cost burden and the composition of ES activities.
+Specifically, firms with higher ES exhibit a higher total operating cost ratio
+(TOCR), and the negative ES coefficient is attenuated when TOCR is
+included as a control variable. Moreover, when we decompose the ES score
+into environmental and social subcategories, we find heterogeneous patterns:
+operational/management and stakeholder-engagement components in the
+environmental category are negatively related to labor productivity, whereas
+community engagement in the social category is positively related. Third,
+the productivity effects of ES vary across firms and industries. In interaction
+models, the adverse association of ES is partially mitigated under certain
+financial conditions, and industry-level analyses show pronounced negative
+effects in selected manufacturing industries—such as paper, metals, and
+electronic components—while the relationship is not statistically significant in
+major export industries or in high greenhouse-gas-emitting sectors.
+Relative to prior studies that focus primarily on aggregate ESG ratings
+or a single pillar, this study provides a more comprehensive assessment of
+how firms’ ES activities relate to labor productivity. We jointly consider (i)
+both ES ratings and continuous ES scores, (ii) channel evidence based on the
+total operating cost ratio (TOCR), (iii) decompositions of the environmental
+(E) and social (S) pillars into detailed subcategories, and (iv) heterogeneity
+across firms and industries. In particular, the TOCR-based analysis and
+the subcategory decomposition together suggest that the ES–productivity
+relationship is not a single uniform effect but may operate through cost
+burdens and activity-specific pathways. By incorporating continuous score
+data, we also capture variation that may be limited in rating-based measures
+
+--- 페이지 10 ---
+4 BOK Working Paper No. 2026-6
+and provide additional robustness checks. Finally, by documenting that ES
+effects can differ by firm characteristics and industry environments, we offer
+policy-relevant implications: effective policy design may require approaches
+tailored to industry and firm conditions rather than uniform prescriptions.
+Overall, our approach contributes empirical evidence that helps clarify the
+mechanisms through which sustainability-related activities may be linked to
+productivity.
+The remainder of this paper is organized as follows. Section II reviews
+the related literature. Section III describes the data. Section IV presents the
+empirical results. Section V concludes.
+II. Literature Review
+Corporate ESG activities can affect labor productivity through multiple
+channels, with potentially positive or negative aspects. On the positive
+side, strong environmental and social practices may enhance employees’
+social identity3) and strengthen job satisfaction and mutual ties within the
+workplace. These improvements can foster knowledge sharing, innovation, and
+organizational efficiency, ultimately raising labor productivity (Turban and
+Greening, 1997; Jones and Volpe, 2011; Delmas and Pekovic, 2012). Firms with
+superior social and environmental performance may also build a reputation
+as desirable employers, facilitating recruitment and increasing the likelihood
+of attracting higher-quality workers. Such employees may exhibit greater
+job satisfaction and align more closely with the firm’s values, which can
+translate into higher effort and, in turn, improved labor productivity (Ambec
+and Lanoie, 2008; Brekke and Nyborg, 2008; Wagner, 2011; Barrymore and
+Sampson, 2021). In addition, appropriately designed environmental standards
+and innovation in production processes can reduce production costs and
+improve factor productivity, thereby strengthening firm competitiveness (Porter
+3) Originally developed by social psychologists Henri Tajfel and John Turner, social identity
+refers to an individual’s self-concept—shaping self-esteem, attitudes, and behaviors—that
+arises from perceived membership in a particular social group.
+
+--- 페이지 11 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 5
+and van der Linde, 1995; Delmas and Montiel, 2009; Alberti, 2013; Ma et al.,
+2020). Finally, as investors increasingly incorporate ESG considerations into
+investment decisions, firms with strong environmental and corporate social
+responsibility (CSR) performance may obtain external financing at lower cost
+(Bassen et al., 2006; Atan et al., 2017).
+On the other hand, strengthening firms’ environmental and social
+management may adversely affect labor productivity if it diverts key inputs—
+such as capital, labor, raw materials, and energy—away from core production
+processes toward non-core activities (Jaffe et al., 1995; Becker, 2011; Jackson
+et al., 2014). Large-scale investments and the adoption of new production
+technologies to comply with stringent environmental standards may also
+reduce organizational flexibility, potentially undermining labor productivity
+and competitiveness (Aguilera-Caracuel and Ortiz-de-Mandojana, 2013;
+Lannelongue et al., 2017). In addition, environmental management often
+entails additional expenditures, and firms may face heightened uncertainty and
+risk stemming from changes in environmental regulation and related policies
+(Walley and Whitehead, 1994; Hoffmann et al., 2009).
+The empirical literature on the relationship between firms’ ESG (or
+broader environmental and social) performance and labor productivity
+remains largely inconclusive. Below, we summarize a set of studies reporting
+positive associations. Goss and Roberts (2011), using U.S. firms over 1991–
+2006, examine the link between corporate social responsibility (CSR) and loan
+pricing and find that firms with stronger CSR obtain loans at lower interest
+rates. This can be interpreted as a reduction in financing costs and may, in
+turn, support productivity improvements. Delmas and Pekovic (2012), based
+on a cross-section of more than 5,000 French firms in 2006, report that firms
+adopting environmental standards such as ISO 140014) exhibit higher labor
+productivity than non-adopters. Atan et al. (2017), analyzing 54 Malaysian
+firms over 2010–2013, find that higher ESG scores are associated with a lower
+4) ISO 14001 is an international standard issued by the International Organization for
+Standardization (ISO) that specifies requirements for an organization’s environmental
+management system (EMS).
+
+--- 페이지 12 ---
+6 BOK Working Paper No. 2026-6
+cost of capital, although the separate effects of the E, S, and G components
+are not statistically significant. Barrymore and Sampson (2021), using U.S.
+firms over 2008–2018, document that the ESG–labor productivity relationship
+varies by industry and is positive for larger firms. Kalantzis and Niczyporuk
+(2022), examining more than 15,000 firms across the EU-27 and the United
+Kingdom over 2018–2019, find that investments in within-firm energy
+effciency increase labor productivity, potentially by improving the quality of
+machinery and equipment and enhancing working conditions. Finally, Deng et
+al. (2023), using 2,833 listed Chinese firms over 2016–2020, show that stronger
+ESG performance is associated with higher total factor productivity.
+However, a number of studies report negative or mixed findings. Becker
+(2011), analyzing manufacturing plants in the United States, finds that higher
+environmental compliance costs are associated with lower labor productivity,
+although the effect is not statistically significant. Lannelongue et al. (2017),
+using a sample of 2,823 plants located in 23 European Economic Area (EEA)
+countries in 2014, document a negative relationship between environmental
+performance and labor productivity. They further examine moderating effects
+by interacting environmental performance with capital intensity and show
+that the negative association is stronger for more capital-intensive plants—
+that is, labor productivity declines more in plants with higher environmental
+performance (e.g., lower CO₂ emissions) when capital intensity is high. Ma
+et al. (2020), studying Chinese manufacturing firms in 2016, also report that
+environmental management is negatively related to labor productivity, and
+that quality management—proxied by adoption of ISO 90015)—attenuates
+this negative relationship. More recently, Kim and Lee (2025) analyzed
+the relationship between ESG performance and corporate productivity for
+Korean listed firms over the period 2006–2021. The results show that neither
+the overall ESG composite score nor the individual E and S scores have
+statistically significant effects on total factor productivity. In contrast, the
+5) ISO 9001 is an international standard for Quality Management Systems (QMS) that
+applies to all industry sectors, issued by the International Organization for Standardization
+(ISO).
+
+--- 페이지 13 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 7
+E score has a statistically significant negative effect on labor productivity—
+measured as total revenue divided by labor costs—whereas the S score and the
+G score have statistically significant positive effects.
+III. Data
+To empirically examine the effect of firms’ ES activities on labor
+productivity in the Korean manufacturing sector, we construct our dataset
+by merging two main databases. ES-related measures are obtained from firm-
+level environmental (E) and social (S) ratings and detailed assessment scores
+published annually by the Korea Corporate Governance Service (KCGS).
+Financial statements and other firm characteristics are drawn from DataGuide.
+Our analysis sample includes only firm-year observations that are available in
+both data sources.
+KCGS has reported annual pillar ratings for E, S, and G as well as an
+overall ESG rating since 2011. The ratings take six ordered categories6)—A+
+(excellent), A (very good), B+ (good), B (fair), C (weak), and D (very weak)—
+which we convert into a numeric scale from 1 to 6 (A+ = 6, A = 5, B+ = 4,
+B = 3, C = 2, D = 1). ES_rating is constructed as the simple average of the
+numeric E and S ratings. In addition to letter grades, KCGS computes detailed
+pillar scores on a 0–100 scale each year. Unlike the ratings, these scores are
+not publicly disclosed and are provided only on a restricted basis for research
+purposes. Specifically, ES_rating is a publicly disclosed ordinal measure that
+provides an intuitive benchmark for comparing firms’ relative ES performance,
+whereas ES_score is an internally assessed continuous measure that can
+capture finer-grained variation that may not be reflected in the discrete rating
+scale. We therefore conduct analyses using both rating-based and score-
+based ES measures to assess the robustness of our findings regarding the ES–
+6) KCGS ratings are classified into seven categories—S, A+, A, B+, B, C, and D. In
+manufacturing, however, there are no observations rated S in our sample. Accordingly,
+we exclude the S category and work with the remaining six rating grades in the empirical
+analysis.
+
+--- 페이지 14 ---
+8 BOK Working Paper No. 2026-6
+productivity relationship. The sample period is set to 2015–2023, during which
+the ESG data exhibit greater stability and time-series consistency.
+We include a standard set of firm-level financial controls that are
+commonly related to labor productivity, including firm size, capital intensity,
+firm age, labor costs, R&D, leverage, and profitability. The dependent variable
+is firm-level labor productivity. Following the literature, we measure labor
+productivity as the natural logarithm of value added per employee (Jensen et
+al., 2001; Zwick, 2004; Salis and Williams, 2010; Delmas and Pekovic, 2013;
+Kalantzis and Niczyporuk, 2022) and, alternatively, the natural logarithm of
+sales per employee (Ichniowski, 1990; Koch and McGrath, 1996; Fallahi et
+al., 2010; Lannelongue et al., 2017; Barrymore and Sampson, 2021). Sales are
+readily available, but they embed intermediate input costs (e.g., raw materials
+and intermediate goods), which can limit their ability to capture the firm’s net
+economic contribution. To address this concern, we treat value added as our
+primary measure while also reporting results based on sales. Firm-level value
+added is constructed following the methodology of the Korea Productivity
+Center (KPC) and includes operating profit, labor income (including wages,
+retirement benefits, and employee welfare expenses), depreciation, allowance
+for doubtful accounts, and taxes and dues.7) Ideally, the denominator would be
+hours worked at the firm level; however, due to data availability constraints,
+we use the number of employees.8)
+Labor productivity is more directly connected to environmental and social
+(E and S) dimensions—such as environmental effciency, working conditions,
+and human resource management—whereas governance (G) is largely
+characterized by more indirect features, including internal control systems and
+7) The value-added measure of Korea Productivity Center (KPC) is constructed using listed-
+firm financial statement data, and information from the manufacturing cost statement
+are not available, which limits our ability to estimate value added with full precision. To
+compensate for this, we also report results using an alternative labor productivity measure
+based on sales.
+8) Both the OECD and the International Labour Organization (ILO) compile labor
+productivity statistics based on value added per unit of labor input. In Korea, the Korea
+Productivity Center (KPC) regularly produces offciallaborproductivityindicatorsby
+sector and by industry, reporting both value added per labor input and an index of
+industrial labor productivity. (https://www.kpc.or.kr)
+
+--- 페이지 15 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 9
+shareholder rights protection. Accordingly, following common practice in the
+literature, we use an ES measure that combines only environmental and social
+performance as our primary explanatory variable (Deng et al., 2013; Lins et
+al., 2017; Dyck et al., 2019; Choi and Jeong, 2025). This choice is intended to
+more clearly isolate the ESG components that are most directly relevant for
+labor productivity.9)
+To appropriately account for firm characteristics that may affect labor
+productivity, we include a set of financial and structural factors. Firm size is a
+standard control variable in productivity studies, and prior research documents
+that larger firms tend to be more productive, potentially reflecting economies
+of scale (Koch and McGrath, 1996; Zwick, 2004; Laureti and Viviani, 2011;
+Ma et al., 2020). We proxy firm size by the natural logarithm of total assets
+and expect a positive coefficient. Capital intensity captures the amount of
+physical capital used per unit of labor input; higher capital intensity implies
+greater availability of machinery and equipment per worker and is therefore
+expected to be positively related to labor productivity. Following Fallahi et
+al. (2010), we measure capital intensity as the natural logarithm of tangible
+fixed assets per employee. For robustness checks, we also use an alternative
+measure that includes intangible assets, with similar results. Firm age may
+also influence productivity in either direction (Jensen et al., 2001; Ma et al.,
+2020). Older firms may benefit from accumulated experience and learning-
+by-doing, whereas younger firms can be more productive in industries with
+rapid technological change. We use the natural logarithm of firm age, and the
+expected sign can be positive or negative.
+Wage levels paid to workers can materially affect firm productivity (Fallahi
+et al., 2010; Delmas and Pekovic, 2013). Higher average wages may reflect
+a more skilled workforce and can raise productivity by improving worker
+motivation and reducing turnover. Conversely, wage increases that exceed
+marginal productivity may impose additional cost burdens. To accommodate
+9) For the main specifications, we also re-estimate the models using the overall ESG measure
+in place of ES. The results are reported in Table 3 and remain robust across additional
+specifications.
+
+--- 페이지 16 ---
+10 BOK Working Paper No. 2026-6
+these competing effects, we use the natural logarithm of average wage per
+employee, and the expected sign is ambiguous. Innovation is another key
+determinant of production efficiency (Schumpeter, 1934; Kurt and Kurt,
+2001). Following Ma et al. (2020), we measure the degree of innovation by an
+R&D ratio, defined as R&D expenses scaled by total assets. Because more
+active innovation is likely to enhance productive efficiency, we expect a
+positive coeffcient. From the perspective of financial structure, leverage may
+have offsetting effects on productivity (Kalantzis and Niczyporuk, 2022; Deng
+et al., 2023; Lan et al., 2024; Kim and Lee, 2025). Moderate use of debt can
+support expansion and the realization of scale economies, whereas excessive
+leverage can reduce productivity through higher interest expenses and tighter
+financing constraints. Accordingly, the expected sign of leverage—measured
+as total liabilities divided by total equity—is not clear ex ante. Finally,
+profitability (ROA) can provide an important foundation for productivity
+improvements. More profitable firms may strengthen efficiency and
+productivity by expanding capital investment and increasing R&D spending.
+Following Laureti and Viviani (2011) and Lan et al. (2024), we proxy
+profitability using net income scaled by total assets and expect a positive sign.
+Our final sample consists of firms in the manufacturing sector—defined
+as KSIC 2-digit industries with codes 10–34—for which ESG assessments are
+available. The resulting panel includes 4,138 firm-year observations. Table 1
+reports summary statistics for the main variables.10) The labor productivity
+measures and ESG-related variables exhibit reasonable distributions in the
+sample, and most financial variables fall within ranges comparable to those
+documented in prior studies. Labor productivity displays substantial cross-firm
+heterogeneity, and firm characteristics such as asset size, capital intensity, and
+profitability also show meaningful dispersion, supporting an empirical analysis
+of productivity determinants. Overall, the sample covers manufacturing firms
+with diverse scales and financial structures, providing suffcient variation to
+examine the relationship between ESG activities and productivity.
+10) D efinitions of the main variables are provided in Appendix A.1.
+
+--- 페이지 17 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 11
+Table 1. Summary statistics
+This table reports summary statistics for the main variables used in the
+empirical analysis. The table presents the number of observations, mean,
+median, standard deviation, minimum, and maximum for each variable.
+Variable definitions are provided in Appendix A.1.
+Variables Obs. Mean Median Std.Dev. Min Max
+LP_VA 4,138 11.49 11.42 1.21 5.27 17.22
+LP_Sales 4,138 13.82 13.67 1.05 10.18 19.77
+ES_rating 4,138 2.85 2.50 1.17 1.00 6.00
+Size 4,138 20.19 19.95 1.45 16.47 26.85
+CapIntensity 4,138 12.89 12.80 1.12 8.12 18.80
+Age 4,138 3.52 3.76 0.71 0.69 4.84
+Salary 4,138 10.97 10.95 0.29 9.34 12.22
+R&D 4,138 0.01 0.00 0.02 0.00 0.32
+Leverage 4,138 1.39 0.74 14.54 0.02 845.10
+ROA 4,138 0.03 0.03 0.07 -0.58 1.30
+IV. Empirical Results
+1. Baseline Regression Analyses
+This section examines the relationship between ES activities and labor
+productivity through a sequence of descriptive and regression analyses. Section
+4.1.1 first illustrates how the ES–productivity relationship changes depending
+on whether firm size is controlled for. Sections 4.1.2 and 4.1.3 then assess
+whether this pattern remains consistent in the baseline ES regressions and in
+comparative specifications using alternative measures, including the E, S, and
+G pillar ratings as well as the integrated ESG ratings.
+
+--- 페이지 18 ---
+12 BOK Working Paper No. 2026-6
+1.1. Univariate Test
+To provide descriptive evidence on the relationship between labor
+productivity and ES measures, we first present a simple comparison without
+controlling for firm size (Figure 1). We then examine whether a similar pattern
+persists after removing the size component in advance (Figure 2). Because ES
+is typically strongly correlated with firm size, contrasting the size-unadjusted
+and size-adjusted comparisons is informative for isolating the underlying ES–
+productivity relationship.
+Panel A of Figure 1 compares mean labor productivity across groups defined
+by the discrete ES rating. Firms are classified into three categories: Low (ES_
+Rating ≤ 2, corresponding to grades C and D), Middle (ES_Rating = 3,
+grade B), and High (ES_Rating ≥ 4, grades B+, A, and A+). The number
+of observations in each group is 1,734 (Low), 1,610 (Middle), and 794 (High),
+indicating that the High group contains substantially fewer observations than
+the other two groups. The x-axis indicates the year, and the y-axis shows the
+group-specific mean of labor productivity measured by natural logarithm of
+value added per employee (LP_VA). The unconditional comparison shows
+that firms with higher ES ratings tend to exhibit higher labor productivity.
+Panel B constructs ES_score as the average of the environmental (E) and
+social (S) scores (0–100) and partitions firms into terciles based on this
+continuous measure. As a result, the three groups are approximately balanced,
+with about 1,380 observations per tercile. Consistent with Panel A, mean
+labor productivity increases with ES_score. However, these patterns do not
+take into account the strong correlation between ES and firm size. Given that
+high-ES firms are typically larger and have greater resource capacity, the
+relationship may differ once firm size is controlled for.
+
+--- 페이지 19 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 13
+Figure 1. Trends in labor productivity across ES ratings and scores
+Panel A: Across ES ratings (LP_VA)
+Panel B: Across ES scores (LP_VA)
+Figure 2 compares differences in the labor productivity across ES groups
+after purging the effect of firm size (Size) from labor productivity. Specifically,
+we regress labor productivity on firm size and compute the resulting residuals,
+which are then plotted by ES group. The size-adjusted patterns differ
+markedly from those in Figure 1. In Panel A, once the size component is
+removed, the high-ES group exhibits lower productivity on average, reversing
+the unconditional pattern shown in Panel A of Figure 1. Panel B yields a
+
+--- 페이지 20 ---
+14 BOK Working Paper No. 2026-6
+similar reversal when ES_score is used. These findings suggest that, after
+accounting for firm size, the relationship between ES and labor productivity
+may be weak or even negative. The fact that the simple comparisons produce
+opposite patterns before and after the size adjustment underscores the
+importance of more rigorous empirical strategies—controlling for firm size and
+incorporating fixed effects—in the subsequent regression analyses.
+Figure 2. Trends in labor productivity after controlling for firm size
+Panel A: Across ES ratings
+Panel B: Across ES scores
+
+--- 페이지 21 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 15
+1.2. Baseline Regression
+To more rigorously assess the effect of ES activities on labor productivity,
+this section estimates panel regression models that include industry and year
+fixed effects. Our baseline specification is as follows.
+Our primary dependent variable is labor productivity based on value
+added (LP_VA), and we additionally report results using sales-based
+labor productivity (LP_Sales) as a robustness check. The key explanatory
+variable captures the level of firms’ ES activities. Throughout the main
+analyses, we use ES_rating and also present results based on the continuous
+assessment measure, ES_score. As control variables, we include the seven
+firm characteristics described in the data section: Size, CapIntensity, Age,
+Salary, R&D, Leverage, and ROA. To mitigate endogeneity concerns arising
+from contemporaneous correlations and potential reverse causality, we follow
+standard practice and use one-period lagged values (t−1) for the explanatory
+and control variables. We further include industry fixed effects, α , defined at
+k(i)
+the KSIC 2-digit level, and year fixed effects, τ. All statistical inferences are
+t
+based on heteroskedasticity-robust standard errors clustered at the firm level.
+Table 2 reports regression estimates of the effect of the ES rating on labor
+productivity. Columns (1) and (2) present results for manufacturing firms
+(KSIC 2-digit codes 10–34), whereas columns (3) and (4) report estimates for
+the broader sample excluding the financial sector. The dependent variable is
+value-added-based labor productivity (LP_VA) in columns (1) and (3) and
+sales-based labor productivity (LP_Sales) in columns (2) and (4).
+In the manufacturing firm sample, the coefficient on ES_rating is
+−0.0623 in column (1) and −0.0650 in column (2), both statistically significant
+at the 5% and 1% levels, respectively. This implies that firms with higher
+ES ratings—i.e., those evaluated more favorably on environmental and social
+dimensions—exhibit lower labor productivity conditional on the included
+
+--- 페이지 22 ---
+16 BOK Working Paper No. 2026-6
+controls and fixed effects. This finding contrasts with the unconditional
+patterns in Figure 1, where higher ES is associated with higher productivity,
+and it is broadly consistent with the size-adjusted evidence in Figure 2, which
+suggests an inverse relationship once the size component is removed. In other
+words, for manufacturing firms, the negative association between ES and
+productivity persists in the multivariate regressions. The estimated coeffcients
+on the controls are also intuitive. In column (1), Size, CapIntensity, and Salary
+all enter with strongly positive coefficients, consistent with prior evidence
+that productivity tends to be higher in larger firms, in firms with greater
+physical capital per worker, and in firms paying higher wages. R&D and ROA
+are likewise positively and significantly associated with productivity, indicating
+that more innovative and more profitable firms tend to exhibit higher labor
+productivity.
+The negative relationship remains when we expand the industry coverage
+from manufacturing firms to the broader sample of non-financial firms. In
+columns (3) and (4), the coefficient on ES_rating is −0.1290 and −0.1021,
+respectively, both statistically significant at the 1% level. Notably, the
+magnitudes are larger in absolute value than those in the manufacturing
+subsample, indicating that the inverse ES–productivity relationship is even
+more pronounced across a wider set of industries. While the simple mean
+comparisons in Figure 1 suggest higher productivity among high-ES firms—
+largely because such firms tend to be larger—once we control for key firm
+characteristics, including size, capital intensity, wage levels, and profitability,
+ES rating continues to exhibit a consistently negative association with
+labor productivity. This pattern is robust to expanding the sample beyond
+manufacturing firms.11)
+11) Using the same empirical framework as in Table 2, we replace the ES rating with the
+continuous ES score (ES_score). The results are reported in Appendix A.2 and confirm
+that our findings are robust.
+
+--- 페이지 23 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 17
+Table 2. ES ratings and labor productivity
+This table presents the regression estimates of labor productivity on ES
+measures. The dependent variables are labor productivity estimated by value-
+added (column 1 and 3) or sales (column 2 and 4). The definitions of each
+variable are presented in the Appendix A.1. All regressions include industry
+and year fixed effects. The heteroscedasticity-consistent standard errors are
+clustered by firm level. Parenthetical values are the t-statistics. ***, **, and *
+denote significance at the 1%, 5%, and 10% levels, respectively.
+LP_VA LP_Sales LP_VA LP_Sales
+Dependent Variable
+(1) (2) (3) (4)
+ES_rating -0.0623** -0.0650*** -0.1290*** -0.1021***
+(-2.332) (-2.900) (-5.524) (-4.975)
+Size 0.0653** 0.0362 0.1283*** 0.0788***
+(2.442) (1.560) (5.428) (3.827)
+CapIntensity 0.6785*** 0.6846*** 0.5041*** 0.5416***
+(15.927) (17.773) (18.114) (20.871)
+Age -0.0314 0.0015 -0.1239*** -0.0684**
+(-0.942) (0.049) (-3.635) (-2.186)
+Salary 0.4779*** 0.5313*** 0.7810*** 0.6872***
+(4.235) (5.526) (7.871) (7.888)
+R&D 2.2722** 0.9312 -1.0527 -1.4686
+(1.981) (1.006) (-0.952) (-1.507)
+Leverage -0.0006** -0.0002 -0.0003 0.0002
+(-2.233) (-0.725) (-0.727) (0.449)
+ROA 3.1963*** 0.1316 1.5847*** -0.1629
+(7.478) (0.586) (4.205) (-0.889)
+Industry Fixed Effect Yes Yes Yes Yes
+Year Fixed Effect Yes Yes Yes Yes
+Observations 4,138 4,138 6,944 6,944
+R-Squared 0.5028 0.6387 0.4816 0.5797
+
+--- 페이지 24 ---
+18 BOK Working Paper No. 2026-6
+1.3. Comparisons of ESG and E, S, G components
+Table 3 compares the effects of the overall ESG rating and its individual
+pillars—environment (E), social (S), and governance (G)—on labor
+productivity. Columns (1)–(8) sequentially include ESG_rating, E_rating, S_
+rating, and G_rating. All specifications control for firm characteristics and
+include industry and year fixed effects, allowing us to assess the association
+between each ESG component and productivity net of observable firm
+heterogeneity and common time- and industry-level shocks. In columns (1)
+and (5), where the overall ESG rating is used, we again find a consistently
+negative relationship between ESG and labor productivity. This mirrors the
+estimates based on ES in Table 2 and indicates that our main conclusion is
+unchanged when replacing the ES measure with the overall ESG rating.
+In columns (2) and (6), where only the environmental (E) rating is
+included, the negative association becomes more pronounced. Among the ESG
+pillars, the E component shows the most consistent inverse relationship with
+labor productivity. One potential interpretation is that environmental efforts—
+such as compliance with regulations, emissions abatement, and improvements
+in energy effciency—may entail higher costs in the short run, which can be
+reflected in lower measured productivity. In this sense, the negative ESG–
+productivity association appears to be driven primarily by the environmental
+pillar. As shown in columns (3) and (7), the social (S) rating is also negatively
+related to labor productivity, although the estimates are weaker in statistical
+significance than those for E. This may reflect the heterogeneous nature of
+social activities—covering areas such as employee welfare, working conditions,
+and diversity—whose productivity implications can vary across firms. By
+contrast, in columns (4) and (8), the governance (G) rating does not exhibit a
+clear relationship with labor productivity. Because governance largely captures
+more indirect and longer-term features such as risk management and internal
+controls, it may be less tightly linked to short-run productivity measures.
+Overall, the G pillar does not appear to be a primary driver of productivity
+variation in our setting.
+
+--- 페이지 25 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 19
+In sum, the estimates in Table 3 (columns (1)–(8)) indicate that the ESG
+pillars are related to labor productivity in different ways. The overall ESG rating,
+as well as the environmental (E) and social (S) components, are consistently
+negatively associated with productivity after controlling for firm characteristics
+and fixed effects, whereas the governance (G) component exhibits limited
+and less systematic relationships. These results suggest that, for productivity
+analysis, it is more informative to move beyond a single aggregate ESG measure
+and to consider its underlying components separately. They also provide
+supporting justification for our focus on the ES measure in the main analysis.
+Table 3. ESG components and labor productivity
+This table presents the regression estimates of labor productivity on
+ESG components. The dependent variables are labor productivity estimated
+by value-added. All regressions include industry and year fixed effects. The
+heteroscedasticity-consistent standard errors are clustered by firm level.
+Parenthetical values are the t-statistics. ***, **, and * denote significance at
+the 1%, 5%, and 10% levels, respectively.
+Dependent LP_VA LP_VA LP_VA LP_VA LP_Sales LP_Sales LP_Sales LP_Sales
+Variable (1) (2) (3) (4) (5) (6) (7) (8)
+-0.0444* -0.0524***
+ESG_rating
+(-1.866) (-2.700)
+-0.0731*** -0.0625***
+E_rating
+(-3.101) (-3.027)
+-0.0155 -0.0302*
+S_rating
+(-0.727) (-1.780)
+0.0038 -0.0138
+G_rating
+(0.176) (-0.824)
+Firm
+Yes Yes Yes Yes Yes Yes Yes Yes
+characteristics
+Industry
+Yes Yes Yes Yes Yes Yes Yes Yes
+Fixed Effects
+Year Fixed
+Yes Yes Yes Yes Yes Yes Yes Yes
+Effects
+Observations 4,138 4,138 4,138 4,138 4,138 4,138 4,138 4,138
+R-Squared 0.5021 0.5043 0.5014 0.5012 0.6379 0.6395 0.6369 0.6363
+
+--- 페이지 26 ---
+20 BOK Working Paper No. 2026-6
+2. Channel Evidence
+This section provides evidence on potential mechanisms through which the
+baseline negative ES–labor productivity relationship may arise. Specifically,
+Section 4.2.1 examines a firm-level cost mechanism based on firms’ cost
+structure, while Section 4.2.2 investigates an ES activity-level mechanism by
+decomposing ES into its underlying subcomponents.
+2.1. Firm-level cost channel: Total operating cost ratio
+This subsection examines whether a cost-burden mechanism may help
+explain the negative association between ES activities and labor productivity.
+To capture firms’ operating cost burden, we use the total operating cost ratio
+(TOCR), defined as (cost of goods sold plus selling, general and administrative
+expenses) divided by sales, i.e., (COGS + SG&A)/Sales. Because TOCR
+jointly reflects production costs (COGS) and operating/administrative costs
+(SG&A), it provides a useful summary measure for assessing whether ES
+activities are linked to firms’ cost structure in ways that may translate into
+lower short-run productivity.
+Panel A of Table 4 examines whether firms with stronger ES performance
+exhibit a higher operating cost burden. In column (1), ES_rating is positively
+and statistically significantly associated with TOCR, suggesting that firms
+with higher ES ratings may incur higher total operating costs relative to sales.
+A key consideration is that ROA is mechanically and accounting-wise closely
+related to TOCR, because profits are calculated after subtracting major cost
+components, including COGS and SG&A. Including such a performance
+measure in the TOCR equation can therefore constitute overcontrol by
+partialling out variation that is inherently tied to the cost structure through
+which ES activities may operate. Accordingly, we present the specification
+without ROA as the baseline. When ROA is additionally controlled for, the
+coefficient on ES_rating becomes smaller and loses statistical significance
+(column (2)), consistent with the notion that ROA absorbs a substantial
+portion of the variation in operating cost burden.
+
+--- 페이지 27 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 21
+Panel B of Table 4 examines how the ES–productivity relationship changes
+when TOCR is added to the labor productivity regressions. TOCR is strongly
+negatively associated with labor productivity, indicating that firms with a
+higher operating cost burden tend to exhibit lower productivity (column (2)).
+Moreover, once TOCR is included, the estimated coefficient on ES_rating
+remains negative but its statistical significance weakens (column (3)). This
+pattern suggests that part of the negative ES–productivity relationship may be
+linked to firms’ operating cost burden, providing indirect evidence consistent
+with the view that ES activities can entail higher costs in the short run.
+Table 4. ES, total operating cost ratio and Labor Productivity
+This table presents the regression estimates of the total operating cost
+ratio (TOCR) on ES_rating (Panel A) and labor productivity on ES_rating,
+controlling for TOCR (Panel B). The dependent variable in Panel A is TOCR,
+defined as (COGS + SG&A)/Sales, and the dependent variable in Panel B is
+labor productivity estimated by value-added. The definitions of each variable
+are presented in Appendix A.1. All regressions include industry and year
+fixed effects. The heteroscedasticity-consistent standard errors are clustered
+by firm level. Parenthetical values are the t-statistics. ***, **, and * denote
+significance at the 1%, 5%, and 10% levels, respectively.
+
+--- 페이지 28 ---
+22 BOK Working Paper No. 2026-6
+Panel A: ES and total operating cost ratio
+TOCR TOCR
+Dependent Variable
+(1) (2)
+ES_rating 0.0067** 0.0020
+(2.510) (0.974)
+Size -0.0091*** -0.0056**
+(-3.388) (-2.478)
+CapIntensity 0.0030 -0.0003
+(1.218) (-0.127)
+Age 0.0130*** 0.0101***
+(3.737) (3.494)
+Salary -0.0322*** -0.0070
+(-2.593) (-0.707)
+R&D 0.1150 -0.0221
+(0.828) (-0.183)
+Leverage 0.0001 0.0000
+(1.158) (-1.490)
+ROA -0.4476***
+(-8.403)
+Industry Fixed Effect Yes Yes
+Year Fixed Effect Yes Yes
+Observations 4138 4138
+R-Squared 0.5133 0.5272
+Panel B: ES and labor productivity controlling for total operating cost ratio
+LP_VA LP_VA LP_VA
+Dependent Variable
+(1) (2) (3)
+-0.0623** -0.0442
+ES_rating
+(-2.332) (-1.597)
+-2.7690*** -2.7555***
+TOCR
+(-7.243) (-7.241)
+Firm characteristics Yes Yes Yes
+Industry Fixed Effect Yes Yes Yes
+Year Fixed Effect Yes Yes Yes
+Observations 4138 4138 4138
+R-Squared 0.5028 0.5451 0.5459
+
+--- 페이지 29 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 23
+2.2. ES activity channel: Subcategory analysis
+Section 4.2.1 shows that the negative ES–labor productivity relationship
+may be closely linked to firms’ operating cost burden, as proxied by the total
+operating cost ratio (TOCR). However, TOCR is a broad cost measure that
+aggregates cost of goods sold and SG&A expenses. As such, evidence that ES
+is associated with higher overall costs does not, by itself, identify which types
+of ES activities are most directly connected to these cost increases and the
+accompanying productivity constraints. ES activities are not a single policy
+or investment item; rather, they comprise heterogeneous components—such
+as strategy formulation, internal governance and operational management
+systems, stakeholder engagement, and performance implementation. It is
+therefore plausible that the adverse ES–productivity association is not uniform
+across ES components, but instead is more tightly related to activities with
+higher coordination and managerial requirements, including operational
+management and stakeholder-facing efforts, which may bear more immediate
+resource and organizational burdens. Motivated by this view, we decompose
+the KCGS environmental (E) and social (S) measures into subcategories and
+reinterpret the ES–productivity relationship at the specific activity level.12)
+Because subcategory information is available only as continuous scores rather
+than discrete ratings, we use ES_score (instead of ES_rating) to ensure
+comparability across the subcategory measures.13)
+Turning to the environmental (E) subcategories in Panel A of Table 5,
+the overall E score continues to be associated with labor productivity in a
+predominantly negative direction, consistent with the earlier results. When
+we decompose E into subcomponents, the negative association appears to
+12) Descriptions of the environmental (E) and social (S) subcategories are provided in
+Appendix A.3.
+13) The subcategory structure of the KCGS environmental (E) and social (S) measures has
+changed over time. For the E pillar, the framework shifted from five subcategories in 2011–
+2018 to three subcategories in 2019–2021, and was then reorganized into four subcategories
+from 2022 onward. The S pillar also underwent a revision: it consisted of four subcategories
+through 2021 but expanded to nine subcategories beginning in 2022. To maintain
+consistency in the number and definition of subcategories across our sample period, we
+conduct the subcategory analysis using the original framework—five E subcategories and
+four S subcategories.
+
+--- 페이지 30 ---
+24 BOK Working Paper No. 2026-6
+be concentrated in subcategories with a more operational and managerial
+orientation. In particular, E. Governance Structure, E. Management, and
+E. Stakeholder Engagement display consistently negative relationships with
+labor productivity. This pattern is consistent with the idea that practical,
+implementation-oriented activities—such as establishing environmental
+governance systems, managing environmentally friendly production and supply
+chains, and engaging in stakeholder communication—may impose additional
+managerial and operational burdens in the short run that are linked to the
+negative labor productivity. By contrast, more structural and longer-horizon
+dimensions such as E. Strategy and E. Performance exhibit more limited and
+less systematic associations with labor productivity. This suggests that some
+environmental efforts may contribute to longer-term risk management or
+efficiency improvements, but may not translate immediately into short-run
+labor productivity measures.
+Panel B, which reports results for the social (S) subcategories, also
+highlights meaningful heterogeneity within ES activities. While the overall S
+score retains a consistently negative sign, the subcategory-level estimates reveal
+divergent patterns. The coefficients on S. Employees, S. Supply Chain and S.
+Market Relations, and S. Customer Relations are not statistically significant,
+indicating no clear association with labor productivity for these dimensions.
+In contrast, S. Community Engagement stands out with a positive and
+statistically significant relationship. This finding is consistent with the
+possibility that efforts to strengthen ties with local communities and undertake
+social contribution initiatives may enhance firm reputation, customer trust,
+and internal cohesion, which can in turn be associated with higher labor
+productivity.
+Overall, the subcategory decomposition suggests that the negative ES–
+labor productivity relationship is unlikely to reflect a uniform adverse effect
+of ES as a whole; rather, it may arise through specific types of activities. In
+particular, the consistently negative associations for operational, managerial,
+and stakeholder-facing environmental activities—such as governance structure,
+management, and stakeholder engagement—link naturally to the cost-burden
+
+--- 페이지 31 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 25
+evidence in Section 4.2.1, in that these activities may raise coordination and
+managerial costs in the short run and thereby make the labor productivity
+worse. By contrast, the positive association for social-community engagement
+indicates that some ES activities may operate through compensating channels,
+such as strengthening trust, reputation, and relational capital, potentially
+buffering or offsetting short-run productivity deterioration. Taken together,
+the effects of ES activities on labor productivity appear heterogeneous across
+subcomponents, with cost-intensive operational efforts and relationship-
+building activities potentially operating simultaneously.
+Table 5. ES Subcategories and labor productivity
+This table presents the regression estimates of labor productivity on ES
+measures, controlling for detailed subcategories. The dependent variables are
+labor productivity estimated by value-added. All regressions include industry
+and year fixed effects. The heteroscedasticity-consistent standard errors are
+clustered by firm level. Parenthetical values are the t-statistics. ***, **, and *
+denote significance at the 1%, 5%, and 10% levels, respectively.
+
+--- 페이지 32 ---
+26 BOK Working Paper No. 2026-6
+Panel A: Environmental subcategories
+Dependent LP_VA LP_VA LP_VA LP_VA LP_VA LP_VA
+Variable (1) (2) (3) (4) (5) (6)
+ES_score -0.0067*** -0.0081** -0.0054 0.0052 -0.0076*** -0.0016
+(-3.176) (-2.195) (-1.404) (1.437) (-3.195) (-0.772)
+E. Strategy -0.0010
+(-0.865)
+E. Governance
+-0.0030*
+Structure
+(-1.955)
+E. Management -0.0090***
+(-3.843)
+E. Performance 0.0017
+(0.866)
+E. Stakeholder
+-0.0031***
+Engagement
+(-3.033)
+Firm
+Yes Yes Yes Yes Yes Yes
+characteristics
+Industry Fixed
+Yes Yes Yes Yes Yes Yes
+Effect
+Year Fixed Effect Yes Yes Yes Yes Yes Yes
+Observations 3,645 2,197 2,197 3,645 3,645 3,645
+R-Squared 0.4977 0.4737 0.4751 0.5038 0.4978 0.5016
+
+--- 페이지 33 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 27
+Panel B: Social subcategories
+Dependent LP_VA LP_VA LP_VA LP_VA LP_VA
+Variable (1) (2) (3) (4) (5)
+ES_score -0.0067*** -0.0088*** -0.0081*** -0.0079*** -0.0117***
+(-3.176) (-3.178) (-3.243) (-3.389) (-4.740)
+S. Employees -0.0059
+(-1.305)
+S. Supply Chain and
+0.0015
+Market Relations
+(0.900)
+S. Customer
+0.0013
+Relations
+(1.450)
+S. Community
+0.0057***
+Engagement
+(3.398)
+Firm characteristics Yes Yes Yes Yes Yes
+Industry Fixed
+Yes Yes Yes Yes Yes
+Effect
+Year Fixed Effect Yes Yes Yes Yes Yes
+Observations 3,645 3,645 3,645 3,645 3,645
+R-Squared 0.4977 0.4981 0.4980 0.4981 0.5012
+3. Heterogeneity Analyses
+The impacts of ES activities on labor productivity are unlikely to be
+uniform across firms. Accordingly, this section examines whether the ES–
+productivity relationship varies systematically with firm and industry
+characteristics by conducting heterogeneity analyses. Specifically, Section 4.3.1
+introduces interaction terms between ES and key firm characteristics to assess
+differential effects across firms, and Section 4.3.2 estimates industry-specific
+regressions to evaluate cross-industry differences in the ES–labor productivity
+relationship.
+
+--- 페이지 34 ---
+28 BOK Working Paper No. 2026-6
+3.1. Interaction Effects between ES and Firm Characteristics
+Firms differ in capital structure, innovative capacity, and financial
+conditions, and such differences can shape how ES activities are implemented
+and incorporated into managerial decision-making. As a result, the ES–labor
+productivity relationship may exhibit heterogeneity, in the sense that the
+association can be amplified or attenuated depending on firm characteristics.
+To examine this possibility, we estimate regression models that include
+interaction terms between the ES rating and key firm attributes.
+Table 6 reports the results from these interaction specifications. The
+interaction terms are constructed using capital intensity (CapIntensity), R&D
+ratio (R&D), leverage (Leverage), and profitability (ROA). All models include
+the full set of firm-level controls as well as industry and year fixed effects. Across
+sp ecifications, the coeffcient on ES_rating remains negative, indicating that
+the baseline pattern—higher ES is associated with lower labor productivity—
+persists even after allowing the relationship to vary with firm characteristics. In
+other words, our main finding is largely unchanged in the augmented models,
+providing additional evidence of robustness.
+In column (2), which interacts ES with capital intensity, the baseline
+ES effect becomes substantially less statistically significant, suggesting that
+the ES–productivity relationship is not fully stable across different levels of
+capital intensity. Although the interaction term itself does not exhibit a clear
+or robust pattern, the attenuation of the main ES coeffcient indicates that
+differences in firms’ capital structure may partially dilute the measured ES–
+productivity association. In column (3), where we allow the ES effect to vary
+with R&D ratio, the statistical significance of the baseline ES coefficient
+similarly weakens, and the interaction term is not statistically significant.
+Taken together, these results imply that the ES–productivity relationship does
+not vary in a systematic way with firms’ innovation level, and that R&D does
+not appear to be a consistent moderator that either amplifies or mitigates the
+effect.
+
+--- 페이지 35 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 29
+By contrast, column (4), which introduces the interaction between ES
+and leverage, yields an interaction term that is weakly positive. This suggests
+that the negative association between ES activities and productivity may be
+attenuated among more highly levered firms. One possible interpretation is
+that, for firms facing tighter financial constraints, ESG-related efforts can play
+a complementary role in strengthening external stakeholder confidence and
+easing financing frictions, thereby partially offsetting the adverse productivity
+effect. In column (5), where ES is interacted with profitability (ROA), the
+interaction term is consistently positive. This implies that the negative ES–
+productivity association is substantially weaker for more profitable firms.
+Firms with stronger profitability may be better positioned to absorb the
+resource demands associated with environmental and social initiatives, so that
+any short-run increases in operating burdens are less likely to be passed on to
+labor productivity. Overall, these results indicate that financial conditions can
+meaningfully shape the extent to which ES activities are associated with labor
+productivity.
+Overall, the interaction analysis indicates that our main finding—
+a negative association between ES ratings and labor productivity—largely
+persists in augmented specifications that allow the relationship to vary with
+firm characteristics. At the same time, leverage and profitability emerge
+as meaningful moderators: higher leverage and stronger profitability are
+associated with a weaker negative ES–productivity relationship. These results
+suggest that the economic implications of ESG-related activities should be
+interpreted in light of firms’ financial structure and managerial capacity, and
+that the ES–productivity association can differ systematically across firms.
+
+--- 페이지 36 ---
+30 BOK Working Paper No. 2026-6
+Table 6. Interaction between ES and firm characteristics and
+labor productivity
+This table presents the regression estimates of labor productivity on ES
+measures, controlling for interaction terms. The dependent variables are
+labor productivity estimated by value-added. All regressions include industry
+and year fixed effects. The heteroscedasticity-consistent standard errors are
+clustered by firm level. Parenthetical values are the t-statistics. ***, **, and *
+denote significance at the 1%, 5%, and 10% levels, respectively.
+LP_VA LP_VA LP_VA LP_VA LP_VA
+Dependent Variable
+(1) (2) (3) (4) (5)
+ES_rating -0.0623** -0.1960 -0.0509* -0.0648** -0.0912***
+(-2.332) (-0.568) (-1.758) (-2.406) (-3.096)
+ES_rating *
+0.0103
+CapIntensity
+(0.383)
+ES_rating * R&D -0.7948
+(-1.197)
+ES_rating * Leverage 0.0021*
+(1.704)
+ES_rating * ROA 0.8454***
+(2.868)
+Firm characteristics Yes Yes Yes Yes Yes
+Industry Fixed Effect Yes Yes Yes Yes Yes
+Year Fixed Effect Yes Yes Yes Yes Yes
+Observations 4,138 4,138 4,138 4,138 4,138
+R-Squared 0.5028 0.5030 0.5031 0.5030 0.5054
+
+--- 페이지 37 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 31
+3.2. Industry-Level Analyses
+The preceding analysis establishes the ES–labor productivity relationship
+in the full sample, but the average association may mask substantial
+heterogeneity across industries. Because industries differ markedly in
+production technologies, energy use, workforce composition, and regulatory
+environments, the costs and operational constraints associated with ES
+activities can vary by industry. To assess such cross-industry heterogeneity, we
+conduct industry-level analyses of the ES–productivity relationship. Detailed
+results for all manufacturing industries at the KSIC 2-digit level are reported
+in Appendix A.4. In the main text, we summarize the industries exhibiting
+statistically meaningful patterns and report the corresponding estimates in
+Table 7.
+We first consider industries of particular national and policy relevance—
+namely, major export-oriented sectors14) (column (1)) and high–greenhouse-
+gas-emitting industries15) (column (2)). For these groups, ES ratings are, on
+average, negatively associated with labor productivity, but the estimates are
+not statistically significant. This may indicate that firms in these industries
+have already adapted to ES-related practices to some extent, or that the
+inherently high capital and technology intensity of these sectors makes the
+incremental operating burdens associated with ES activities less salient in
+measured productivity. Importantly, we do not find statistically significant
+evidence that ES activities reduce labor productivity in the major export-
+oriented industries. From a policy perspective, this is a relatively encouraging
+result, suggesting that strengthening ES practices need not necessarily
+undermine external competitiveness in these key sectors.
+In contrast, a more disaggregated view across manufacturing industries
+reveals substantial cross-industry heterogeneity in the ES–productivity
+14) We define major export-oriented industries as the seven KSIC 2-digit industries that
+correspond to Korea’s 15 leading export items identified by the Ministry of Trade, Industry
+and Energy (2024): KSIC codes 20, 23, 24, 26, 28, 30, and 31.
+15) High–greenhouse-gas-emitting industries are defined as the six KSIC 2-digit industries
+with the highest average emissions in Korea over 2018–2020, based on the OECD country–
+industry emissions dataset: KSIC codes 17, 18, 19, 20, 23, and 24.
+
+--- 페이지 38 ---
+32 BOK Working Paper No. 2026-6
+relationship. In paper and pulp (KSIC 17), basic metals (KSIC 24),
+fabricated metal products (KSIC 25), electronic components and computers/
+communications equipment (KSIC 26), and furniture manufacturing (KSIC
+32), ES ratings exhibit a pronounced negative association with labor
+productivity. These findings suggest that environmental and social initiatives
+may translate into more immediate operational burdens in these industries—
+through production-process adjustments, higher operating costs, or
+compliance-related expenditures. The adverse association may be particularly
+notable in sectors where environmental regulation or workplace safety and
+labor standards entail substantial implementation and monitoring costs.
+Overall, the industry-level evidence indicates that the average negative
+ES–productivity association documented in the full sample does not apply
+uniformly across manufacturing industries. Instead, the relationship varies
+meaningfully with industry-specific technological conditions, capital intensity,
+and regulatory environments. This underscores the importance of interpreting
+the economic implications of ESG activities in an industry context and
+suggests that effective ESG-related policy design and corporate strategy
+should take such cross-industry differences into account.
+
+--- 페이지 39 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 33
+Table 7. Industry-level analysis
+This table presents the regression estimates of labor productivity on
+ES measures by industry. The dependent variables are labor productivity
+estimated by value-added. Column 1 reports the result for the core export
+industries (KSIC industry codes 20, 23, 24, 26, 28, 30, and 31). Column 2
+reports the result for the high-emission industries (KSIC industry codes 17,
+18, 19, 20, 23, and 24). Column 3 reports the results for the Manufacture of
+Pulp, Paper, and Paper Products (KSIC industry code 17). Column 4 reports
+the result for the Manufacture of Basic Metals (KSIC industry code 24).
+Column 5 reports the result for the Manufacture of Fabricated Metal Products
+Except Machinery and Furniture (KSIC industry code 25). Column 6 reports
+the result for the Manufacture of Electronic Components, Computers,
+Imaging, Audio, and Communication Equipment (KSIC industry code 26).
+Column 7 reports the result for the Manufacture of Furniture (KSIC industry
+code 32). The results for all industries are provided in the Appendix A.4.
+The heteroscedasticity-consistent standard errors are clustered by firm level.
+Parenthetical values are the t-statistics. ***, **, and * denote significance at
+the 1%, 5%, and 10% levels, respectively.
+Dependent LP_VA LP_VA LP_VA LP_VA LP_VA LP_VA LP_VA
+Variable (1) (2) (3) (4) (5) (6) (7)
+ES_rating -0.0557 -0.0540 -0.2582** -0.2085** -0.2990* -0.1485* -0.3632*
+(-1.326) (-0.996) (-2.850) (-2.244) (-2.078) (-1.992) (-2.316)
+Firm
+Yes Yes Yes Yes Yes Yes Yes
+characteristics
+Industry Fixed
+Yes Yes - - - - -
+Effect
+Year Fixed
+Yes Yes Yes Yes Yes Yes Yes
+Effect
+Observations 2,142 1,372 131 404 89 372 44
+R-Squared 0.4797 0.5693 0.6456 0.6042 0.6168 0.3450 0.8184
+
+--- 페이지 40 ---
+34 BOK Working Paper No. 2026-6
+V. Conclusion
+This study empirically examines the relationship between firms’
+environmental (E) and social (S) performance—measured using KCGS
+indicators—and labor productivity. We construct a panel of listed firms
+over 2015–2023 and estimate panel regression models that include standard
+firm-level controls as well as industry and year fixed effects. Our empirical
+analyses encompass baseline specifications, mechanism-oriented evidence, and
+heterogeneity tests across firms and industries.
+Empirically, we find that ES ratings and ES scores are significantly
+negatively associated with labor productivity in the full sample—an
+association that contrasts with simple, unconditional comparisons that do not
+account for firm size. The results indicate that once key firm characteristics
+such as size, wage levels, and capital intensity are controlled for, ES
+activities may be linked to lower, rather than higher, short-run productivity,
+potentially reflecting operating burdens or implementation frictions. The
+negative association is also observed when using the overall ESG rating and
+the individual E, S, and G ratings, supporting the robustness of the baseline
+finding. Mechanism-oriented analyses provide complementary evidence. Firms
+with higher ES performance exhibit a higher total operating cost ratio (TOCR),
+and the negative ES coeffcient becomes statistically insignificant once TOCR
+is included, suggesting that the ES–productivity relationship may be closely
+related to firms’ operating cost burden. Subcategory analyses further reveal
+meaningful heterogeneity within E and S activities. On the environmental
+side, subcomponents related to operational management and stakeholder
+engagement are consistently negatively associated with productivity, whereas
+on the social side, community engagement shows a positive association.
+Taken together, these findings are consistent with the coexistence of a cost-
+burden channel and a relational-capital channel within ES activities. We also
+document heterogeneity across firms and industries. In firm-level interaction
+specifications, the negative ES–productivity association is partially attenuated
+under certain financial conditions—most notably among firms with higher
+
+--- 페이지 41 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 35
+leverage or stronger profitability—implying that the ES effect can vary
+with firms’ financial capacity. Industry-level analyses likewise show that the
+negative association is pronounced in some manufacturing industries, while
+it is not statistically significant in major export-oriented sectors or high–
+greenhouse-gas-emitting industries.
+These empirical findings suggest that the impacts of ES activities on labor
+productivity are not straightforward and yield several policy and managerial
+implications. First, ES initiatives should be interpreted through a long-
+horizon perspective of value creation and risk management rather than as
+instruments for immediate productivity improvement. Accordingly, relying
+solely on short-run productivity measures provides an incomplete assessment
+of the economic relevance of ES activities. Second, the mechanism-oriented
+evidence indicates that ES engagement can entail short-run operating burdens
+and that the effects on labor productivity may differ across activity types.
+This underscores the need to move beyond an exclusive focus on aggregate
+ES scores and to manage ES efforts with explicit attention to cost structures
+and the composition of activities. Third, because the ES–productivity
+relationship varies with firm characteristics and industry-specific cost and
+regulatory environments, uniform ES policies or regulatory approaches
+may be undesirable. Industry-tailored policies are particularly relevant
+where production processes and environmental regulatory frameworks differ
+substantially across sectors. Notably, we do not find statistically significant
+evidence of adverse effects in major export-oriented manufacturing industries,
+suggesting that strengthening ES practices need not necessarily undermine
+external competitiveness—an important consideration for future sustainability
+policy design.
+Our analysis focuses on short-run labor productivity, whereas ES activities
+may exert their influence through longer-run outcomes such as innovation,
+resilience, and financial stability. In addition, our labor productivity measures
+are based on value added (or sales) per employee and therefore may not fully
+capture variation in hours worked or changes in labor quality. Future research
+could therefore incorporate longer horizons and a broader set of performance
+
+--- 페이지 42 ---
+36 BOK Working Paper No. 2026-6
+measures, including productivity metrics that better reflect labor input
+intensity and quality. Moreover, macro-level conditions—such as industry
+technology regimes and regulatory institutions—may interact with ES
+engagement. A multi-layered framework that jointly considers firm behavior
+and the industry- and country-level institutional environment would be a
+fruitful direction for further work.
+
+--- 페이지 43 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 37
+References
+Aguilera-Caracuel, J. and N. Ortiz-de-Mandijana (2013), “Green Innovation
+and Financial Performance: An Institutional Approach,” Organization &
+Environment, 26(4), 365-385.
+Albertini, E. (2013), “Does Environmental Management Improve Financial
+Performance? A Meta-Analytical Review,” Organization & Environment,
+26(4), 431-457.
+Ambec, S. and P. Lanoie (2008), “Does It Pay to Be Green? A Systematic
+Overview,” Academy of Management Perspectives, 22(4), 45-62.
+Atan, R., M. Alan, J. Said and M. Zamri (2017), “The Impacts of
+Environmental, Social, and Governance Factors on Firm performance:
+Panel Study of Malaysian Companies,” Management of Environmental
+Quality, 29(2), 182-194.
+Barrymore, N. and R. Sampson (2009), “ESG Performance and Labor
+Productivity: Exploring Whether and When ESG Affects Firm
+Performance,” Academy of Management Proceedings, Vol. 1, 13997.
+Bassen, A., K. Meyer and J. Schlange (2006), “The Influence of Corporate
+Responsibility on the Cost of Capital,” SSRN Electronic Journal, 984406.
+Becker, R. (2011), “Local Environmental Regulation and Plant-Level
+Productivity,” Ecological Economics, 70, 2516-2522.
+Brekke, K. and K. Nyborg (2008), “Attracting Responsible Employees: Green
+Production as Labor Market Screening,” Resource and Energy Economics,
+30(4), 509-526.
+Choi, D.B., Jeong, S. (2025), “CSR Scores versus Actual Impacts: Banks’
+Main Street Lending During the Great Recession,” Journal of Banking &
+Finance, 172, 107380.
+
+--- 페이지 44 ---
+38 BOK Working Paper No. 2026-6
+Delmas, M. and I. Montiel (2009), “Greening the Supply Chain: When Is
+Customer Pressure Effective?” Journal of Economics and Management
+Strategy, 18(1), 171-201.
+Delmas, M. and S. Pekovic (2013), “Environmental Standards and Labor
+Productivity: Understanding the Mechanisms that Sustain Sustainability,”
+Journal of Organizational Behavior, 34, 230-252.
+Deng, X., Kang, J.-k., Low, B.S. (2013), “Corporate Social Responsibility
+and Stakeholder Value Maximization: Evidence from Mergers,” Journal of
+Financial Economics, 110 (1), 87–109.
+Deng, X, W. Li and X. Ren (2023), “More Sustainable, More Productive:
+Evidence from ESG Ratings and Total Factor Productivity among Listed
+Chinese Firms,” Finance Research Letters, 51.
+Dyck, A., Lins, K. V., Roth, L., & Wagner, H. F. (2019), “Do Institutional
+Investors Drive Corporate Social Responsibility? International Evidence,”
+Journal of Financial Economics, 131(3), 693-714.
+Fallahi, F., S. Sakineh and N. Mehin Aslaninia (2010), “Determinants of Labor
+Productivity in Iran’s Manufacturing Firms: With Emphasis on Labor
+Education and Training,” MPRA Paper, 27447.
+Goss, A. and G. Roberts (2011), “The Impact of Corporate Social
+Responsibility on the Cost of Bank Loans,” Journal of Banking & Finance,
+35, 1794-1810.
+Ichniowski, C. (1990), “Human Resource Management Systems and the
+Performance of U.S. Manufacturing Businesses,” NBER Working Paper.
+No. 3449.
+Jackson, S., A. Schuler and K. Jiang (2014), “An Aspirational Framework for
+Strategic Human Resource Management,” The Academy of Management
+Annals, 8(1), 1-56.
+
+--- 페이지 45 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 39
+Jaffe, A., A. Peterson, P. Portney and R. Stavins (1995), “Environmental
+Regulation and the Competitiveness of U.S. Manufacturing: What Does
+the Evidence Tell Us?” Journal of Economic Literature, 33(1), 132-163.
+Jenson, J., R. McGuckin and K. Stiroh (2001), “The Impact of Vintage and
+Survival on Productivity: Evidence from Cohorts of U.S. Manufacturing
+Plants,” The Review of Economics and Statistics, 83(2), 323-332.
+Jones, C. and E. Volpe (2011), “Organizational Identification: Extending Our
+Understanding of Social Identities through Social Networks,” Journal of
+Organizational Behavior, 32(3), 413-434.
+Kim, J. and J. Lee (2025), “ESG Scores and Firm Productivity: Evidence
+from South Korea,” Environmental and Resource Economics Review, 34(1),
+1-26.
+Koch, M. and R. McGrath (1996), “Improving Labor Productivity: Human
+Resource Management Policies Do Matter,” Strategic Management
+Journal, 17(5), 335-354.
+Kurt, S. and U. Kurt (2015), “Innovation and Labour Productivity in BRICS
+Countries: Panel Causality and Co-integration,” Procedia – Social and
+Behavioral Sciences, 195, 1295-1302.
+Lan Y., S. Zhang, P. Zhou, H. Li and X. Dong (2024), “Green Credit Policy
+and Firm’s Labor Productivity: Evidence from Chinese Heavily-polluting
+Enterprises,” Frontiers in Environmental Science, 12.
+Laureti, T. and A. Viviani (2011), “Competitiveness and Productivity: A Case
+Study of Italian Firms,” Applied Economics, 43(20), 2615-2625.
+Lannelongue, G., J. Gonzalez-Benito and I. Quiroz (2017), “Environmental
+Management and Labor Productivity: The Moderating Role of Capital
+Intensity,” Journal of Environmental Management, 190, 158-169.
+
+--- 페이지 46 ---
+40 BOK Working Paper No. 2026-6
+Lins, K.V., Servaes, H., Tamayo, A. (2017), “Social Capital, Trust, and Firm
+Performance: The Value of Corporate Social Responsibility During the
+Financial Crisis,” Journal of Finance 72, 1785-1824.
+Ma, Y., Q. Zhang and H. Yin (2020), “Environmental Management and Labor
+Productivity: The Moderating Role of Quality Management,” Journal of
+Environmental Management, 255.
+OECD (2025), “OECD Compendium of Productivity Indicators 2025,” OECD
+Publishing, Paris, https://doi.org/10.1787/b024d9e1-en.
+Porter, M. and C. van der Linde (1995), “Green and Competitive: Ending the
+Stalemate,” Harvard Business Review, 73(5), 120-134.
+Salis, S. and A. Williams (2010), “Knowledge Sharing through Face-to-
+Face Communication and Labour Productivity: Evidence from British
+Workplaces,” British Journal of Industrial Relations, 48(2), 436-459.
+Schumpeter, J. (1934), The Theory of Economic Development: An Enquiry
+into Profits, Capital, Credit, Interest and the Business Cycle, Transaction
+Publishers, ISBN: 0878556982.
+Wagner, M. (2011), “Corporate Performance Implications of Extended
+Stakeholder Management: New Insights on Mediation and Moderation
+Effects,” Ecological Economics, 70(5), 942-950.
+Zwick, T. (2004), “Employee Participation and Productivity,” Labour
+Economics, 11(6), 715-740.
+
+--- 페이지 47 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 41
+Appendix
+Appendix A.1. Definitions of variables
+Variable Description
+Numeric values converted from letter-graded ratings of a firm's
+E_rating
+environmental performance by KCGS (D = 1 to A+ = 6)
+Numeric values converted from letter-graded ratings of a firm's social
+S_rating
+performance by KCGS (D = 1 to A+ = 6)
+Numeric values converted from letter-graded ratings of a firm's governance
+G_rating
+performance by KCGS (D = 1 to A+ = 6)
+Numeric values converted from letter-graded ratings of a firm's ESG
+ESG_rating
+performance by KCGS (D = 1 to A+ = 6)
+ES_rating The arithmetic average between E_rating and S_rating
+The average of the environmental score (out of 100) and the social score (out
+ES_score
+of 100) provided by KCGS, which are non-public data
+LP_VA Natural logarithm of value-added per employee
+LP_Sales Natural logarithm of sales per employee
+Size Natural logarithm of total assets
+CapIntensity Natural logarithm of tangible assets per employee
+Age Natural logarithm of a firm’s age
+Salary Natural logarithm of salaries per employee
+R&D Ratio of R&D expenses to total assets
+Leverage Total liabilities divided by total equity
+ROA Return on Assets, measured as net income divided by total assets
+Total Operating Cost Ratio.
+TOCR (Cost of goods sold(COGS) + Selling, General &Administrative(SG&A))/
+Sales
+
+--- 페이지 48 ---
+42 BOK Working Paper No. 2026-6
+Appendix A.2. ES scores and labor productivity
+This table presents the regression estimates of labor productivity on ES
+measures. The dependent variables are labor productivity estimated by value-
+added (column 1 and 3) or sales (column 2 and 4). The definitions of each
+variable are presented in the Appendix A.1. All regressions include industry
+and year fixed effects. The heteroscedasticity-consistent standard errors are
+clustered by firm level. Parenthetical values are the t-statistics. ***, **, and *
+denote significance at the 1%, 5%, and 10% levels, respectively.
+LP_VA LP_Sales LP_VA LP_Sales
+Dependent Variable
+(1) (2) (3) (4)
+ES_score -0.0051*** -0.0052*** -0.0093*** -0.0073***
+(-2.777) (-3.411) (-6.131) (-5.606)
+Size 0.0796*** 0.0499** 0.1468*** 0.0936***
+(2.826) (2.072) (5.996) (4.361)
+CapIntensity 0.6737*** 0.6801*** 0.5004*** 0.5386***
+(15.858) (17.789) (18.111) (20.886)
+Age -0.0322 0.0009 -0.1232*** -0.0678**
+(-0.968) (0.030) (-3.633) (-2.176)
+Salary 0.4956*** 0.5476*** 0.7914*** 0.6955***
+(4.375) (5.701) (8.025) (8.034)
+R&D 2.3020** 0.9592 -0.9582 -1.3929
+(2.034) (1.048) (-0.882) (-1.453)
+Leverage -0.0006** -0.0002 -0.0003 0.0001
+(-2.315) (-0.720) (-0.821) (0.388)
+ROA 3.1651*** 0.1021 1.5660*** -0.1779
+(7.439) (0.458) (4.190) (-0.977)
+Industry Fixed Effect Yes Yes Yes Yes
+Year Fixed Effect Yes Yes Yes Yes
+Observations 4,138 4,138 6,944 6,944
+R-Squared 0.5040 0.6403 0.4843 0.5818
+
+--- 페이지 49 ---
+ES Activities and Labor Productivity: Evidence from Korean Manufacturing Firms 43
+Appendix A.3. Description of ES subcategories
+Variable Description
+Activities related to setting the overall direction of environmental
+management and establishing and operating environmental strategies/
+E. Strategy
+policies, as well as defining environmental goals and implementation
+plans.
+Activities related to building an environmentally oriented organizational
+E. Governance
+structure for environmental management and clarifying environmental
+Structure
+roles and responsibilities (organizational arrangements and systems).
+Activities related to implementing environmental management in day-to-
+day operations, including the establishment and execution of operational/
+E. Management management systems such as environmentally friendly production,
+climate-change response, environmentally responsible supply-chain
+management, and environmental risk management.
+Activities related to the environmental performance evaluation system,
+including selecting performance indicators, measuring/analyzing/
+E.Performance
+evaluating performance, and reporting and reviewing the results to
+support continuous improvement.
+Activities related to promoting stakeholder participation and interaction
+E. Stakeholder in environmental management, establishing communication channels, and
+Engagement collecting stakeholder feedback on disclosed environmental information
+and reflecting it in subsequent actions.
+Activities related to protecting and respecting internationally recognized
+labor rights; ensuring quality of life through fair compensation, stable
+S. Employees
+employment, and a healthy working environment; and providing
+opportunities for education, training, and capability development.
+Activities related to responsible transactions and management in supply-
+S. Supply Chain chain and market relationships, including fair treatment of suppliers,
+and Market incorporating social responsibility into purchasing/procurement policies,
+Relations and considering CSR-related issues such as human rights and labor
+practices among suppliers.
+Activities related to fair dealings with customers, ensuring product/
+S. Customer service safety and health, collecting/using/managing personal data in a
+Relations lawful and fair manner, and establishing communication mechanisms to
+gather and incorporate customer feedback into products/services.
+Activities related to contributing to local residents’ quality of life (e.g.,
+support for education, culture, and health), promoting local economic
+S. Community
+development through employment, purchasing, technical support, and
+Engagement
+infrastructure investment, and maintaining constructive relationships
+through active communication with local communities.
+Source: KCGS (2010)
+
+--- 페이지 50 ---
+44 BOK Working Paper No. 2026-6
+Appendix A.4. Industry-level regression results
+This table presents the regression estimates of labor productivity on
+ES measures by industry. The dependent variables are labor productivity
+estimated by value-added. All regressions include firm, industry and year
+fixed effects. The heteroscedasticity-consistent standard errors are clustered
+by firm level. Parenthetical values are the t-statistics. ***, **, and * denote
+significance at the 1%, 5%, and 10% levels, respectively.
+Ind.
+Industry Description Coefficient t-value Observations
+code
+Core export industries (20, 23, 24, 26, 28, 30, 31) -0.0557 (-1.326) 2142
+High-emission industries (17, 18, 19, 20, 23, 24) -0.0540 (-0.996) 1372
+Manufacture of Food Products 10 -0.0054 (-0.089) 282
+Manufacture of Beverages 11 0.0583 (0.535) 44
+Manufacture of Tobacco Products 12 - - 9
+Manufacture of Textiles (Except Apparel) 13 0.1583 (0.583) 41
+Manufacture of Wearing Apparel, Accessories,
+14 -0.0888 (-0.931) 136
+and Fur Products
+Manufacture of Leather, Bags, and Footwear 15 0.4232 (1.216) 37
+Manufacture of Wood and Wood Products
+16 -0.2123 (-1.185) 31
+(Except Furniture)
+Manufacture of Pulp, Paper, and Paper Products 17 -0.2582** (-2.850) 131
+Printing and Reproduction of Recorded Media 18 - - 0
+Manufacture of Coke, Briquettes, and Refined
+19 -0.0377 (-0.277) 43
+Petroleum Products
+Manufacture of Chemicals and Chemical Products
+20 0.0063 (0.094) 604
+(Except Pharmaceuticals)
+Manufacture of Medical Substances and
+21 -0.0681 (-1.184) 496
+Pharmaceuticals
+Manufacture of Rubber and Plastics Products 22 0.1451 (1.253) 215
+Manufacture of Non-metallic Mineral Products 23 -0.0977 (-1.324) 190
+Manufacture of Basic Metals 24 -0.2085** (-2.244) 404
+Manufacture of Fabricated Metal Products
+25 -0.2990* (-2.078) 89
+(Except Machinery and Furniture)
+Manufacture of Electronic Components,
+Computers, Imaging, Audio, and Communication 26 -0.1485* (-1.992) 372
+Equipment
+Manufacture of Medical, Precision, Optical
+27 0.0565 (0.768) 74
+Instruments and Watches
+Manufacture of Electrical Equipment 28 -0.0879 (-0.858) 157
+Manufacture of Other Machinery and Equipment 29 -0.0980 (-1.109) 306
+Manufacture of Motor Vehicles and Trailers 30 -0.0043 (-0.042) 369
+Manufacture of Other Transport Equipment 31 0.0146 (0.093) 46
+Manufacture of Furniture 32 -0.3632* (-2.316) 44
+Manufacture of Other Products 33 - - 18
+Repair of Industrial Machinery and Equipment 34 - - 0
+
+--- 페이지 51 ---
+<Abstract in Korean>
+ES 활동과 노동생산성: 한국 제조업 사례
+정성준*, 유복근**
+본 연구는 KCGS(Korea Corporate Governance Service)가 제공하는 환경
+(E) 및 사회(S) 지표를 활용하여 기업의 ES 활동이 노동생산성에 미치는 영향을 실
+증적으로 분석한다. 2015~2023년 상장기업 패널자료를 이용한 분석 결과, ES 등
+급과 ES 점수 모두 노동생산성과 유의한 음(-)의 관계를 보였으며, 이러한 결과는
+ESG 종합등급이나 E·S 개별 등급을 사용한 경우에도 강건하게 유지되었다. 나아
+가 본 연구는 비용 부담 경로와 정합적인 채널 증거를 제시한다. ES 수준이 높은 기
+업일수록 총영업비용률(TOCR)이 높게 나타나, ES-생산성 관계가 운영비용 압박
+과 연관되어 있음을 시사한다. 하위지표 분석에서는 ES 내부의 이질적 경로가 확인
+된다. 환경(E) 부문에서는 운영·관리 및 커뮤니케이션 중심 활동이 노동생산성과
+음(-)의 관계를 보여, 조정 및 관리 비용 증가와 부합하는 결과를 나타낸다. 반면 사
+회(S) 부문의 지역사회 참여는 노동생산성과 양(+)의 관계를 보이며, 신뢰, 평판,
+관계자본을 통한 보완적 경로가 존재함을 시사한다. 마지막으로 기업 수준 및 산업
+수준 분석은 ES-생산성 관계가 기업과 산업 간에 상당한 이질성을 보임을 보여준
+다. 종합하면, 본 연구는 비용 기반 채널 증거, 하위지표 분해, 이질성 분석을 결합
+함으로써 지속가능경영의 경제적 함의를 평가할 때 총합 ES/ESG 지표뿐 아니라 비
+용 구조, 활동 유형, 기업 및 산업 특성을 함께 고려할 필요가 있음을 강조한다.
+핵심 주제어: ESG, ES 활동, 노동생산성, 제조 기업
+JEL Classification: D24, E24, G30, Q50
+** 한국은행 경제연구원 부연구위원, E-mail: seongjun.jeong@bok.or.kr
+** 한국은행 경제연구원 연구위원, E-mail: bokyu@bok.or.kr
+이 연구내용은 집필자 개인의견이며 한국은행의 공식견해와는 무관합니다. 따라서 본 논문의 내용을
+보도하거나 인용할 경우에는 집필자명을 반드시 명시하여 주시기 바랍니다.
+
+--- 페이지 52 ---
+BOK 경제연구 발간목록
+한국은행 경제연구원에서는 Working Paper인 󰡔󰡔󰡔󰡔BOK 경제연구󰡕󰡕󰡕󰡕를 수시로 발간하고 있습니다.
+󰡔󰡔󰡔󰡔BOK 경제연구󰡕󰡕󰡕󰡕는 주요 경제 현상 및 정책 효과에 대한 직관적 설명 뿐 아니라 깊이 있는
+이론 또는 실증 분석을 제공함으로써 엄밀한 논증에 초점을 두는 학술논문 형태의 연구이며
+한국은행 직원 및 한국은행 연구용역사업의 연구 결과물이 수록되고 있습니다.
+󰡔󰡔󰡔󰡔BOK 경제연구󰡕󰡕󰡕󰡕는 한국은행 경제연구원 홈페이지(http://imer.bok.or.kr)에서 다운로드하여
+보실 수 있습니다.
+제2019-1 Deciphering Monetary Policy Board Ki Young Park⋅
+Minutes through Text Mining Approach: Youngjoon Lee⋅
+The Case of Korea Soohyon Kim
+2 The Impacts of Macroeconomic News Jieun Lee⋅
+Announcements on Intraday Implied Doojin Ryu
+Volatility
+3 Taking a Bigger Slice of the Global Chong-Sup Kim⋅
+Value Chain Pie: An Industry-level Seungho Lee⋅
+Analysis Jihyun Eum
+4 Trend Growth Shocks and Asset Prices Nam Gang Lee
+5 Uncertainty, Attention Allocation and Kwangyong Park
+Monetary Policy Asymmetry
+6 Central Bank Digital Currency and Young Sik Kim⋅
+Financial Stability Ohik Kwon
+7 은행의 수익 및 자산구조를 반영한 통화정책 김의진⋅정호성
+위험선호경로
+8 혁신기업에 대한 산업금융 지원: 이론모형 강경훈⋅양준구
+분석
+9 가계부채 제약하의 통화정책: 2주체 거시모형 정용승⋅송승주
+(TANK)에서의 정량적 분석
+10 Alchemy of Financial Innovation: Jungu Yang
+Securitization, Liquidity and Optimal
+Monetary Policy
+11 Measuring Monetary Policy Surprises Youngjoon Lee⋅
+Using Text Mining: The Case of Korea Soohyon Kim⋅
+Ki Young Park
+12 Tracking Uncertainty through the Seohyun Lee⋅
+Relative Sentiment Shift Series Rickard Nyman
+13 Intra-firm and Arm’s Length Trade Moon Jung Choi⋅
+during the Global Financial Crisis: Ji Hyun Eum
+Evidence from Korean Manufacturing Firms
+
+--- 페이지 53 ---
+BOK 경제연구 발간목록
+14 특허자료를 이용한 우리나라 지식전파의 지역화 이지홍⋅남윤미
+분석
+한국은행 경제연구원에서는 Working Paper인 󰡔󰡔󰡔󰡔BOK 경제연구󰡕󰡕󰡕󰡕를 수시로 발간하고 있습니다.
+󰡔󰡔󰡔󰡔BOK 경제연구󰡕󰡕󰡕󰡕는 주요 경제 현상 및 정책 효과에 대한 직관적 설명 뿐 아니라 깊이 있는
+이론 또는 실증 분석을 제공함으로써 엄밀한 논증에 초점을 두는 학술논문 형태의 연구이며 15 Overhead Labour and Skill-Biased Choong Hyun Nam
+한국은행 직원 및 한국은행 연구용역사업의 연구 결과물이 수록되고 있습니다. Technological Change: The Role of
+󰡔󰡔󰡔󰡔BOK 경제연구󰡕󰡕󰡕󰡕는 한국은행 경제연구원 홈페이지(http://imer.bok.or.kr)에서 다운로드하여 Product Diversification
+보실 수 있습니다.
+16 Does the Number of Countries in an Myunghyun Kim
+제2019-1 Deciphering Monetary Policy Board Ki Young Park⋅ International Business Cycle Model
+Minutes through Text Mining Approach: Youngjoon Lee⋅ Matter?
+The Case of Korea Soohyon Kim
+2 The Impacts of Macroeconomic News Jieun Lee⋅
+17 High-Frequency Credit Spread Bruno Deschamps⋅
+Announcements on Intraday Implied Doojin Ryu
+Information and Macroeconomic Christos Ioannidis⋅
+Forecast Revision Kook Ka
+Volatility
+3 Taking a Bigger Slice of the Global Chong-Sup Kim⋅ 18 경제 분석을 위한 텍스트 마이닝 김수현⋅이영준⋅신진영⋅
+Value Chain Pie: An Industry-level Seungho Lee⋅ 박기영
+Analysis Jihyun Eum
+4 Trend Growth Shocks and Asset Prices Nam Gang Lee 19 Takeover, Distress, and Equity Euna Cho
+Issuance: Evidence from Korea
+5 Uncertainty, Attention Allocation and Kwangyong Park
+Monetary Policy Asymmetry
+20 The Cash-Flow Channel of Monetary Sang-yoon Song
+6 Central Bank Digital Currency and Young Sik Kim⋅ Policy: Evidence from Mortgage
+Financial Stability Ohik Kwon Borrowers
+7 은행의 수익 및 자산구조를 반영한 통화정책 김의진⋅정호성
+21 부의 효과의 분위 추정: 분위 정준 공적분회귀를 김기호
+위험선호경로
+중심으로
+8 혁신기업에 대한 산업금융 지원: 이론모형 강경훈⋅양준구
+분석 22 Identifying Government Spending Kwangyong Park⋅
+Shocks and Multipliers in Korea Eun Kyung Lee
+9 가계부채 제약하의 통화정책: 2주체 거시모형 정용승⋅송승주
+(TANK)에서의 정량적 분석
+23 Systemic Risk of the Consumer Credit Hyun Hak Kim⋅
+10 Alchemy of Financial Innovation: Jungu Yang Network across Financial Institutions Hosung Jung
+Securitization, Liquidity and Optimal
+Monetary Policy
+24 Impact of Chinese Renminbi on Korean Jihyun Eum
+11 Measuring Monetary Policy Surprises Youngjoon Lee⋅ Exports: Does Quality Matter?
+Using Text Mining: The Case of Korea Soohyon Kim⋅
+Ki Young Park
+25 Uncertainty, Credit and Investment: Youngju Kim⋅
+12 Tracking Uncertainty through the Seohyun Lee⋅
+Evidence from Firm-Bank Matched Data Seohyun Lee⋅
+Hyunjoon Lim
+Relative Sentiment Shift Series Rickard Nyman
+13 Intra-firm and Arm’s Length Trade Moon Jung Choi⋅ 26 A Structural Change in the Trend and Nam Gang Lee⋅
+during the Global Financial Crisis: Ji Hyun Eum Cycle in Korea Byoung Hoon Seok
+Evidence from Korean Manufacturing Firms
+
+--- 페이지 54 ---
+제2020-1 인구 고령화가 실질 금리에 미치는 영향 권오익⋅김명현
+2 달러라이제이션이 확산된 북한경제에서 문성민⋅김병기
+보유외화 감소가 물가･환율에 미치는 영향
+3 상태공간 벡터오차수정모형을 이용한 월별 GDP 김기호
+추정: 깁스표본추출 접근
+4 우리나라 외환시장 오퍼레이션의 행태 및 박준서⋅최경욱
+환율변동성 완화 효과
+5 Common Factor Augmented Forecasting Hyeongwoo Kim⋅
+Models for the US Dollar-Korean Won Soohyon Kim
+Exchange Rate
+6 북한｢경제연구｣로 분석한 경제정책 변화: 텍스트 김수현⋅손 욱
+마이닝 접근법
+7 북한의 광물 수출과 품목별 수입: 대중무역을 김병연⋅김민정⋅김다울
+중심으로
+8 Network-Based Measures of Systemic Jaewon Choi⋅
+Risk in Korea Jieun Lee
+9 Aggregate Productivity Growth and Firm Kyoo il Kim⋅
+Dynamics in Korean Manufacturing Jin Ho Park
+2007-2017
+10 2001년 이후 한국의 노동생산성 성장과 유혜미
+인적자본: 교육의 질적 개선 효과를 중심으로
+11 House Prices and Household Seungyoon Lee
+Consumption in Korea
+12 글로벌 가치사슬 변화가 경제성장에 미치는 김세완⋅최문정
+영향: 2008년 금융위기 전후 전･후방참여
+효과의 국제비교를 중심으로
+13 산업구조조정이 고용 및 성장에 미치는 영향 서병선⋅김태경
+14 Cross-border Trade Credit and Trade Moon Jung Choi⋅
+Flows During the Global Financial Crisis Sangyeon Hwang⋅
+Hyejoon Im
+
+--- 페이지 55 ---
+15 International Co-movements and Hasan Isomitdinov⋅
+Determinants of Public Debt Vladimir Arčabić⋅
+Junsoo Lee⋅
+Youngjin Yun
+16 북한 비공식금융 실태조사 및 분석･평가 이주영⋅문성민
+17 북한의 장기 경제성장률 추정: 1956~1989년 조태형⋅김민정
+18 Macroeconomic and Financial Market Soohyon Kim
+Analyses and Predictions through Deep
+Learning
+19 제조업의 수출과 생산성 간 관계 분석: 이윤수⋅김원혁⋅박진호
+사업체 자료 이용
+20 우리나라 제조업 수출기업의 내수전환 남윤미⋅최문정
+결정요인 분석
+21 A Model of Satisficing Behaviour Rajiv Sarin⋅
+Hyun Chang Yi
+22 Vulnerable Growth: A Revisit Nam Gang Lee
+23 Credit Market Frictions and Ohik Kwon⋅
+Coessentiality of Money and Credit Manjong Lee
+24 북한의 자본스톡 추정 및 시사점 표학길⋅조태형⋅김민정
+25 The Economic Costs of Diplomatic Hyejin Kim⋅
+Conflict Jungmin Lee
+26 Central Bank Digital Currency, Tax Ohik Kwon⋅
+Evasion, Inflation Tax, and Central Bank Seungduck Lee⋅
+Independence Jaevin Park
+27 Consumption Dynamics and a Home Dongjae Jung
+Purchase
+28 자본유입과 물가상승률 간의 동태적 상관관계 최영준⋅손종칠
+분석: 아시아의 8개국 소규모 개방경제를 중심
+으로
+29 The Excess Sensitivity of Long-term Kwangyong Park
+Interest rates and Central Bank
+Credibility
+
+--- 페이지 56 ---
+30 Wage and Employment Effects of Hyejin Kim
+Immigration: Evidence from Korea
+제2021-1 외국인력 생산성 제고 방안―직업훈련 김혜진⋅이철희
+프로그램의 노동시장 성과 분석을 중심으로
+2 한국경제의 추세 성장률 하락과 원인 석병훈⋅이남강
+3 Financial Globalization: Effects on Christopher Paik
+Banks’ Information Acquisition and
+Credit Risk
+4 The Effects of Monetary Policy on Myunghyun Kim⋅
+Consumption: Workers vs. Retirees Sang-yoon Song
+5 북한지역 토지자산 추정에 관한 연구: 임송
+프레임워크 개발 및 탐색적 적용
+6 김정은 시대 북한의 금융제도 변화 김민정⋅문성민
+- 북한 문헌 분석을 중심으로 -
+7 Chaebols and Firm Dynamics in Korea Philippe Aghion⋅
+Sergei Guriev⋅
+Kangchul Jo
+8 한국의 화폐환상에 관한 연구 권오익⋅김규식⋅황인도
+9 재원조달 방법을 고려한 재정지출 효과 분석 김소영⋅김용건
+: 미국의 사례를 중심으로
+10 The Impact of Geopolitical Risk on Stock Seungho Jung⋅
+Returns: Evidence from Inter-Korea Jongmin Lee⋅
+Geopolitics Seohyun Lee
+11 Real Business Cycles in Emerging Seolwoong Hwang⋅
+Countries: Are Asian Business Cycles Soyoung Kim
+Different from Latin American Business
+Cycles?
+12 우리 수출의 글로벌 소득탄력성 하락 요인 분석 김경근
+13 북한의 경제체제에 관한 연구: 실태와 평가 양문수⋅임송
+14 Distribution-Dependent Value of Money: Byoung-Ki Kim⋅
+A Coalition-Proof Approach to Monetary Ohik Kwon⋅
+Equilibrium Suk Won Lee
+
+--- 페이지 57 ---
+15 A Parametric Estimation of the Policy Dong Jae Jung
+Stance from the Central Bank Minutes
+16 The Immigrant Wage Gap and Hyejin Kim⋅
+Assimilation in Korea Chulhee Lee
+17 Monetary Non-Neutrality in a Multisector Jae Won Lee⋅
+Economy: The Role of Risk-Sharing Seunghyeon Lee
+18 International Transmission of Chinese Yujeong Cho⋅
+Monetary Policy Shocks to Asian Soyoung Kim
+Countries
+19 The Impact of Robots on Labor Demand: Hyejin Kim
+Evidence from Job Vacancy Data for
+South Korea
+20 전공 불일치가 불황기 대졸 취업자의 임금에 최영준
+미치는 장기 효과 분석
+21 Upstream Propagation of the U.S.-China Minkyu Son
+Trade War
+제2022-1 Immigration and Natives’ Task Hyejin Kim⋅
+Specialization: Evidence from Korea Jongkwan Lee
+2 Transmission of Global Financial Shocks: Bada Han
+Which Capital Flows Matter?
+3 Measuring the Effects of LTV and DTI Soyoung Kim⋅
+Limits: A Heterogeneous Panel VAR Seri Shim
+Approach with Sign Restrictions
+4 A Counterfactual Method for Byongju Lee
+Demographic Changes in Overlapping
+Generations Models
+5 Housing Wealth, Labor Supply, and Jongwoo Chung
+Retirement Behavior: Evidence from
+Korea
+6 Demand Shocks vs. Supply Shocks: Seolwoong Hwang⋅
+Which Shocks Matter More in Income Kwangwon Lee⋅
+and Price Inequality? Geunhyung Yim
+
+--- 페이지 58 ---
+7 Financial Literacy and Mutual Fund Jongwoo Chung⋅
+Retail Investing: Evidence from Korea Booyuel Kim
+During the 2008 Financial Crisis
+8 Exchange Rate Regime and Optimal Policy: Yujeong Cho⋅
+The Case of China Yiping Huang⋅
+Changhua Yu
+9 북한 수출입단가지수 추정: 북중무역 데이터를 이종민⋅김민정
+중심으로
+10 탄소배출을 감안한 국가별 녹색 총요소생산성 안상기
+분석
+11 북한 소비자 지급수단 조사 및 분석 이주영
+12 Selection into Outsourcing versus Sangho Shin
+Integration Strategies for
+Heterogeneous Multinationals
+13 Central Bank Digital Currency and Privacy: Syngjoo Choi⋅
+A Randomized Survey Experiment Bongseop Kim⋅
+Young Sik Kim⋅
+Ohik Kwon
+14 Technological Change, Job Characteristics, Jongwoo Chung⋅
+and Employment of Elderly Workers: Chulhee Lee
+Evidence from Korea
+15 Machine-Learning-Based Beomseok Seo⋅
+News Sentiment Index (NSI) of Korea Younghwan Lee⋅
+Hyungbae Cho
+16 빅데이터를 이용한 실시간 민간소비 예측 신승준⋅서범석
+17 Fixed Effects Quantile Estimations Ki-Ho Kim
+with Extended Within Transformation
+and their Application
+18 글로벌 금융위기 이후 가계소비행태 최영준
+변화 분석: 세대별 소비행태를 중심으로
+19 Optimal Monetary Policy under Seunghyeon Lee
+Heterogeneous Consumption Baskets
+
+--- 페이지 59 ---
+20 통화정책 충격이 생산과 물가에 미치는 임근형⋅나승호⋅오다운
+효과의 국가별 차이 및 결정요인
+제2023-1 Shocks, Frictions, and Inequality in Seungcheol Lee⋅
+Korean Business Cycles Ralph Luetticke⋅
+Morten O. Ravn
+2 소득동질혼과 가구구조가 가구소득 불평등에 박용민⋅허 정
+미치는 영향: 국제비교를 중심으로
+3 Dominant Currency Pricing: Minkyu Son
+Evidence from Korean Exports
+4 Banking Crisis, Venture Capital and Chun-Yu HoㆍWon Sung
+Innovation
+5 Can Robots Save Workers? Hyejin Kim
+The Effects of Robots on Workplace
+Injuries and Workers' Health in Korea
+6 International Reserve Accumulation: Bada Hanㆍ
+Balancing Private Inflows with Public Dongwook Kimㆍ
+Outflows Youngjin Yun
+7 Global Bank Branches and Financial Yoocheol Noh
+Stability: How Do Global Bank
+Branches Amplify Financial Shocks?
+8 인구구조 변화에 따른 산업별 고용인력 변화와 김혜진ㆍ정종우
+정책대안별 효과 추정: 여성, 고령자, 외국인
+고용확대를 중심으로
+9 북한 장기 수출입 데이터 재구축 및 분석 : 김민정ㆍ김다울
+1962~2018년
+10 Econometric Forecasting Using Ubiquitous Beomseok Seo
+News Text: Text-enhanced Factor Model
+11 Changes in Inflation Dynamics in Korea: Yun Jung Kimㆍ
+Global Factor, Country Factor, and their Noh-Sun Kwark
+Propagation
+12 Financial Technologies and the Iftekhar Hasanㆍ
+Effectiveness of Monetary Policy Boreum Kwak･Xiang Li
+Transmission
+
+--- 페이지 60 ---
+13 북한의 시장물가: 2006~2022 임 송ㆍ문승현
+14 지난 60년 경제환경변화와 한국기업 재무지표 조윤제ㆍ최연교
+변화: 󰡔󰡔󰡔󰡔기업경영분석󰡕󰡕󰡕󰡕(1961-2021)에 나타난 지표를
+중심으로
+Korea’s Economic Policy Changes: Reflected
+in the Corporate Financial Indicators During
+the Last 60 Years
+15 Extended Two-Way Fixed Effects Quantile Ki-Ho Kim
+Cointegration Regression and Its Application
+16 In Search of the Origin of Original Sin Bada Hanㆍ
+Dissipation Jangyoun Leeㆍ
+Taehee Oh
+17 대규모･비선형 베이지안 VAR 모형을 활용한 강규호ㆍ김도완
+한국 거시경제 전망 및 시나리오 분석
+18 Does the Uncovered Interest Parity Hold Joonyoung Hurㆍ
+in Korea? Kwanho Shin
+19 북한이탈주민의 건강과 경제적 적응에 대한 정승호ㆍ위혜승ㆍ이종민
+연구: 국민건강정보DB 분석을 중심으로
+20 The Credit-Driven Business Cycles in South Nam Gang Leeㆍ
+Korea: How Important is the Credit Supply Seungho Nah
+Channel?
+21 The Effects of Monetary Policy Shocks on Seolwoong Hwang
+Inflation Heterogeneity: The Case of Korea
+22 Dollar and Government Bond Liquidity: Jieun Lee
+Evidence from Korea
+23 우리나라의 가계부채와 소득불평등 김수현ㆍ황설웅
+24 초저출산의 경제적･비경제적 원인: 남윤미ㆍ황인도
+설문 실험을 통한 분석
+25 한국경제 80년(1970-2050) 및 미래 성장전략 조태형
+Eighty Years of the Korean Economy
+(1970-2050): The Past and a Future Growth
+Strategy
+
+--- 페이지 61 ---
+26 국내 기후변화 물리적 리스크의 실물경제 이지원
+영향 분석
+27 Point and Risk estImation using an Beomseok Seoㆍ
+enSemble of Models for Nowcasting: Hyungbae Choㆍ
+PRISM-Now Dongjae Lee
+28 Does the Target Matter? Evidence from Eseul Choi
+Labor Supply Decisions of Fishermen
+29 북한이탈주민 조사를 통해 본 북한 출산율 하락 이주영ㆍ김선중
+추세와 남북한 인구통합에 대한 시사점
+제2024-1 The Evolution of the Response of Credit Do wan Kim
+Spread Variables to Monetary Policy Shocks
+2 Uncertainty and the Impacts of Structural Oil Soojin Joㆍ
+Shocks on the Korean Economy Myungkyu Shim
+3 수출대상국의 무역기술장벽(TBT)이 한국 수출에 장용준ㆍ신상호
+미치는 영향 분석: 수출의 내･외연적 한계와 산업
+특성에 따른 비교
+4 개인 특성별 이질적 인플레이션율과 실질 소비 유재인ㆍ민찬호ㆍ정호성
+탄력성
+5 실업경험이 가계소비에 미치는 장기효과 분석 최영준
+6 Central Bank Digital Currency, Real Effect Seonghoon Cho
+and Welfare
+7 우리나라 노동시장 상황과 인플레이션 간의 허준영·채민석
+관계 변화
+8 Is there an information channel of Oliver Holtemöllerㆍ
+monetary policy? Alexander Kriwoluzkyㆍ
+Boreum Kwak
+9 Inflation Disagreement and Monetary Boreum Kwak･
+Transmission in Korea Seri Shim･Peter Tillmann
+10 Using Density Forecast for Growth-at-Risk Yoosoon Changㆍ
+to Improve Mean Forecast of GDP Growth Yong-gun Kimㆍ
+in Korea Boreum Kwakㆍ
+Joon Y. Park
+11 수익률곡선 추세와 기간 프리미엄 강규호·구병수
+12 Digital Literacy and Physical Cash Demand Kyeongtae Leeㆍ
+during the COVID-19 Pandemic Jaevin Park
+13 Exploring the Natural Interest Rate in Korea: Kyeongtak Doㆍ
+A Multi-Model Approach Ju Hyun Ahnㆍ
+Hae Ri Jung
+
+--- 페이지 62 ---
+제2025-1 북한지역 저출생 발생원인에 대한 실증적 접근 이주영, 김기호
+2 The Impact of Global Supply Chain Shock Bongseok Choiㆍ
+on Production Costs Hyun Hak Kimㆍ
+Sangho Shin
+3 BOK-LOOK: A Semi-Structural Model for Seungryul Jeongㆍ
+Koreais Open Economy and Monetary Policy Seokil Kangㆍ
+Analysis Hyungbae Choㆍ
+Jinwoon Yoonㆍ
+Dongjae Lee
+4 기후변화가 한국 노동시장에 미치는 영향 심명규, 조수진
+5 인플레이션 경험이 주택수요에 미치는 영향 분석 최영준
+6 A Properly Ordered Zero Sign Restrictions Ki-Ho Kim
+on VARX for a Small Open Economy
+7 Monetary and central bank information Bosung Jangㆍ
+shocks: Tales from alternative identifications Inhwan So
+8 Monetary-Fiscal Policy Mix and Inflation Sora Chonㆍ
+in Korea Wongi Kimㆍ
+Seri Shim
+9 Investment Giants in Emerging Markets Daisoon Kimㆍ
+Jee Won Parkㆍ
+Inhwan So
+10 Demand for Home Pension and Reverse Duk Gyoo Kimㆍ
+Mortgage: An Information Provision Survey In Do Hwang
+Experiment
+11 A Large Bayesian Vector Sunho Leeㆍ
+Autoregression of the Yield Curve and Kyu Ho Kang
+Macroeconomic Variables with
+No-Arbitrage Restriction
+12 Demographic Shifts and the Real Jae Won Leeㆍ
+Interest Rate in an Open Economy: Woong Yong Parkㆍ
+The Case of Korea Seolwoong Hwang
+13 Population Aging and Financial Stability: Hun Jang
+An Empirical Analysis
+14 Macroeconomic Impacts of Climate Change Young-Han Kimㆍ
+under NGFS Scenarios Bok-Keun Yu
+
+--- 페이지 63 ---
+15 Effect of Climate Change on the Korean Jihyun Kimㆍ
+Economy: Aggregated VAR with Functional Boreum Kwak
+Data
+16 인구변화가 지역별 노동시장에 미치는 영향 분석 이철희ㆍ정종우
+17 Dollar Dominance and International Minkyu Son
+Spillovers of US Financial Shocks
+18 The Earned Income Tax Credit and the Dongmin Chun
+Tax-benefit Link of Public Pensions
+19 Diagnostic Expectations into Housing DSGE Junghyuk Leeㆍ
+and Productive Investment Crowding-Out Jinwoon Yoon
+Effect
+20 Public Demand and Financial Implications Duk Gyoo Kimㆍ
+for Retail CBDC: A Randomized Survey Ohik Kwonㆍ
+Experiment Seungduck Lee
+제2026-1 Predicting the Payment Preference for Syngjoo Choiㆍ
+CBDC: A Discrete Choice Experiment Bongseop Kimㆍ
+Young Sik Kimㆍ
+Ohik Kwonㆍ
+Soeun Park
+2 주택담보대출 차입자의 금리 선택 분석 최영준
+3 U.S.-Korea Yield Synchronization and Jihyun Kimㆍ
+Its Implications for Monetary Policy Somin Kimㆍ
+Transmission Boreum Kwak
+4 Brains to the Capital: Wage Gaps and the Jongwoo Chungㆍ
+Regional Sorting of Skilled Migrants in Hyejin Kimㆍ
+South Korea Jongkwan Lee
+5 Lending to vulnerable households and Jieun Leeㆍ
+consumption: Evidence from Korea Ilhyock Shim
+6 ES Activities and Labor Productivity: Seongjun Jeongㆍ
+Evidence from Korean Manufacturing Firms Bok-Keun Yu

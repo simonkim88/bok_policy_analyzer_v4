@@ -1,3 +1,4 @@
+# pyright: basic, reportArgumentType=false, reportOptionalMemberAccess=false, reportGeneralTypeIssues=false
 """
 금리 결정 확률 예측 모델
 
@@ -14,6 +15,8 @@ from dataclasses import dataclass
 from pathlib import Path
 import json
 from datetime import datetime, timedelta
+
+from src.data.ecos_data_loader import EcosDataLoader
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -58,56 +61,6 @@ class PredictionResult:
 class RatePredictor:
     """금리 결정 확률 예측기"""
 
-    # 한국은행 기준금리 변동 이력 (실제 데이터)
-    # 출처: 한국은행 ECOS
-    RATE_HISTORY = {
-        # 2021년
-        "2021_01_15": (0.50, "hold"),
-        "2021_02_25": (0.50, "hold"),
-        "2021_04_15": (0.50, "hold"),
-        "2021_05_27": (0.50, "hold"),
-        "2021_07_15": (0.50, "hold"),
-        "2021_08_26": (0.75, "hike"),  # +25bp
-        "2021_10_12": (0.75, "hold"),
-        "2021_11_25": (1.00, "hike"),  # +25bp
-        # 2022년
-        "2022_01_14": (1.25, "hike"),  # +25bp
-        "2022_02_24": (1.25, "hold"),
-        "2022_04_14": (1.50, "hike"),  # +25bp
-        "2022_05_26": (1.75, "hike"),  # +25bp
-        "2022_07_13": (2.25, "hike"),  # +50bp (빅스텝)
-        "2022_08_25": (2.50, "hike"),  # +25bp
-        "2022_10_12": (3.00, "hike"),  # +50bp (빅스텝)
-        "2022_11_24": (3.25, "hike"),  # +25bp
-        # 2023년
-        "2023_01_13": (3.50, "hike"),  # +25bp
-        "2023_02_23": (3.50, "hold"),
-        "2023_04_11": (3.50, "hold"),
-        "2023_05_25": (3.50, "hold"),
-        "2023_07_13": (3.50, "hold"),
-        "2023_08_24": (3.50, "hold"),
-        "2023_10_19": (3.50, "hold"),
-        "2023_11_30": (3.50, "hold"),
-        # 2024년
-        "2024_01_11": (3.50, "hold"),
-        "2024_02_22": (3.50, "hold"),
-        "2024_04_12": (3.50, "hold"),
-        "2024_05_23": (3.50, "hold"),
-        "2024_07_11": (3.50, "hold"),
-        "2024_08_22": (3.50, "hold"),
-        "2024_10_11": (3.25, "cut"),   # -25bp
-        "2024_11_28": (3.00, "cut"),   # -25bp
-        # 2025년
-        "2025_01_16": (3.00, "hold"),
-        "2025_02_25": (2.75, "cut"),   # -25bp
-        "2025_04_17": (2.75, "hold"),
-        "2025_05_29": (2.50, "cut"),   # -25bp
-        "2025_07_10": (2.50, "hold"),
-        "2025_08_28": (2.50, "hold"),
-        "2025_10_23": (2.50, "hold"),
-        "2025_11_27": (2.50, "hold"),
-    }
-
     ACTION_MAP = {"hike": 1, "hold": 0, "cut": -1}
     ACTION_LABELS = {1: "인상", 0: "동결", -1: "인하"}
 
@@ -119,9 +72,26 @@ class RatePredictor:
         else:
             self.scaler = None
         self.is_fitted = False
+        self._data_loader = None
+        self._rate_history = None
 
         # 디렉토리 생성
         MODEL_DIR.mkdir(parents=True, exist_ok=True)
+
+
+    @property
+    def RATE_HISTORY(self):
+        return self._get_rate_history()
+
+    def _get_rate_history(self) -> Dict[str, Tuple[float, str]]:
+        if self._rate_history is not None:
+            return self._rate_history
+
+        if self._data_loader is None:
+            self._data_loader = EcosDataLoader()
+
+        self._rate_history = self._data_loader.get_rate_history()
+        return self._rate_history
 
     def load_tone_data(self) -> pd.DataFrame:
         """톤 분석 결과 로드"""

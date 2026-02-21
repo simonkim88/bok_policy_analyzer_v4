@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from collections import Counter
 import json
+import re
 from datetime import datetime
 
 from .sentiment_dict import SentimentDictionary
@@ -45,6 +46,10 @@ class ToneResult:
     sentence_tones: List[float] = field(default_factory=list)      # 문장별 톤
     total_sentences: int = 0
     interpretation: str = ""             # 톤 해석
+    policy_intent_tone: float = 0.0       # 정책 의도/조건부 문장 톤
+    raw_keyword_tone: float = 0.0         # 단순 키워드 매칭 톤
+    context_adjusted_tone: float = 0.0    # 문맥 조정 톤
+    ngram_tone: float = 0.0               # N-gram 기반 톤
 
 
 class ToneAnalyzer:
@@ -58,6 +63,24 @@ class ToneAnalyzer:
         "moderate_dovish": -0.3,
         # below -0.3: strong_dovish
     }
+
+    NEGATION_PATTERNS = [
+        "아니", "않", "없", "못", "불가", "부정",
+        "아닌 것으로", "가능성은 낮", "제한적"
+    ]
+
+    AMPLIFIER_PATTERNS = [
+        "매우", "상당히", "크게", "현저히", "급격히",
+        "대폭", "뚜렷", "확연", "강하게"
+    ]
+
+    HEDGING_PATTERNS = [
+        "다소", "약간", "소폭", "일부", "제한적",
+        "부분적", "일시적", "가능성", "여지"
+    ]
+
+    CONTRAST_PATTERNS = [r"에도\s*불구하고", r"이지만", r"지만", r"이나\s", r"그러나"]
+    POLICY_INTENT_PATTERNS = [r"할\s*필요", r"필요가\s*있", r"당부", r"대응해야", r"검토"]
 
     def __init__(
         self,
@@ -110,6 +133,89 @@ class ToneAnalyzer:
         else:
             return "강한 비둘기파 (Strong Dovish)"
 
+    def _aggregate_terms(self, items: List[Tuple[str, float]]) -> Dict[str, float]:
+        aggregated: Dict[str, float] = {}
+        for term, weight in items:
+            aggregated[term] = aggregated.get(term, 0.0) + weight
+        return aggregated
+
+    def _find_term_positions(self, sentence: str, term: str) -> List[int]:
+        if " " in term:
+            parts = [re.escape(part) for part in term.split() if part]
+            if not parts:
+                return []
+            pattern = '.{0,20}'.join(parts)
+            return [m.start() for m in re.finditer(pattern, sentence)]
+        return [m.start() for m in re.finditer(re.escape(term), sentence)]
+
+    def _has_pattern(self, text: str, patterns: List[str]) -> bool:
+        return any(re.search(pattern, text) for pattern in patterns)
+
+    def _score_sentence_context(self, sentence: str) -> Tuple[float, float]:
+        sent_matches = self.dictionary.match_in_text(sentence)
+        hawkish_score = 0.0
+        dovish_score = 0.0
+
+        for polarity in ["hawkish", "dovish"]:
+            for term, base_weight in sent_matches[polarity]:
+                positions = self._find_term_positions(sentence, term)
+                if not positions:
+                    if polarity == "hawkish":
+                        hawkish_score += base_weight
+                    else:
+                        dovish_score += base_weight
+                    continue
+
+                unit_weight = base_weight / max(len(positions), 1)
+                for pos in positions:
+                    start = max(0, pos - 10)
+                    context_window = sentence[start:pos]
+                    multiplier = 1.0
+
+                    if any(am in context_window for am in self.AMPLIFIER_PATTERNS):
+                        multiplier *= 1.5
+                    if any(hd in context_window for hd in self.HEDGING_PATTERNS):
+                        multiplier *= 0.5
+
+                    target_polarity = polarity
+                    if any(ng in context_window for ng in self.NEGATION_PATTERNS):
+                        target_polarity = "dovish" if polarity == "hawkish" else "hawkish"
+
+                    adj_weight = unit_weight * multiplier
+                    if target_polarity == "hawkish":
+                        hawkish_score += adj_weight
+                    else:
+                        dovish_score += adj_weight
+
+        return hawkish_score, dovish_score
+
+    def _score_sentence_with_contrast(self, sentence: str) -> Tuple[float, float]:
+        for pattern in self.CONTRAST_PATTERNS:
+            match = re.search(pattern, sentence)
+            if not match:
+                continue
+
+            first_clause = sentence[:match.start()].strip()
+            second_clause = sentence[match.end():].strip()
+            if not second_clause:
+                continue
+
+            first_h, first_d = self._score_sentence_context(first_clause)
+            second_h, second_d = self._score_sentence_context(second_clause)
+            return (0.7 * first_h + 1.3 * second_h, 0.7 * first_d + 1.3 * second_d)
+
+        return self._score_sentence_context(sentence)
+
+    def _score_policy_intent(self, sentence: str, h_score: float, d_score: float) -> float:
+        if not self._has_pattern(sentence, self.POLICY_INTENT_PATTERNS):
+            return 0.0
+
+        intent_multiplier = 1.2
+        if re.search(r"할\s*필요", sentence):
+            intent_multiplier = 1.5
+
+        return self.calculate_tone_index(h_score * intent_multiplier, d_score * intent_multiplier)
+
     def analyze_text(self, text: str, meeting_date: str = "") -> ToneResult:
         """
         텍스트의 톤 분석
@@ -121,30 +227,55 @@ class ToneAnalyzer:
         Returns:
             ToneResult 객체
         """
-        # 감성 키워드 매칭
+        # 1) 단순 키워드 기준 점수 (기존 방식 유지)
         matches = self.dictionary.match_in_text(text)
-
-        # 매파/비둘기파 점수 계산
-        hawkish_terms = {term: weight for term, weight in matches["hawkish"]}
-        dovish_terms = {term: weight for term, weight in matches["dovish"]}
+        hawkish_terms = self._aggregate_terms(matches["hawkish"])
+        dovish_terms = self._aggregate_terms(matches["dovish"])
 
         hawkish_score = sum(hawkish_terms.values())
         dovish_score = sum(dovish_terms.values())
+        raw_keyword_tone = self.calculate_tone_index(hawkish_score, dovish_score)
 
-        # 톤 지수 계산
-        tone_index = self.calculate_tone_index(hawkish_score, dovish_score)
+        # 2) N-gram 전용 톤
+        ngram_matches = self.dictionary.match_ngrams_in_text(text)
+        ngram_hawkish = sum(weight for _, weight in ngram_matches["hawkish"])
+        ngram_dovish = sum(weight for _, weight in ngram_matches["dovish"])
+        ngram_tone = self.calculate_tone_index(ngram_hawkish, ngram_dovish)
 
-        # 문장별 톤 분석
+        # 3) 문장 단위 문맥 조정 톤 + 정책 의도 톤
         sentences = self.preprocessor.split_sentences(text)
-        sentence_tones = []
+        sentence_tones: List[float] = []
+        context_h_total = 0.0
+        context_d_total = 0.0
+        policy_intent_values: List[float] = []
 
         for sentence in sentences:
-            sent_matches = self.dictionary.match_in_text(sentence)
-            h_score = sum(w for _, w in sent_matches["hawkish"])
-            d_score = sum(w for _, w in sent_matches["dovish"])
+            h_score, d_score = self._score_sentence_with_contrast(sentence)
+            if re.search(r"할\s*필요", sentence):
+                h_score *= 1.5
+                d_score *= 1.5
+
             if h_score > 0 or d_score > 0:
                 sent_tone = self.calculate_tone_index(h_score, d_score)
                 sentence_tones.append(sent_tone)
+                context_h_total += h_score
+                context_d_total += d_score
+
+                policy_intent_tone = self._score_policy_intent(sentence, h_score, d_score)
+                if policy_intent_tone != 0.0:
+                    policy_intent_values.append(policy_intent_tone)
+
+        context_adjusted_tone = self.calculate_tone_index(context_h_total, context_d_total)
+        policy_intent_tone = float(np.mean(policy_intent_values)) if policy_intent_values else 0.0
+
+        # 4) 멀티 레이어 결합 톤
+        tone_index = (
+            0.4 * context_adjusted_tone
+            + 0.3 * ngram_tone
+            + 0.2 * policy_intent_tone
+            + 0.1 * raw_keyword_tone
+        )
+        tone_index = float(np.clip(tone_index, -1.0, 1.0))
 
         return ToneResult(
             meeting_date=meeting_date,
@@ -155,7 +286,11 @@ class ToneAnalyzer:
             dovish_terms=dovish_terms,
             sentence_tones=sentence_tones,
             total_sentences=len(sentences),
-            interpretation=self.interpret_tone(tone_index)
+            interpretation=self.interpret_tone(tone_index),
+            policy_intent_tone=policy_intent_tone,
+            raw_keyword_tone=raw_keyword_tone,
+            context_adjusted_tone=context_adjusted_tone,
+            ngram_tone=ngram_tone,
         )
 
     def analyze_processed_minutes(self, minutes: ProcessedMinutes) -> ToneResult:
@@ -251,7 +386,12 @@ class ToneAnalyzer:
                                                 reverse=True)[:5]),
                 "top_dovish": ", ".join(sorted(r.dovish_terms.keys(),
                                                key=lambda x: r.dovish_terms[x],
-                                               reverse=True)[:5]),
+                                                reverse=True)[:5]),
+                "policy_intent_tone": r.policy_intent_tone,
+                "raw_keyword_tone": r.raw_keyword_tone,
+                "context_adjusted_tone": r.context_adjusted_tone,
+                "ngram_tone": r.ngram_tone,
+                "sentence_tones": json.dumps(r.sentence_tones) if r.sentence_tones else "",
             })
 
         df = pd.DataFrame(data)
@@ -287,7 +427,11 @@ class ToneAnalyzer:
                 "hawkish_terms": r.hawkish_terms,
                 "dovish_terms": r.dovish_terms,
                 "sentence_tones": r.sentence_tones[:20],  # 처음 20개만
-                "total_sentences": r.total_sentences
+                "total_sentences": r.total_sentences,
+                "policy_intent_tone": r.policy_intent_tone,
+                "raw_keyword_tone": r.raw_keyword_tone,
+                "context_adjusted_tone": r.context_adjusted_tone,
+                "ngram_tone": r.ngram_tone,
             })
 
         with open(json_path, 'w', encoding='utf-8') as f:
@@ -296,7 +440,7 @@ class ToneAnalyzer:
 
         return df
 
-    def get_tone_statistics(self, results: List[ToneResult]) -> Dict:
+    def get_tone_statistics(self, results: List[ToneResult]) -> Dict[str, float | int]:
         """톤 분석 통계"""
         if not results:
             return {}
@@ -304,15 +448,15 @@ class ToneAnalyzer:
         tones = [r.tone_index for r in results]
 
         return {
-            "count": len(results),
-            "mean": np.mean(tones),
-            "std": np.std(tones),
-            "min": np.min(tones),
-            "max": np.max(tones),
-            "median": np.median(tones),
-            "hawkish_count": sum(1 for t in tones if t > 0.1),
-            "dovish_count": sum(1 for t in tones if t < -0.1),
-            "neutral_count": sum(1 for t in tones if -0.1 <= t <= 0.1),
+            "count": int(len(results)),
+            "mean": float(np.mean(tones)),
+            "std": float(np.std(tones)),
+            "min": float(np.min(tones)),
+            "max": float(np.max(tones)),
+            "median": float(np.median(tones)),
+            "hawkish_count": int(sum(1 for t in tones if t > 0.1)),
+            "dovish_count": int(sum(1 for t in tones if t < -0.1)),
+            "neutral_count": int(sum(1 for t in tones if -0.1 <= t <= 0.1)),
         }
 
 
@@ -363,11 +507,11 @@ def main():
         tone = row['tone_index']
         bar_len = int(abs(tone) * 20)
         if tone >= 0:
-            bar = "█" * bar_len + "░" * (20 - bar_len)
-            direction = "▲"
+            bar = "#" * bar_len + "." * (20 - bar_len)
+            direction = "UP"
         else:
-            bar = "░" * (20 - bar_len) + "█" * bar_len
-            direction = "▼"
+            bar = "." * (20 - bar_len) + "#" * bar_len
+            direction = "DOWN"
         print(f"{row['meeting_date_str']} | {tone:+.3f} | {direction} {bar}")
 
     print(f"\n결과 저장 위치: {OUTPUT_DIR}")

@@ -1,9 +1,11 @@
+# pyright: basic
 """
 한국은행 통화정책 톤 분석 대시보드
 
 Streamlit 기반 실시간 분석 및 예측 대시보드
 """
 
+import csv
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -16,13 +18,12 @@ from datetime import datetime
 PROJECT_ROOT = Path(__file__).parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.nlp.sentiment_dict import SentimentDictionary
-from src.nlp.tone_analyzer import ToneAnalyzer
 from src.models.rate_predictor import RatePredictor
 from src.utils.styles import get_custom_css
 from src.views.analysis_view import render_analysis_view
 from src.views.settings_view import render_settings_view
 from src.views.taylor_view import render_taylor_view
+from src.views.data_coverage_view import render_data_coverage_view
 
 # 페이지 설정
 st.set_page_config(
@@ -35,6 +36,7 @@ st.set_page_config(
 # 데이터 디렉토리
 DATA_DIR = PROJECT_ROOT / "data"
 ANALYSIS_DIR = DATA_DIR / "analysis"
+BASE_RATE_PATH = DATA_DIR / "08_ecos" / "base_rate" / "base_rate.csv"
 
 
 @st.cache_data
@@ -46,8 +48,6 @@ def load_tone_data():
         return None
     
     df = pd.read_csv(tone_path)
-    # Exclude 2025-05-29 as requested
-    df = df[df['meeting_date_str'] != '2025_05_29']
     return df
 
 
@@ -63,6 +63,31 @@ def load_predictor():
     except Exception as e:
         st.warning(f"예측 모델 로드 실패: {e}")
         return predictor
+
+
+@st.cache_data
+def load_base_rate_series():
+    """기준금리 시계열 로드"""
+    if not BASE_RATE_PATH.exists():
+        return pd.DataFrame()
+
+    records = []
+    with open(BASE_RATE_PATH, 'r', encoding='utf-8', newline='') as csv_file:
+        reader = csv.DictReader(csv_file)
+        for item in reader:
+            time_raw = str(item.get('TIME', '')).strip()
+            value_raw = str(item.get('DATA_VALUE', '')).strip()
+            try:
+                date = datetime.strptime(time_raw, '%Y%m%d')
+                rate = float(value_raw)
+            except (ValueError, TypeError):
+                continue
+            records.append({'date': pd.Timestamp(date), 'rate': rate})
+
+    if not records:
+        return pd.DataFrame()
+
+    return pd.DataFrame(records).sort_values(by='date')
 
 
 def create_tone_gauge(tone_value):
@@ -107,29 +132,97 @@ def create_timeline_chart(df):
     """시계열 톤 지수 차트"""
     fig = go.Figure()
 
-    # 톤 지수 라인
+    timeline_df = df.copy()
+    timeline_df['meeting_dt'] = pd.to_datetime(
+        timeline_df['meeting_date'].astype(str).str.split(' ').str[0],
+        errors='coerce'
+    )
+    timeline_df = timeline_df.dropna(subset=['meeting_dt']).sort_values('meeting_dt')
+    timeline_df['tone_ma3'] = timeline_df['tone_index'].rolling(3, min_periods=1).mean()
+
+    fig.add_hrect(y0=0.1, y1=1.0, fillcolor='#FFAB40', opacity=0.10, line_width=0)
+    fig.add_hrect(y0=-1.0, y1=-0.1, fillcolor='#64B5F6', opacity=0.10, line_width=0)
+
+    # Build base rate lookup for hover info
+    rate_texts = []
+    marker_colors = []
+    base_rate_df = load_base_rate_series()
+    if not base_rate_df.empty:
+        rate_map = base_rate_df.set_index('date')['rate']
+        prev_rate = None
+        for _, meeting in timeline_df.iterrows():
+            meeting_date = meeting['meeting_dt']
+            if meeting_date in rate_map.index:
+                current_rate = float(rate_map.loc[meeting_date])
+            else:
+                idx = rate_map.index.searchsorted(meeting_date, side='right') - 1
+                if idx < 0:
+                    rate_texts.append('')
+                    marker_colors.append('#00E676')
+                    continue
+                current_rate = float(rate_map.iloc[idx])
+
+            if prev_rate is not None:
+                delta = current_rate - prev_rate
+                if delta > 0:
+                    symbol = '▲'
+                    mc = '#FF5252'
+                elif delta < 0:
+                    symbol = '▼'
+                    mc = '#69F0AE'
+                else:
+                    symbol = '■'
+                    mc = '#00E676'
+                rate_texts.append(f'{symbol} 기준금리 {current_rate:.2f}% ({delta:+.2f}%p)')
+            else:
+                rate_texts.append(f'기준금리 {current_rate:.2f}%')
+                mc = '#00E676'
+            marker_colors.append(mc)
+            prev_rate = current_rate
+    else:
+        rate_texts = [''] * len(timeline_df)
+        marker_colors = ['#00E676'] * len(timeline_df)
+
     fig.add_trace(go.Scatter(
-        x=pd.to_datetime(df['meeting_date'].astype(str).str.split(' ').str[0]),
-        y=df['tone_index'],
+        x=timeline_df['meeting_dt'],
+        y=timeline_df['tone_index'],
         mode='lines+markers',
         name='Tone Index',
-        line=dict(color='royalblue', width=3),
-        marker=dict(size=8),
-        hovertemplate='<b>%{x|%Y-%m-%d}</b><br>Tone: %{y:.3f}<extra></extra>'
+        line=dict(color='#00E676', width=3),
+        marker=dict(size=8, color=marker_colors),
+        customdata=rate_texts,
+        hovertemplate='<b>%{x|%Y-%m-%d}</b><br>Tone: %{y:.3f}<br>%{customdata}<extra></extra>'
     ))
 
-    # 중립선
-    fig.add_hline(y=0, line_dash="dash", line_color="gray", annotation_text="중립")
-    fig.add_hline(y=0.3, line_dash="dot", line_color="orange", annotation_text="강한 매파")
-    fig.add_hline(y=-0.3, line_dash="dot", line_color="blue", annotation_text="강한 비둘기파")
+    fig.add_trace(go.Scatter(
+        x=timeline_df['meeting_dt'],
+        y=timeline_df['tone_ma3'],
+        mode='lines',
+        name='3-Meeting MA',
+        line=dict(color='#64B5F6', width=2, dash='dash'),
+        hovertemplate='<b>%{x|%Y-%m-%d}</b><br>MA3: %{y:.3f}<extra></extra>'
+    ))
+
+    fig.add_hline(y=0, line_dash='dash', line_color='#CFD8DC', annotation_text='중립')
+    fig.add_hline(y=0.3, line_dash='dot', line_color='#FFAB40', annotation_text='강한 매파')
+    fig.add_hline(y=-0.3, line_dash='dot', line_color='#64B5F6', annotation_text='강한 비둘기파')
 
     fig.update_layout(
-        title="BOK Tone Index 시계열 추이",
-        xaxis_title="회의 날짜",
-        yaxis_title="Tone Index",
+        title='BOK Tone Index 시계열 추이',
+        xaxis_title='회의 날짜',
+        yaxis_title='Tone Index',
         hovermode='x unified',
-        height=400,
-        showlegend=False
+        height=430,
+        template='plotly_dark',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        legend=dict(orientation='h', y=1.02, yanchor='bottom', x=1, xanchor='right'),
+        xaxis=dict(
+            dtick='M3',
+            tickformat='%Y Q%q',
+            gridcolor='rgba(255,255,255,0.08)',
+            gridwidth=1,
+        ),
     )
 
     return fig
@@ -224,6 +317,8 @@ def main():
         st.session_state.show_settings = False
     if 'show_taylor' not in st.session_state:
         st.session_state.show_taylor = False
+    if 'show_data_coverage' not in st.session_state:
+        st.session_state.show_data_coverage = False
     if 'selected_meeting' not in st.session_state:
         st.session_state.selected_meeting = '2026_01'  # 기본값: 2026년 1월 (최신)
     
@@ -448,6 +543,9 @@ def main():
             if st.button(" ", key=f"btn_{meeting_date}"):
                 st.session_state.selected_meeting = meeting_date
                 st.session_state.show_analysis = False
+                st.session_state.show_settings = False
+                st.session_state.show_taylor = False
+                st.session_state.show_data_coverage = False
                 st.rerun()
     
     # "Earlier meetings" button in 6th column
@@ -496,6 +594,9 @@ def main():
                 if st.button(" ", key=f"btn_earlier_{meeting_date}"):
                     st.session_state.selected_meeting = meeting_date
                     st.session_state.show_analysis = False
+                    st.session_state.show_settings = False
+                    st.session_state.show_taylor = False
+                    st.session_state.show_data_coverage = False
                     st.rerun()
     
     st.markdown("<br>", unsafe_allow_html=True)
@@ -543,6 +644,9 @@ def main():
     
     if st.button(f"🔍 {selected_formatted} 발표 심층 분석 보기", key="main_analysis_btn", use_container_width=True):
         st.session_state.show_analysis = not st.session_state.show_analysis
+        st.session_state.show_settings = False
+        st.session_state.show_taylor = False
+        st.session_state.show_data_coverage = False
         st.rerun()
     
     # 선택된 회의 데이터
@@ -565,7 +669,10 @@ def main():
              st.session_state.show_analysis = False
              st.rerun()
              
-        render_analysis_view(selected_row)
+        # Find previous meeting for comparison
+        idx = df.index[df['meeting_date_str'] == selected_meeting].tolist()
+        previous_row = df.iloc[idx[0]-1].to_dict() if idx and idx[0] > 0 else None
+        render_analysis_view(selected_row, previous_row)
         
     elif st.session_state.show_settings:
         # 전문가 설정 화면
@@ -580,9 +687,16 @@ def main():
         if st.button("← 대시보드로 돌아가기 (Back to Dashboard)"):
              st.session_state.show_taylor = False
              st.rerun()
-             
+
         render_taylor_view()
-        
+
+    elif st.session_state.show_data_coverage:
+        if st.button("← 대시보드로 돌아가기 (Back to Dashboard)"):
+             st.session_state.show_data_coverage = False
+             st.rerun()
+
+        render_data_coverage_view()
+
     else:
         # 기존 대시보드 화면
         tone_value = selected_row['tone_index']
@@ -624,14 +738,23 @@ def main():
                 st.session_state.show_settings = True
                 st.session_state.show_taylor = False
                 st.session_state.show_analysis = False
+                st.session_state.show_data_coverage = False
                 st.rerun()
-            
+
             if st.button("📈 테일러 룰 분석", key="btn_taylor_analysis"):
                 st.session_state.show_taylor = True
                 st.session_state.show_settings = False
                 st.session_state.show_analysis = False
+                st.session_state.show_data_coverage = False
                 st.rerun()
-                
+
+            if st.button("📁 데이터 현황", key="btn_data_coverage"):
+                st.session_state.show_data_coverage = True
+                st.session_state.show_settings = False
+                st.session_state.show_taylor = False
+                st.session_state.show_analysis = False
+                st.rerun()
+
             st.markdown("---")
             st.markdown("### 💡 정보")
             st.markdown("""

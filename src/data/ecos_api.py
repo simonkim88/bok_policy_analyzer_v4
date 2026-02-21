@@ -15,6 +15,13 @@ from dataclasses import dataclass
 import json
 import os
 
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -59,7 +66,8 @@ class EcosAPI:
         Args:
             api_key: ECOS API 인증키. None이면 환경변수 ECOS_API_KEY에서 읽음
         """
-        self.api_key = api_key or "LZUNMUPZQ4FFUITEF1R7"
+        # TODO: Remove hardcoded fallback key in production
+        self.api_key = api_key or os.environ.get('ECOS_API_KEY', 'LZUNMUPZQ4FFUITEF1R7')
 
         if not self.api_key:
             logger.warning("ECOS API 키가 설정되지 않았습니다. 환경변수 ECOS_API_KEY를 설정하거나 api_key를 전달해주세요.")

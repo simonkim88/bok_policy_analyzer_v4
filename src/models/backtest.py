@@ -1,140 +1,158 @@
+"""
+Enhanced Backtesting Framework.
 
-import pandas as pd
-import numpy as np
-import logging
-from typing import List, Dict
-import matplotlib.pyplot as plt
-import seaborn as sns
+Tests Taylor Rule variants against historical BOK decisions.
+Calculates: accuracy, RMSE, directional accuracy, Granger causality.
+"""
+
 from pathlib import Path
-import sys
 
-# 프로젝트 루트 경로 추가
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
+import numpy as np
+import pandas as pd
+from statsmodels.tsa.stattools import grangercausalitytests
 
-from src.models.rate_predictor import RatePredictor, PredictionResult
+from src.taylor_rule import ExtendedTaylorRule
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
-logger = logging.getLogger(__name__)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
-class Backtester:
-    """
-    금리 예측 모델 백테스터 (Walk-Forward Validation)
-    """
-    
-    def __init__(self, start_idx: int = 10):
-        """
-        Args:
-            start_idx: 학습을 시작할 최소 데이터 개수. 이 시점 이후부터 예측을 수행함.
-        """
-        self.predictor = RatePredictor()
-        self.start_idx = start_idx
-        self.results = []
-        
-    def run(self):
-        """백테스트 실행"""
-        # 1. 데이터 로드
+
+class TaylorRuleBacktester:
+    def __init__(self, model_type="extended"):
+        self.model_type = model_type
+        self.engine = ExtendedTaylorRule()
+        self.data_dir = PROJECT_ROOT / "data"
+
+    def _load_meeting_dates(self):
+        tone_path = self.data_dir / "analysis/tone_index_results.csv"
+        tone = pd.read_csv(tone_path)
+        tone["Date"] = pd.to_datetime(tone["meeting_date"], errors="coerce")
+        tone = pd.DataFrame(tone[["Date", "meeting_date_str"]])
+        tone = tone[tone["Date"].notna()]
+        tone = tone.set_index("Date").sort_index().reset_index()
+        tone = tone.drop_duplicates(subset=["Date"]).reset_index(drop=True)
+        return tone
+
+    def _calc_direction(self, series):
+        diff = series.diff().fillna(0.0)
+        return pd.Series(np.sign(diff), index=series.index)
+
+    def run_backtest(self, start_date="2015-01-01"):
+        model_df = self.engine.calculate(self.model_type).df.copy()
+        model_df = model_df.set_index("Date").sort_index().reset_index()
+
+        meetings = self._load_meeting_dates()
+        meetings = meetings[meetings["Date"] >= pd.to_datetime(start_date)].copy()
+        if meetings.empty:
+            return pd.DataFrame()
+
+        meetings = meetings.set_index("Date").sort_index().reset_index()
+        merged = pd.merge_asof(
+            meetings,
+            model_df,
+            on="Date",
+            direction="backward",
+        )
+
+        merged["Taylor_Gap"] = merged["Taylor_Rate"] - merged["Base_Rate"]
+        merged["Taylor_Recommended_Rate"] = merged["Taylor_Rate"]
+        merged["Actual_Direction"] = self._calc_direction(merged["Base_Rate"])
+
+        prev_actual = merged["Base_Rate"].shift(1).fillna(merged["Base_Rate"])
+        merged["Expected_Direction"] = np.sign(merged["Taylor_Recommended_Rate"] - prev_actual)
+        merged["Direction_Match"] = merged["Expected_Direction"] == merged["Actual_Direction"]
+
+        merged["Squared_Error"] = (merged["Taylor_Rate"] - merged["Base_Rate"]) ** 2
+        merged["Abs_Error"] = (merged["Taylor_Rate"] - merged["Base_Rate"]).abs()
+
+        return merged[
+            [
+                "Date",
+                "meeting_date_str",
+                "Base_Rate",
+                "Taylor_Rate",
+                "Taylor_Gap",
+                "Expected_Direction",
+                "Actual_Direction",
+                "Direction_Match",
+                "Abs_Error",
+                "Squared_Error",
+            ]
+        ].copy()
+
+    def calculate_metrics(self, results):
+        if results.empty:
+            return {
+                "observations": 0,
+                "directional_accuracy": 0.0,
+                "rmse": 0.0,
+                "mae": 0.0,
+                "r_squared": 0.0,
+                "hit_ratio_by_year": {},
+                "granger_pvalue_lag2": np.nan,
+            }
+
+        y_true = results["Base_Rate"].astype(float)
+        y_pred = results["Taylor_Rate"].astype(float)
+
+        rmse = float(np.sqrt(np.mean((y_pred - y_true) ** 2)))
+        mae = float(np.mean(np.abs(y_pred - y_true)))
+
+        ss_res = float(np.sum((y_true - y_pred) ** 2))
+        ss_tot = float(np.sum((y_true - y_true.mean()) ** 2))
+        r_squared = 1.0 - (ss_res / ss_tot) if ss_tot != 0 else 0.0
+
+        directional_accuracy = float(results["Direction_Match"].mean())
+
+        by_year = results.copy()
+        by_year["Year"] = by_year["Date"].dt.year
+        hit_ratio = by_year.groupby("Year")["Direction_Match"].mean().to_dict()
+        hit_ratio = {str(k): float(v) for k, v in hit_ratio.items()}
+
+        granger_pvalue = np.nan
         try:
-            df = self.predictor.load_tone_data()
-        except FileNotFoundError:
-            logger.error("데이터 파일을 찾을 수 없습니다.")
-            return
+            gc_input = results[["Base_Rate", "Taylor_Rate"]].dropna()
+            if len(gc_input) >= 12:
+                gc_res = grangercausalitytests(gc_input, maxlag=2, verbose=False)
+                granger_pvalue = float(gc_res[2][0]["ssr_ftest"][1])
+        except Exception:
+            granger_pvalue = np.nan
 
-        # 2. 날짜순 정렬
-        if 'meeting_date' not in df.columns:
-            df['meeting_date'] = pd.to_datetime(df['meeting_date_str'].str.replace('_', '-'))
-        df = df.sort_values('meeting_date').reset_index(drop=True)
-        
-        # 3. 레이블이 있는 데이터만 필터링
-        labeled_df = []
-        for _, row in df.iterrows():
-            if row['meeting_date_str'] in self.predictor.RATE_HISTORY:
-                labeled_df.append(row)
-        
-        df_labeled = pd.DataFrame(labeled_df).reset_index(drop=True)
-        
-        logger.info(f"총 데이터 수: {len(df)}, 레이블이 있는 데이터 수: {len(df_labeled)}")
-        logger.info(f"백테스트 시작 (초기 학습 데이터: {self.start_idx}개)")
-        print("-" * 80)
-        print(f"{'회의일':<12} {'실제':<6} {'예측':<6} {'정확':<4} {'신뢰도':<8} {'Tone':<8} {'상태'}")
-        print("-" * 80)
+        return {
+            "observations": int(len(results)),
+            "directional_accuracy": directional_accuracy,
+            "rmse": rmse,
+            "mae": mae,
+            "r_squared": float(r_squared),
+            "hit_ratio_by_year": hit_ratio,
+            "granger_pvalue_lag2": granger_pvalue,
+        }
 
-        # 4. Walk-Forward Loop
-        correct_count = 0
-        total_count = 0
-        
-        for i in range(self.start_idx, len(df_labeled)):
-            # 학습 데이터 (과거 데이터)
-            train_df = df_labeled.iloc[:i]
-            
-            # 테스트 데이터 (현재 예측 대상)
-            test_row = df_labeled.iloc[i]
-            target_date = test_row['meeting_date_str']
-            
-            # 실제 결과
-            rate, actual_action_code = self.predictor.RATE_HISTORY[target_date]
-            actual_action = self.predictor.ACTION_LABELS[self.predictor.ACTION_MAP[actual_action_code]]
-            
-            # 모델 학습
-            # 주의: 매번 새로운 인스턴스를 만들지 않고 train을 다시 호출하여 리셋됨을 이용
-            # scaler가 fit_transform으로 매번 갱신되므로 정보 유출 없음
-            self.predictor = RatePredictor() 
-            self.predictor.train(train_df)
-            
-            # 예측
-            pred_result = self.predictor.predict(test_row.to_dict())
-            
-            # 결과 기록
-            is_correct = (pred_result.predicted_action == actual_action)
-            if is_correct:
-                correct_count += 1
-            total_count += 1
-            
-            self.results.append({
-                'date': target_date,
-                'actual': actual_action,
-                'predicted': pred_result.predicted_action,
-                'is_correct': is_correct,
-                'confidence': pred_result.confidence,
-                'tone': test_row['tone_index'],
-                'probs': [pred_result.prob_hike, pred_result.prob_hold, pred_result.prob_cut]
-            })
-            
-            # 출력
-            mark = "O" if is_correct else "X"
-            print(f"{target_date:<12} {actual_action:<6} {pred_result.predicted_action:<6} {mark:<4} {pred_result.confidence:.1%}    {test_row['tone_index']:+.3f}")
+    def compare_models(self, start_date="2015-01-01"):
+        rows = []
+        for model_type in ["standard", "extended", "augmented"]:
+            tester = TaylorRuleBacktester(model_type=model_type)
+            result = tester.run_backtest(start_date=start_date)
+            metrics = tester.calculate_metrics(result)
+            rows.append(
+                {
+                    "model_type": model_type,
+                    "observations": metrics["observations"],
+                    "directional_accuracy": metrics["directional_accuracy"],
+                    "rmse": metrics["rmse"],
+                    "mae": metrics["mae"],
+                    "r_squared": metrics["r_squared"],
+                    "granger_pvalue_lag2": metrics["granger_pvalue_lag2"],
+                }
+            )
 
-        # 5. 최종 리포트
-        accuracy = correct_count / total_count if total_count > 0 else 0
-        print("-" * 80)
-        print(f"백테스트 완료")
-        print(f"총 예측: {total_count}회")
-        print(f"정답: {correct_count}회")
-        print(f"정확도: {accuracy:.2%}")
-        
-        self.plot_results()
-        
-    def plot_results(self):
-        """결과 시각화 (터미널 환경이라 저장은 생략하거나 파일로 저장)"""
-        if not self.results:
-            return
-            
-        # 결과 DataFrame
-        res_df = pd.DataFrame(self.results)
-        
-        # 정확도 추이 (누적)
-        res_df['cumulative_acc'] = res_df['is_correct'].expanding().mean()
-        
-        print("\n[구간별 정확도]")
-        # 5개씩 묶어서 정확도 확인
-        chunk_size = 5
-        for i in range(0, len(res_df), chunk_size):
-            chunk = res_df.iloc[i:i+chunk_size]
-            acc = chunk['is_correct'].mean()
-            start_date = chunk.iloc[0]['date']
-            end_date = chunk.iloc[-1]['date']
-            print(f"{start_date} ~ {end_date}: {acc:.2%}")
+        return pd.DataFrame(rows).sort_values(by="rmse").reset_index(drop=True)
+
+
+class Backtester(TaylorRuleBacktester):
+    """Backward-compatible alias for existing imports."""
+
 
 if __name__ == "__main__":
-    backtester = Backtester(start_idx=10) # 최소 10개의 데이터로 시작
-    backtester.run()
+    backtester = TaylorRuleBacktester(model_type="extended")
+    out = backtester.run_backtest(start_date="2018-01-01")
+    print(backtester.calculate_metrics(out))

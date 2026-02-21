@@ -79,6 +79,8 @@ class TextPreprocessor:
         r'금융통화위원회는.*의결',
     ]
 
+    SENTENCE_CONNECTORS = ["다만", "그러나", "한편", "또한", "반면"]
+
     def __init__(self, use_kss: bool = True):
         """
         전처리기 초기화
@@ -117,6 +119,9 @@ class TextPreprocessor:
         """텍스트 정규화"""
         # 특수문자 정리 (괄호 내용 보존)
         text = re.sub(r'[「」『』【】]', '', text)
+        text = text.replace('…', '...')
+        # 문맥 전환 표현 앞뒤 공백 정리
+        text = re.sub(r'\s*(다만|그러나|한편|또한)\s*', r' \1 ', text)
         # 연속 공백 제거
         text = re.sub(r' +', ' ', text)
         # 연속 줄바꿈 제거
@@ -180,13 +185,18 @@ class TextPreprocessor:
         if self.use_kss and self._kss:
             try:
                 sentences = self._kss.split_sentences(text)
-                return [s.strip() for s in sentences if s.strip()]
+                return [str(s).strip() for s in sentences if str(s).strip()]
             except Exception as e:
                 logger.warning(f"KSS 문장 분리 실패, 기본 분리 사용: {e}")
 
-        # 기본 문장 분리 (마침표, 물음표, 느낌표 기준)
-        sentences = re.split(r'(?<=[.?!])\s+', text)
-        return [s.strip() for s in sentences if s.strip() and len(s) > 10]
+        # 기본 문장 분리 (마침표, 물음표, 느낌표 + 전환 표현 기준)
+        connector_pattern = '|'.join(self.SENTENCE_CONNECTORS)
+        split_pattern = rf'(?<=[.?!;])\s+|(?<=다)\s+(?=({connector_pattern}))'
+        sentences = re.split(split_pattern, text)
+        # 캡처 그룹으로 들어온 전환 표현 조각 제거
+        connector_set = set(self.SENTENCE_CONNECTORS)
+        sentences = [s for s in sentences if s and s not in connector_set]
+        return [s.strip() for s in sentences if s.strip() and len(s.strip()) > 10]
 
     def extract_member_opinions(self, text: str) -> List[Dict[str, str]]:
         """
