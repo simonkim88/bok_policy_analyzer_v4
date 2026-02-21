@@ -2,7 +2,7 @@
 # Convenient script to launch the app on Linux/Cloud
 set -e
 
-echo "Starting BOK Policy Analyzer v3..."
+echo "Starting BOK Policy Analyzer v4..."
 
 if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
