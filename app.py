@@ -294,6 +294,138 @@ def main():
     
     # Custom CSS 적용
     st.markdown(get_custom_css(), unsafe_allow_html=True)
+    
+    # ===== Mobile Sidebar Toggle JavaScript & Button =====
+    st.markdown("""
+    <script>
+    // Mobile sidebar toggle functionality
+    (function() {
+        function initMobileSidebar() {
+            let toggleBtn = document.getElementById('mobile-menu-toggle-btn');
+            let sidebar = document.querySelector('section[data-testid="stSidebar"]');
+            let overlay = document.getElementById('sidebar-overlay');
+            
+            // Create overlay if it doesn't exist
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'sidebar-overlay';
+                overlay.className = 'sidebar-overlay';
+                document.body.appendChild(overlay);
+            }
+            
+            function closeSidebar() {
+                sidebar = sidebar || document.querySelector('section[data-testid="stSidebar"]');
+                toggleBtn = toggleBtn || document.getElementById('mobile-menu-toggle-btn');
+                overlay = overlay || document.getElementById('sidebar-overlay');
+                
+                if (sidebar) {
+                    sidebar.classList.remove('mobile-open');
+                }
+                if (overlay) {
+                    overlay.classList.remove('active');
+                }
+                if (toggleBtn) {
+                    toggleBtn.innerHTML = '<span>☰</span><span>메뉴 열기 >></span>';
+                }
+            }
+            
+            // Initial state: close sidebar on mobile
+            if (window.innerWidth <= 768 && sidebar) {
+                closeSidebar();
+            }
+            
+            // Bind overlay click
+            if (overlay) {
+                overlay.onclick = closeSidebar;
+            }
+            
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    sidebar = sidebar || document.querySelector('section[data-testid="stSidebar"]');
+                    toggleBtn = toggleBtn || document.getElementById('mobile-menu-toggle-btn');
+                    
+                    if (sidebar && sidebar.classList.contains('mobile-open')) {
+                        if (!sidebar.contains(e.target) && toggleBtn && !toggleBtn.contains(e.target)) {
+                            closeSidebar();
+                        }
+                    }
+                }
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                sidebar = sidebar || document.querySelector('section[data-testid="stSidebar"]');
+                toggleBtn = toggleBtn || document.getElementById('mobile-menu-toggle-btn');
+                overlay = overlay || document.getElementById('sidebar-overlay');
+                
+                if (window.innerWidth > 768) {
+                    // Desktop: remove mobile classes
+                    if (sidebar) {
+                        sidebar.classList.remove('mobile-open');
+                    }
+                    if (overlay) {
+                        overlay.classList.remove('active');
+                    }
+                    if (toggleBtn) {
+                        toggleBtn.innerHTML = '<span>☰</span><span>메뉴 열기 >></span>';
+                    }
+                } else {
+                    // Mobile: ensure sidebar is closed on resize to mobile
+                    if (sidebar && !sidebar.classList.contains('mobile-open')) {
+                        // Keep it closed
+                    }
+                }
+            });
+        }
+        
+        // Run immediately if DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMobileSidebar);
+        } else {
+            initMobileSidebar();
+        }
+        
+        // Also run after a short delay to ensure Streamlit has rendered
+        setTimeout(initMobileSidebar, 100);
+        setTimeout(initMobileSidebar, 500);
+    })();
+    </script>
+    
+    <!-- Mobile Menu Toggle Button -->
+    <button id="mobile-menu-toggle-btn" class="mobile-menu-toggle" onclick="
+        (function() {
+            let sidebar = document.querySelector('section[data-testid=\'stSidebar\']');
+            let overlay = document.getElementById('sidebar-overlay');
+            let btn = document.getElementById('mobile-menu-toggle-btn');
+            
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'sidebar-overlay';
+                overlay.className = 'sidebar-overlay';
+                document.body.appendChild(overlay);
+                overlay.onclick = function() {
+                    sidebar.classList.remove('mobile-open');
+                    overlay.classList.remove('active');
+                    btn.innerHTML = '<span>☰</span><span>메뉴 열기 >></span>';
+                };
+            }
+            
+            if (sidebar.classList.contains('mobile-open')) {
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+                btn.innerHTML = '<span>☰</span><span>메뉴 열기 >></span>';
+            } else {
+                sidebar.classList.add('mobile-open');
+                overlay.classList.add('active');
+                btn.innerHTML = '<span>✕</span><span>메뉴 닫기 <<</span>';
+            }
+        })();
+    ">
+        <span>☰</span>
+        <span>메뉴 열기 >></span>
+    </button>
+    """, unsafe_allow_html=True)
 
     # 헤더
     st.markdown("""

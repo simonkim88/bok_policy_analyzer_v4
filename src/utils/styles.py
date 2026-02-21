@@ -185,5 +185,106 @@ def get_custom_css():
             background-color: transparent !important;
         }
 
+        /* ===== Mobile Sidebar Toggle Styles ===== */
+        /* Mobile menu toggle button */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 999999;
+            background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%) !important;
+            color: white !important;
+            border: none !important;
+            padding: 12px 20px !important;
+            font-size: 0.95rem !important;
+            font-weight: 600 !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 15px rgba(21, 101, 192, 0.5) !important;
+            transition: all 0.3s ease !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+        
+        .mobile-menu-toggle:hover {
+            background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%) !important;
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.6) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Desktop sidebar always visible */
+        @media screen and (min-width: 769px) {
+            section[data-testid="stSidebar"] {
+                transform: translateX(0) !important;
+                position: relative !important;
+                width: auto !important;
+            }
+            
+            /* Hide mobile toggle on desktop */
+            .mobile-menu-toggle {
+                display: none !important;
+            }
+            
+            /* Hide overlay on desktop */
+            .sidebar-overlay {
+                display: none !important;
+            }
+        }
+
+        /* Mobile responsive styles */
+        @media screen and (max-width: 768px) {
+            /* Show mobile toggle button */
+            .mobile-menu-toggle {
+                display: flex !important;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            /* Hide sidebar by default on mobile */
+            section[data-testid="stSidebar"] {
+                transform: translateX(-100%) !important;
+                transition: transform 0.3s ease-in-out !important;
+                position: fixed !important;
+                left: 0 !important;
+                top: 0 !important;
+                height: 100vh !important;
+                z-index: 999998 !important;
+                width: 300px !important;
+                box-shadow: 2px 0 20px rgba(0,0,0,0.8) !important;
+            }
+            
+            /* Show sidebar when open */
+            section[data-testid="stSidebar"].mobile-open {
+                transform: translateX(0) !important;
+            }
+            
+            /* Overlay when sidebar is open */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 999997;
+                backdrop-filter: blur(3px);
+            }
+            
+            .sidebar-overlay.active {
+                display: block !important;
+            }
+            
+            /* Adjust main content for mobile */
+            section.main > div {
+                padding-top: 60px !important;
+            }
+            
+            /* Hide default sidebar collapse button on mobile */
+            button[kind="header"] {
+                display: none !important;
+            }
+        }
+
     </style>
     """
