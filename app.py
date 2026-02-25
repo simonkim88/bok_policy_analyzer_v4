@@ -296,7 +296,7 @@ def main():
     st.markdown(get_custom_css(), unsafe_allow_html=True)
     
     # ===== Mobile Sidebar Toggle JavaScript & Button =====
-    st.markdown("""
+    st.html("""
     <script>
     // Mobile sidebar toggle functionality
     (function() {
@@ -425,7 +425,7 @@ def main():
         <span>☰</span>
         <span>메뉴 열기 >></span>
     </button>
-    """, unsafe_allow_html=True)
+    """)
 
     # 헤더
     st.markdown("""
@@ -845,42 +845,57 @@ def main():
 
             st.markdown("---")
             
-            # 전문가 설정 버튼
+            # 네비게이션 버튼
             st.markdown("""
             <style>
             div[data-testid="stSidebar"] div[data-testid="stButton"] button {
-                background-color: #2D3748;  /* Dark Slate Grey - Subtle */
-                color: #CBD5E0;
+                width: 100%;
+                height: 48px !important;
+                background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+                color: #E2E8F0;
                 border: 1px solid #4A5568;
-                font-size: 0.9rem;
-                padding: 0.4rem 1rem;
-                border-radius: 8px;
-                transition: all 0.3s ease;
+                font-size: 0.95rem;
+                font-weight: 500;
+                letter-spacing: 0.02em;
+                padding: 0 1.2rem;
+                border-radius: 10px;
+                transition: all 0.25s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 4px;
+                white-space: nowrap;
             }
             div[data-testid="stSidebar"] div[data-testid="stButton"] button:hover {
-                background-color: #4A5568;
-                border-color: #718096;
-                color: white;
-                box-shadow: none;
+                background: linear-gradient(135deg, #00E676 0%, #00C853 100%);
+                border-color: #00E676;
+                color: #1A202C;
+                font-weight: 600;
+                box-shadow: 0 4px 12px rgba(0, 230, 118, 0.3);
+                transform: translateY(-1px);
+            }
+            div[data-testid="stSidebar"] div[data-testid="stButton"] button:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 6px rgba(0, 230, 118, 0.2);
             }
             </style>
             """, unsafe_allow_html=True)
             
-            if st.button("⚙️ 전문가 설정", key="btn_expert_settings"):
+            if st.button("⚙️  전문가 설정", key="btn_expert_settings", use_container_width=True):
                 st.session_state.show_settings = True
                 st.session_state.show_taylor = False
                 st.session_state.show_analysis = False
                 st.session_state.show_data_coverage = False
                 st.rerun()
 
-            if st.button("📈 테일러 룰 분석", key="btn_taylor_analysis"):
+            if st.button("📈 테일러 룰 분석", key="btn_taylor_analysis", use_container_width=True):
                 st.session_state.show_taylor = True
                 st.session_state.show_settings = False
                 st.session_state.show_analysis = False
                 st.session_state.show_data_coverage = False
                 st.rerun()
 
-            if st.button("📁 데이터 현황", key="btn_data_coverage"):
+            if st.button("📁 데이터 현황", key="btn_data_coverage", use_container_width=True):
                 st.session_state.show_data_coverage = True
                 st.session_state.show_settings = False
                 st.session_state.show_taylor = False
